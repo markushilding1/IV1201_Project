@@ -18,7 +18,7 @@
     "build": "env-cmd -f ./src/settings/.env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "prettier --config .prettierrc  'src/**/*.js' --write"
+    "prettify": "prettier --config .prettierrc src/**/*.js --write"
   },
   "eslintConfig": {
     "extends": "react-app"
