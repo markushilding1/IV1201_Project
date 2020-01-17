@@ -18,7 +18,7 @@
     "build": "env-cmd -f ./src/settings/.env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "prettier --config .prettierrc  'src/**/*.js' --write"
+    "prettify": "prettier --config .prettierrc src/**/*.js --write"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -34,5 +34,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.18.0"
   }
 }
