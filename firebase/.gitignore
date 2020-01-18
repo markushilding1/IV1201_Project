@@ -63,3 +63,7 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+
+# react production build
+public/*
