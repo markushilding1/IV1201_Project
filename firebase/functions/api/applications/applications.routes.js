@@ -7,14 +7,12 @@ const applicationsController = require('./applications.controller');
 //Import middleware
 const exampleMiddleware = require('./middlewares/exampleMiddleware');
 
-//Middleware for these specific routes here
-/*  Example make sure the client has a valid auth token
-    App.use(someAuthorizationMiddleware);
-*/
+//Middleware for all routes here to check if the requests
+//Are made from authenticated users with valid token
+router.use(exampleMiddleware.isAuthenticated);
 
 //Setup Controllers
-router.post('/submit', exampleMiddleware.isAuthenticated, applicationsController.submitApplication);
-
+router.post('/submit', applicationsController.submitApplication);
 router.get('/', exampleMiddleware.isRecruiter, applicationsController.getAllApplications);
 
 module.exports = router;
