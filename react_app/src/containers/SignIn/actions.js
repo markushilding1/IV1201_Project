@@ -18,6 +18,7 @@ export const signInUser = (email, password) => {
   return (dispatch, getState, { getFirebase }) => {
     dispatch({ type: SIGN_IN });
     const auth = getFirebase().auth();
+    
     auth
       .signInWithEmailAndPassword(email, password)
       .catch(function(error) {
@@ -32,7 +33,18 @@ export const signInUser = (email, password) => {
           auth.signOut();
           signInFailed(dispatch, 'Account not verified.');
         } else if (result) {
-          console.log(result);
+          const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
+          fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/users/', {
+            headers:{
+              'Authorization':accessToken,
+            }
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          })
 
           signInSuccess(dispatch);
           //getUserData(result.user, dispatch);

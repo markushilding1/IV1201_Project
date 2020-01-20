@@ -1,7 +1,7 @@
 //Import Modules
 const functions = require('firebase-functions');
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 
 //Import Routes
 const routes = require('./api/routes');
@@ -10,7 +10,7 @@ const routes = require('./api/routes');
 const app = express();
 
 //Automatically allow cross-origin requests
-//app.use(cors({ origin: true }));
+app.use(cors({ origin: true }));
 
 //Mount Routes
 app.use(routes);
