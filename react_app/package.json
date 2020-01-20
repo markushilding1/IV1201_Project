@@ -34,11 +34,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm prettier && npm run pretest"
+      "pre-commit": "npm run prettify && npm run pretest"
     }
-  },
-  "lint-staged" : {
-    "*.js": ["./node_modules/.bin/eslint — fix", "git add"]
   },
   "eslintConfig": {
     "extends": "react-app"
