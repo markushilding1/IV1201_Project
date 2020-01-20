@@ -29,7 +29,16 @@
     "build": "env-cmd -f ./src/settings/.env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "prettier --config .prettierrc src/**/*.js --write"
+    "prettify": "prettier --config .prettierrc src/**/*.js --write",
+    "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm prettier && npm run pretest"
+    }
+  },
+  "lint-staged" : {
+    "*.js": ["./node_modules/.bin/eslint — fix", "git add"]
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +58,8 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.18.0"
+    "eslint-plugin-react": "^7.18.0",
+    "husky": "^4.0.10",
+    "lint-staged": "^10.0.0"
   }
 }
