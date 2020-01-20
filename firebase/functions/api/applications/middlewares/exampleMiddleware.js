@@ -5,6 +5,7 @@ exports.isAuthenticated = (req, res, next) => {
     const isAuthenticated = true;
 
     if(isAuthenticated) {
+        req.email = 'email';
         return next();
     } else {
         throw new UnauthorizedError();
