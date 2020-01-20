@@ -84,7 +84,6 @@ const getUserData = (user, dispatch) => {
     .catch(err => {
       console.log(err);
     })
-  
   };
 */
 
