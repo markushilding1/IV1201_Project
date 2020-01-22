@@ -18,13 +18,12 @@ export const signInUser = (email, password) => {
   return (dispatch, getState, {getFirebase}) => {
     dispatch({type: SIGN_IN});
     const auth = getFirebase().auth();
-    
+
     auth
         .signInWithEmailAndPassword(email, password)
         .catch(function(error) {
         // Look up possible error codes to generate
         // appropiate error messages.
-<<<<<<< HEAD
         // var errorCode = error.code;
           const errorMessage = error.message;
           signInFailed(dispatch, errorMessage);
@@ -34,30 +33,19 @@ export const signInUser = (email, password) => {
             auth.signOut();
             signInFailed(dispatch, 'Account not verified.');
           } else if (result) {
-            console.log(result);
-=======
-        //var errorCode = error.code;
-        var errorMessage = error.message;
-        signInFailed(dispatch, errorMessage);
-      })
-      .then((result) => {
-        if (result && !result.user.emailVerified) {
-          auth.signOut();
-          signInFailed(dispatch, 'Account not verified.');
-        } else if (result) {
-          const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
-          fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/users/', {
-            headers:{
-              'Authorization':accessToken,
-            }
-          })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.log(err);
-          })
->>>>>>> 2df0bc71c3dbfb8b06cd7f273ae0f774f8a4f4ed
+            const accessToken = getState().firebase.auth.stsTokenManager
+                .accessToken;
+            fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/users/', {
+              headers: {
+                Authorization: accessToken,
+              },
+            })
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
 
             signInSuccess(dispatch);
           // getUserData(result.user, dispatch);

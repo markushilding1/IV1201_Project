@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {componse} from 'redux';
 import View from './view';
 
-import { exportedFunction } from './actions';
+import {exportedFunction} from './actions';
 
 const withRouter = require('react-router-dom').withRouter;
 

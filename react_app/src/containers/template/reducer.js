@@ -1,7 +1,4 @@
-import {
-  CONSTANT
-} from './constants';
-
+import {CONSTANT} from './constants';
 
 const INITIAL_STATE = {
   loading: false,
@@ -15,11 +12,11 @@ function nameReducer(state = INITIAL_STATE, action) {
         ...state,
         loading: true,
         error: null,
-      };  
+      };
     default:
       break;
   }
   return state;
 }
 
-export default nameReducer
+export default nameReducer;
