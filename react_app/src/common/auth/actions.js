@@ -84,7 +84,10 @@ const getUserData = (user, dispatch) => {
     .catch(err => {
       console.log(err);
     })
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2df0bc71c3dbfb8b06cd7f273ae0f774f8a4f4ed
   };
 */
 

@@ -5,11 +5,13 @@ const router = express.Router();
 const applicationsController = require('./applications.controller');
 
 //Import middleware
-const exampleMiddleware = require('./middlewares/exampleMiddleware');
+const authMiddleware = require('./../common/middlewares/authentication.js');
+const exampleMiddleware = require('./middlewares/exampleMiddleware.js');
+
 
 //Middleware for all routes here to check if the requests
 //Are made from authenticated users with valid token
-router.use(exampleMiddleware.isAuthenticated);
+router.use(authMiddleware.isAuthenticated);
 
 //Setup Controllers
 router.post('/submit', applicationsController.submitApplication);

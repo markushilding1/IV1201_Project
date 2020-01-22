@@ -3,16 +3,18 @@
   "description": "Cloud Functions for Firebase",
   "scripts": {
     "lint": "eslint .",
-    "serve": "firebase serve --only functions",
+    "serve:local": "env-cmd -f ./settings/.env.local firebase serve --only functions",
+    "serve:prod": "env-cmd -f ./settings/.env.production firebase serve --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "env-cmd -f ./settings/.env.production firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "engines": {
     "node": "8"
   },
   "dependencies": {
+    "env-cmd": "^10.0.1",
     "express": "^4.17.1",
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0"
