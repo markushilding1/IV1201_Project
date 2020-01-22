@@ -8,5 +8,5 @@ exports.submitApplication = (req, res, next) => {
 
 //Controller to handle get applications
 exports.getAllApplications = (req, res, next) => {
-    res.send('From get all applications');
+    return applicationsService.getAllApplications();
 };

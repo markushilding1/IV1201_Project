@@ -5,19 +5,20 @@ const { Pool, Client } = require('pg')
 const connectionString = 'postgresql://dbuser:secretpassword@database.server.com:3211/mydb'
 
 //Function to get all applications
-exports.getAllApplication = async () => {
-
-    //Use either client or pool, not sure which one is best
-    const pool = new Pool({config});
-    pool.connect();
-
-    const text = 'INSERT INTO users(name, email) VALUES($1, $2) RETURNING *';
-    const values = ['brianc', 'brian.m.carlson@gmail.com'];
-
-    try {
-        const res = await pool.query(text, values)
-        console.log(res.rows[0])
-      } catch (err) {
-        console.log(err.stack)
-      }
+exports.getAllApplications = async () => {
+  console.log('Repo called');
+  const client = new Client({
+    connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
+    ssl: true,
+  });
+  
+  client.connect();
+  
+  client.query('CREATE TABLE role (role_id BIGINT PRIMARY KEY, name VARCHAR(255));', (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
+    }
+    client.end();
+  });
 }

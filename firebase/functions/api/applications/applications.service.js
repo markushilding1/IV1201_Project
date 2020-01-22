@@ -1,7 +1,8 @@
 const ExampleError = require('../errors/exampleError');
+const applicationRepository = require('./applications.repository');
 
 exports.getAllApplications = (req, res, next) => {
-    throw new ExampleError();
+    applicationRepository.getAllApplications();
 };
 
 exports.submitApplication = (req, res, next) => {
