@@ -1,4 +1,4 @@
-import { GET_USER, GET_USER_SUCCESS, GET_USER_FAILED } from './constants.js';
+import {GET_USER, GET_USER_SUCCESS, GET_USER_FAILED} from './constants.js';
 
 const INITIAL_STATE = {
   loading: false,

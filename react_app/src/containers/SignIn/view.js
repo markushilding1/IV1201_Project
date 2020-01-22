@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import './style.scss';
 
 const SignInView = (props) => {
-  const { error, loading, onFormSubmit, onFormChange } = props;
+  const {error, loading, onFormSubmit, onFormChange} = props;
   const buttonText = loading ? 'Signing in...' : 'Sign In';
 
   return (

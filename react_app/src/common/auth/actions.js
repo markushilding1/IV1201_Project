@@ -1,6 +1,6 @@
-import { SIGN_OUT } from './constants.js';
+import {SIGN_OUT} from './constants.js';
 
-//const API_URL = process.env.REACT_APP_API_URL;
+// const API_URL = process.env.REACT_APP_API_URL;
 
 /**
  * @description Listens to authentication changes from
@@ -13,12 +13,12 @@ export const authListener = () => {
     return (dispatch, getState, {getFirebase}) => {
         const auth = getFirebase().auth();
         auth.onAuthStateChanged((user) => {
-            
+
             // if(user && user.emailVerified) {
             if (user ) {
-                
+
                 // User is signed in.
-                
+
                 var displayName = user.displayName;
                 var email = user.email;
                 var emailVerified = user.emailVerified;
@@ -28,7 +28,7 @@ export const authListener = () => {
                 var providerData = user.providerData;
                 var refreshToken = user.refreshToken;
 
-                
+
                 dispatch({
                     type:AUTH_SUCCESS,
                     payload:user
@@ -39,7 +39,7 @@ export const authListener = () => {
                 .then(doc => {
                     if (!doc.exists) {
                         console.log('No such document!');
-                    } 
+                    }
                     else {
                         listenToUserChanges()
                         dispatch({
@@ -56,12 +56,12 @@ export const authListener = () => {
                     });
                     console.log('Error getting document', err);
                 });
-            } 
+            }
             else {
                 signOut();
             }
         })
-       
+
     }
 }
 */
@@ -84,20 +84,20 @@ const getUserData = (user, dispatch) => {
     .catch(err => {
       console.log(err);
     })
-  
+
   };
 */
 
 export const signOutUser = () => {
-  return (dispatch, _, { getFirebase }) => {
+  return (dispatch, _, {getFirebase}) => {
     const auth = getFirebase().auth();
     auth
-      .signOut()
-      .then(function() {
-        dispatch({ type: SIGN_OUT });
-      })
-      .catch(function(error) {
-        console.log('Failed to sign out user');
-      });
+        .signOut()
+        .then(function() {
+          dispatch({type: SIGN_OUT});
+        })
+        .catch(function(error) {
+          console.log('Failed to sign out user');
+        });
   };
 };
