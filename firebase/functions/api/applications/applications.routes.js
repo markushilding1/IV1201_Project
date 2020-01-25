@@ -15,6 +15,6 @@ const exampleMiddleware = require('./middlewares/exampleMiddleware.js');
 
 //Setup Controllers
 router.post('/submit', applicationsController.submitApplication);
-router.get('/', applicationsController.getAllApplications);
+router.get('/', applicationsController.getApplications);
 
 module.exports = router;

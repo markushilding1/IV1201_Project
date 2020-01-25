@@ -7,6 +7,11 @@ exports.submitApplication = (req, res, next) => {
 };
 
 //Controller to handle get applications
-exports.getAllApplications = (req, res, next) => {
-    return applicationsService.getAllApplications();
+exports.getApplications = (req, res, next) => {
+    //Get page nr from body or params?
+    const page = req.body.page;
+    //Limit is hardcoded for now, could also come from client
+    const limit = 20;
+    
+    return applicationsService.getApplications(page, limit);
 };

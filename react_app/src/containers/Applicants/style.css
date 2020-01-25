@@ -1,0 +1,32 @@
+.outerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px 0 10px 0;
+}
+
+.innerContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.row {
+}
+
+.col {
+}
+
+.applicants {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn {
+    margin-right: 10px;
+}
+
+.spinner {
+    align-self: center;
+}
