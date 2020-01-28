@@ -12,7 +12,7 @@ exports.submitApplication = (req, res, next) => {
     }
 
     console.log('From Applications Controller');
-    return applicationsService.submitApplication();
+    return applicationsService.submitApplication(req.body.areaOfExpertise,req.body.availPeriods);
 };
 
 //Controller to handle get applications
