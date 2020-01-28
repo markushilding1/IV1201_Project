@@ -10,8 +10,7 @@ import Nav from 'react-bootstrap/Nav';
 import './style.css';
 
 const TopNavbar = (props) => {
-  const user = props.user;
-
+  const { auth, user, userLoading } = props;
   const home = <Nav.Link href="/">Home</Nav.Link>;
   const signOut = <Nav.Link onClick={props.onSignOutClick}>Sign Out</Nav.Link>;
 
@@ -22,25 +21,25 @@ const TopNavbar = (props) => {
           <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">Logo</Navbar.Brand>
 
-            {!user ? (
+            {auth.isLoaded && !user && !userLoading ? (
               <Nav className="mr-auto">
                 {home}
                 <Nav.Link href="/sign-in">Sign In</Nav.Link>
                 <Nav.Link href="/sign-up">Sign Up</Nav.Link>
               </Nav>
-            ) : user.role === 'applicant' ? (
+            ) : user && user.role === 'applicant' ? (
               <Nav className="mr-auto">
                 {home}
                 <Nav.Link href="/apply">Apply for job</Nav.Link>
                 {signOut}
               </Nav>
-            ) : (
+            ) : user && user.role === 'recruiter' ? (
               <Nav className="mr-auto">
                 {home}
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
                 {signOut}
               </Nav>
-            )}
+            ) : null}
           </Navbar>
         </Col>
       </Row>

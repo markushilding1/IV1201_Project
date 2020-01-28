@@ -1,5 +1,11 @@
-import { SIGN_OUT, SET_USER } from './constants.js';
-
+import {
+  SIGN_OUT,
+  GET_USER,
+  GET_USER_SUCCESS,
+  GET_USER_FAILED,
+} from './constants.js';
+import history from './../../utils/history';
+import { signInSuccess } from './../../containers/SignIn/actions';
 const API_URL = process.env.REACT_APP_API_URL;
 
 /**
@@ -46,13 +52,27 @@ export const authListener = () => {
 
         if (!accessToken) return;
 
+        dispatch({ type: GET_USER });
+
         const uid = user.uid;
         const userData = await getUserProfile(uid, accessToken);
 
         if (userData) {
           dispatch({
-            type: SET_USER,
+            type: GET_USER_SUCCESS,
             payload: userData,
+          });
+
+          signInSuccess(dispatch);
+
+          const next = getState().auth.next;
+          if (next) {
+            history.push(`/${next}`);
+          }
+        } else {
+          dispatch({
+            type: GET_USER_FAILED,
+            payload: 'Could not get user data.',
           });
         }
       } else {
@@ -75,6 +95,7 @@ export const signOutUser = () => {
         // getFirebase().logout();
 
         dispatch({ type: SIGN_OUT });
+        history.push('/sign-in');
       })
       .catch(function(error) {
         console.log('Failed to sign out user');

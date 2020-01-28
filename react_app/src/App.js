@@ -11,7 +11,6 @@ import SignIn from './containers/SignIn';
 import SignUp from './containers/SignUp';
 import SignUpSuccess from './containers/SignUp/Success';
 import Applicants from './containers/Applicants';
-
 import TopNavbar from './components/TopNavbar';
 
 import './App.css';
@@ -28,13 +27,25 @@ class App extends Component {
   };
 
   render() {
+    const { auth, user, userLoading } = this.props;
+
+    if (!auth.isLoaded) {
+      return null;
+    }
+
     return (
       <div className="App">
-        <TopNavbar user={null} onSignOutClick={this.handleSignOut} />
+        <TopNavbar
+          auth={auth}
+          user={user}
+          userLoading={userLoading}
+          onSignOutClick={this.handleSignOut}
+        />
 
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-in/:next" component={SignIn} />
+          <Route path="/sign-in/" component={SignIn} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/sign-up-success" component={SignUpSuccess} />
           <Route path="/applicants" component={Applicants} />
@@ -51,9 +62,13 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   const auth = state.firebase.auth;
+  const user = state.auth.user;
+  const userLoading = state.auth.loading;
 
   return {
     auth: auth,
+    user: user,
+    userLoading: userLoading,
   };
 };
 

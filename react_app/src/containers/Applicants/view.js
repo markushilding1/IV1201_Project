@@ -12,8 +12,12 @@ import Applicant from './components/applicant';
 import './style.css';
 
 const view = (props) => {
-  const {applicants, loading} = props;
+  const { applicants, loading, authorized } = props;
   console.log(props);
+
+  if (!authorized) {
+    return null;
+  }
 
   return (
     <Container className="outerContainer">

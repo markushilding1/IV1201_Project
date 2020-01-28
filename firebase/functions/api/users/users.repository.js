@@ -30,7 +30,12 @@ exports.getUserProfile = async (uid) => {
   const client = db.conn();
 
   return await new Promise((resolve, reject) => {
-    client.query(`SELECT * FROM person WHERE person_id = $1 limit 1`,
+    client.query(`
+      SELECT p.name, p.surname, p.person_id, p.ssn, r.name as role
+      FROM person as p, role as r 
+      WHERE person_id = $1 
+      AND p.role_id = r.role_id
+      LIMIT 1`,
     values, 
     (err, res) => {
       if (err) {

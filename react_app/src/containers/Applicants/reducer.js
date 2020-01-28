@@ -3,7 +3,7 @@
  * @author Philip Romn
  */
 
-import {SEARCH} from './constants.js';
+import { SEARCH } from './constants.js';
 
 const INITIAL_STATE = {
   loading: false,
