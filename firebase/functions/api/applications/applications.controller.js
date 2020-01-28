@@ -7,11 +7,14 @@ exports.submitApplication = (req, res, next) => {
 };
 
 //Controller to handle get applications
-exports.getApplications = (req, res, next) => {
-    //Get page nr from body or params?
-    const page = req.body.page;
-    //Limit is hardcoded for now, could also come from client
-    const limit = 20;
-    
-    return applicationsService.getApplications(page, limit);
+exports.getApplications = async (req, res, next) => {
+    try {
+        //Get query parameters
+        const query = req.query;    
+        const result = applicationsService.getApplications(query);
+        return res.send('success');
+    } catch(err) {
+        console.log('Error reached controller')
+        return next(err);
+    }
 };
