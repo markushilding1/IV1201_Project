@@ -11,6 +11,7 @@ import SignIn from './containers/SignIn';
 import SignUp from './containers/SignUp';
 import SignUpSuccess from './containers/SignUp/Success';
 import Applicants from './containers/Applicants';
+import Applications from './containers/Applications'
 
 import TopNavbar from './components/TopNavbar';
 
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/sign-up" component={SignUp} />
           <Route path="/sign-up-success" component={SignUpSuccess} />
           <Route path="/applicants" component={Applicants} />
+          <Route path="/applications" component={Applications}/>
         </Switch>
       </div>
     );
