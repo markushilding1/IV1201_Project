@@ -3,7 +3,7 @@ const db = require('../common/db/index.js');
 
 exports.createUserProfile = async (body) => {
   const { uid, name, surname, ssn } = body;
-  const values = [uid, name, surname, ssn, 2];
+  const values = [uid, name, surname, ssn, 1];
   const client = db.conn();
 
   return await new Promise((resolve, reject) => {

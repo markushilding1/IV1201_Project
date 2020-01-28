@@ -18,7 +18,7 @@ class index extends Component {
   }
 
   permissionCheck() {
-    const result = this.props.permissionCheck('recruiter', 'applicants');
+    const result = this.props.permissionCheck('recruit', 'applicants');
     if (result) {
       this.setState({
         authorized: true,
