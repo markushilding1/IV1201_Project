@@ -17,7 +17,7 @@ export const checkSignedIn = () => {
       if (role === 'applicant') {
         history.push('/apply');
       } else if (role === 'recruit') {
-        history.push('/applications');
+        history.push('/applicants');
       }
     }
 
