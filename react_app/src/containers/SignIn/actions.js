@@ -5,7 +5,10 @@ import {
   SIGN_IN_STATUS_RESET,
 } from './constants.js';
 
+import { SET_USER } from './../../common/auth/constants';
 import history from './../../utils/history';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 /**
  * @author Markus Hilding
@@ -15,47 +18,32 @@ import history from './../../utils/history';
  * @param {*} password
  */
 export const signInUser = (email, password) => {
-  return (dispatch, getState, {getFirebase}) => {
-    dispatch({type: SIGN_IN});
+  return (dispatch, getState, { getFirebase }) => {
+    dispatch({ type: SIGN_IN });
     const auth = getFirebase().auth();
 
     auth
-        .signInWithEmailAndPassword(email, password)
-        .catch(function(error) {
+      .signInWithEmailAndPassword(email, password)
+      .catch(function(error) {
         // Look up possible error codes to generate
         // appropiate error messages.
         // var errorCode = error.code;
-          const errorMessage = error.message;
-          signInFailed(dispatch, errorMessage);
-        })
-        .then((result) => {
-          if (result && !result.user.emailVerified) {
-            auth.signOut();
-            signInFailed(dispatch, 'Account not verified.');
-          } else if (result) {
-            const accessToken = getState().firebase.auth.stsTokenManager
-                .accessToken;
-            fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/users/', {
-              headers: {
-                Authorization: accessToken,
-              },
-            })
-                .then((res) => {
-                  console.log(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-
-            signInSuccess(dispatch);
-          // getUserData(result.user, dispatch);
-          } else {
-            signInFailed(
-                dispatch,
-                'No user with provided email and password found.',
-            );
-          }
-        });
+        const errorMessage = error.message;
+        signInFailed(dispatch, errorMessage);
+      })
+      .then((result) => {
+        if (result && !result.user.emailVerified) {
+          auth.signOut();
+          signInFailed(dispatch, 'Account not verified.');
+        } else if (result) {
+          signInSuccess(dispatch);
+        } else {
+          signInFailed(
+            dispatch,
+            'No user with provided email and password found.',
+          );
+        }
+      });
   };
 };
 
@@ -65,7 +53,7 @@ export const signInUser = (email, password) => {
  * @param {function} dispatch Redux dispatch
  */
 const signInSuccess = (dispatch) => {
-  dispatch({type: SIGN_IN_SUCCESS});
+  dispatch({ type: SIGN_IN_SUCCESS });
 
   // temporarily
   history.push('/userpage');
@@ -90,5 +78,5 @@ const signInFailed = (dispatch, err) => {
  * error message.
  */
 export const resetError = () => {
-  return (dispatch) => dispatch({type: SIGN_IN_STATUS_RESET});
+  return (dispatch) => dispatch({ type: SIGN_IN_STATUS_RESET });
 };

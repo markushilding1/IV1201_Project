@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import './style.scss';
 
 const SignUpView = (props) => {
-  const {error, loading, onFormSubmit, onFormChange} = props;
+  const { error, loading, onFormSubmit, onFormChange } = props;
   const buttonText = loading ? 'Signing Up...' : 'Sign Up';
 
   return (
@@ -23,18 +23,28 @@ const SignUpView = (props) => {
               <Form.Control
                 disabled={loading}
                 type="text"
-                name="firstName"
+                name="name"
                 placeholder="Enter first name"
               />
             </Form.Group>
 
             <Form.Group controlId="formLastName">
-              <Form.Label>Last name</Form.Label>
+              <Form.Label>Efternamn</Form.Label>
               <Form.Control
                 disabled={loading}
                 type="text"
-                name="lastName"
+                name="surname"
                 placeholder="Enter last name"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formLastName">
+              <Form.Label>Personnummer</Form.Label>
+              <Form.Control
+                disabled={loading}
+                type="text"
+                name="ssn"
+                placeholder=""
               />
             </Form.Group>
 
