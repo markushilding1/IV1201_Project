@@ -31,9 +31,9 @@ exports.getApplications = async (page, limit) => {
     }
     client.end();
   });
-}
+};
 
-exports.submitApplication = async () => {
+exports.submitApplication = async (areaOfExpertise,availPeriods) => {
   const client = new Client({
     connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
     ssl: true,
@@ -42,11 +42,22 @@ exports.submitApplication = async () => {
   client.connect();
   
   //INSERT INTO competence osv
-  client.query('CREATE TABLE role (role_id BIGINT PRIMARY KEY, name VARCHAR(255));', (err, res) => {
+  areaOfExpertise.forEach(item =>
+      client.query(`INSERT INTO competence (competence_id , name) 
+      VALUES(${item.id},${item.name}`, (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
     }
-    client.end();
-  });
-}
+  }));
+  availPeriods.forEach(item =>
+      client.query(`INSERT INTO competence (competence_id , name) 
+      VALUES(${item.availability_id},${item.from_date},${item.person_id}, ${item.to_date}`, (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
+    }
+  }));
+  client.end();
+
+};

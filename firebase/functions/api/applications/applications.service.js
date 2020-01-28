@@ -5,6 +5,6 @@ exports.getApplications = (page, limit) => {
     return applicationRepository.getApplications(page, limit);
 };
 
-exports.submitApplication = (req, res, next) => {
-    throw new ExampleError();
+exports.submitApplication = (areaOfExpertise,availPeriods) => {
+    return applicationRepository.getApplications(areaOfExpertise,availPeriods);
 };
