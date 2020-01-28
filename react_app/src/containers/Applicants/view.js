@@ -12,21 +12,21 @@ import Applicant from './components/applicant';
 import './style.css';
 
 const view = (props) => {
-  const {applicants, loading} = props;
+  const {applicants, loading, onFormChange} = props;
   console.log(props);
 
   return (
     <Container className="outerContainer">
       <Row className="searchBar">
         <Col>
-          <Form>
+          <Form onChange={onFormChange}>
             <Form.Row>
               <Form.Group as={Col} controlId="formGridNamn">
-                <Form.Control placeholder="Namn" />
+                <Form.Control name="namn" placeholder="Namn" />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridCompetence">
-                <Form.Control as="select">
+                <Form.Control name="kompetens" as="select">
                   <option>Välj Kompetens...</option>
                   <option>Korvgrillning</option>
                   <option>Karuselldrift</option>
@@ -40,6 +40,7 @@ const view = (props) => {
                 <Form.Control />
               </Form.Group>
             </Form.Row>
+            <Button className="searchBtn">Search</Button>
           </Form>
         </Col>
       </Row>

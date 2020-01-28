@@ -3,7 +3,8 @@ const applicationRepository = require('./applications.repository');
 
 exports.getApplications = async (page, limit) => {
     try {
-        const result = applicationRepository.getApplications(page, limit);
+        const result = await applicationRepository.getApplications(page, limit);
+        return result;
     } catch(err) {
         console.log('Error reached service')
         throw err;

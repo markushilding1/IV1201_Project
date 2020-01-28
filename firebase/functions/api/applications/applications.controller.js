@@ -11,8 +11,8 @@ exports.getApplications = async (req, res, next) => {
     try {
         //Get query parameters
         const query = req.query;    
-        const result = applicationsService.getApplications(query);
-        return res.send('success');
+        const result = await applicationsService.getApplications(query);
+        return res.send(result);
     } catch(err) {
         console.log('Error reached controller')
         return next(err);

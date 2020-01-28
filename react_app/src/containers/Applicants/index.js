@@ -6,6 +6,8 @@ class index extends Component {
     super(props);
 
     this.state = {
+      namn: '',
+      kompetens: '',
       data: null,
       loading: true,
       error: null,
@@ -13,7 +15,7 @@ class index extends Component {
   }
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch(`https://jsonplaceholder.typicode.com/users?id=1`)
         .then((response) => response.json())
         .then((data) => {
           this.setState({
@@ -27,8 +29,20 @@ class index extends Component {
         });
   }
 
+  handleFormChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    console.log(value)
+    console.log(name)
+    this.setState({ [name]: value }, () => console.log(this.state));
+  };
+
   render() {
-    return <View applicants={this.state.data} loading={this.state.loading} />;
+    return <View 
+      applicants={this.state.data} 
+      loading={this.state.loading} 
+      onFormChange={this.handleFormChange}
+      />;
   }
 }
 
