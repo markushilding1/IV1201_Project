@@ -16,7 +16,6 @@ exports.getUserProfile = async (req, res, next) => {
         res.send(result);
     } else {
         res.status(403);
-    }
-
-    res.send();
+        res.send();
+    }    
 };
