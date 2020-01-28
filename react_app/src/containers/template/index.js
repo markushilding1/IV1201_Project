@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {componse} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { componse } from 'redux';
 import View from './view';
 
-import {exportedFunction} from './actions';
+import { exportedFunction } from './actions';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -28,6 +28,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withRouter(ClassName));

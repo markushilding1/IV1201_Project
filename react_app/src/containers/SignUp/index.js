@@ -10,8 +10,9 @@ class SignUp extends Component {
     super(props);
 
     this.state = {
-      firstName: '',
-      lastName: '',
+      name: '',
+      surame: '',
+      ssn: '',
       email: '',
       password: '',
       passwordVerification: '',
@@ -37,11 +38,12 @@ class SignUp extends Component {
    */
   handleFormSubmit = (e) => {
     e.preventDefault();
-    const { firstName, lastName, email, password } = this.state;
+    const { name, surname, ssn, email, password } = this.state;
 
     const data = {
-      firstName,
-      lastName,
+      name,
+      surname,
+      ssn,
       email,
       password,
     };

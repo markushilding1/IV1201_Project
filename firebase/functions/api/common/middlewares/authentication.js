@@ -2,10 +2,8 @@ const UnauthorizedError = require('../../errors/unauthorizedError');
 const verifyIdToken = require('../utils/idTokenValidation').verifyIdToken;
 
 exports.isAuthenticated = async (req, res, next) => {
-    
     // JWT Token
     const idToken = req.headers.authorization;
-    
     // Check if token is valid.
     try {
         const isAuthenticated = await verifyIdToken(idToken);

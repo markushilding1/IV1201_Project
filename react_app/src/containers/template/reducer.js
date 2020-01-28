@@ -1,4 +1,4 @@
-import {CONSTANT} from './constants';
+import { CONSTANT } from './constants';
 
 const INITIAL_STATE = {
   loading: false,
