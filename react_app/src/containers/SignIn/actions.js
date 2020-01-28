@@ -5,10 +5,7 @@ import {
   SIGN_IN_STATUS_RESET,
 } from './constants.js';
 
-import { SET_USER } from './../../common/auth/constants';
-import history from './../../utils/history';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { AUTH_WAITING } from './../../common/auth/constants';
 
 /**
  * @author Markus Hilding
@@ -17,7 +14,7 @@ const API_URL = process.env.REACT_APP_API_URL;
  * @param {*} email
  * @param {*} password
  */
-export const signInUser = (email, password) => {
+export const signInUser = (email, password, next) => {
   return (dispatch, getState, { getFirebase }) => {
     dispatch({ type: SIGN_IN });
     const auth = getFirebase().auth();
@@ -36,7 +33,10 @@ export const signInUser = (email, password) => {
           auth.signOut();
           signInFailed(dispatch, 'Account not verified.');
         } else if (result) {
-          signInSuccess(dispatch);
+          dispatch({
+            type: AUTH_WAITING,
+            payload: next,
+          });
         } else {
           signInFailed(
             dispatch,
@@ -52,11 +52,8 @@ export const signInUser = (email, password) => {
  * @description dispatches an successful authentification of a user.
  * @param {function} dispatch Redux dispatch
  */
-const signInSuccess = (dispatch) => {
+export const signInSuccess = (dispatch) => {
   dispatch({ type: SIGN_IN_SUCCESS });
-
-  // temporarily
-  history.push('/userpage');
 };
 
 /**

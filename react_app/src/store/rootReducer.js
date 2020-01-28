@@ -21,7 +21,7 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  state = action.payload === SIGN_OUT ? undefined : state;
+  state = action.type === SIGN_OUT ? undefined : state;
   return appReducer(state, action);
 };
 

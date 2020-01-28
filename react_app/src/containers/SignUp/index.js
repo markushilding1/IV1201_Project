@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
 import { signUpUser, resetError } from './actions';
+import { checkSignedIn } from './../../utils/checkSignedIn';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -66,6 +67,8 @@ class SignUp extends Component {
   render() {
     const { error, loading } = this.props;
 
+    this.props.checkSignedIn();
+
     return (
       <View
         error={error}
@@ -88,6 +91,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   signUpUser,
   resetError,
+  checkSignedIn,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));
