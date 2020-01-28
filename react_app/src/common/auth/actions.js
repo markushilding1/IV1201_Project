@@ -1,102 +1,83 @@
-import {SIGN_OUT} from './constants.js';
+import { SIGN_OUT, SET_USER } from './constants.js';
 
-// const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
+
+/**
+ * @author Markus Hilding
+ * @description Fetches user profile data from rest api.
+ * @param {string} uid user id
+ * @param {string} accessToken user access token (JWT token)
+ */
+const getUserProfile = (uid, accessToken) => {
+  return new Promise((resolve) => {
+    fetch(`${API_URL}/users/${uid}`, {
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (!res.ok || (res.ok && res.status !== 200)) {
+          resolve(false);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        resolve(false);
+      });
+  });
+};
 
 /**
  * @description Listens to authentication changes from
  * firebase and dispatches authSuccess and authFailed
  * depending if user is logged in or not.
  */
-
-/* To be rewritten and used when database and api is done.
 export const authListener = () => {
-    return (dispatch, getState, {getFirebase}) => {
-        const auth = getFirebase().auth();
-        auth.onAuthStateChanged((user) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const auth = getFirebase().auth();
+    auth.onAuthStateChanged(async (user) => {
+      if (user && user.emailVerified) {
+        const accessToken = getState().firebase.auth.stsTokenManager
+          .accessToken;
 
-            // if(user && user.emailVerified) {
-            if (user ) {
+        if (!accessToken) return;
 
-                // User is signed in.
+        const uid = user.uid;
+        const userData = await getUserProfile(uid, accessToken);
 
-                var displayName = user.displayName;
-                var email = user.email;
-                var emailVerified = user.emailVerified;
-                var photoURL = user.photoURL;
-                var isAnonymous = user.isAnonymous;
-                var uid = user.uid;
-                var providerData = user.providerData;
-                var refreshToken = user.refreshToken;
-
-
-                dispatch({
-                    type:AUTH_SUCCESS,
-                    payload:user
-                });
-
-                let userRef = db.collection('users').doc(user.email);
-                userRef.get()
-                .then(doc => {
-                    if (!doc.exists) {
-                        console.log('No such document!');
-                    }
-                    else {
-                        listenToUserChanges()
-                        dispatch({
-                            type:SET_USER,
-                            payload:doc.data()
-                        });
-                        console.log('Document data:', doc.data());
-                    }
-                })
-                .catch(err => {
-                    dispatch({
-                        type:AUTH_FAILED,
-                        payload:err
-                    });
-                    console.log('Error getting document', err);
-                });
-            }
-            else {
-                signOut();
-            }
-        })
-
-    }
-}
-*/
+        if (userData) {
+          dispatch({
+            type: SET_USER,
+            payload: userData,
+          });
+        }
+      } else {
+        signOutUser();
+      }
+    });
+  };
+};
 
 /**
- * @description Fetching user
- * @param {*} dispatch
+ * @description
  */
-/* To be used when database and api is done.
-const getUserData = (user, dispatch) => {
-
-    fetch(`${API_URL}/user/${user.uid}`, {
-      headers:{
-        'Content-type':'application/json'
-      },
-    })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  };
-*/
-
 export const signOutUser = () => {
-  return (dispatch, _, {getFirebase}) => {
+  return (dispatch, _, { getFirebase }) => {
     const auth = getFirebase().auth();
     auth
-        .signOut()
-        .then(function() {
-          dispatch({type: SIGN_OUT});
-        })
-        .catch(function(error) {
-          console.log('Failed to sign out user');
-        });
+      .signOut()
+      .then(function() {
+        // maybe following is needed on log out
+        // getFirebase().logout();
+
+        dispatch({ type: SIGN_OUT });
+      })
+      .catch(function(error) {
+        console.log('Failed to sign out user');
+      });
   };
 };

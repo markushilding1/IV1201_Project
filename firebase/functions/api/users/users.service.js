@@ -1,9 +1,10 @@
-exports.getUser = (req, res, next) => {
-  const mockUser = {
-    name: 'Erik',
-    surname: 'Eriksson',
-    pnr: '19900303-1122',
-    role: 'recruiter',
-  };
-  return mockUser;
-};
+//Import Controllers
+const repositoryController = require('./users.repository');
+
+exports.createUserProfile = async (body) => (
+  await repositoryController.createUserProfile(body)
+);
+
+exports.getUserProfile = async (uid) => (
+  await repositoryController.getUserProfile(uid)
+)

@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // Actions
-import { signOutUser } from './common/auth/actions';
+import { signOutUser, authListener } from './common/auth/actions.js';
 
 // Containers
 import Home from './containers/Home';
@@ -19,7 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.authListener = null;
+    this.authListener = this.props.authListener();
   }
 
   handleSignOut = () => {
@@ -44,6 +44,7 @@ class App extends Component {
 
 const mapDispatchToProps = {
   signOutUser,
+  authListener,
 };
 
 const mapStateToProps = (state) => {
