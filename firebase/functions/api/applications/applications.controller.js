@@ -3,6 +3,18 @@ const { check, validationResult} = require('express-validator');
 
 
 //Controller to handle submission of an application
+
+
+exports.getAreaOfExpertise = async (req,res,next)=> {
+    const result = await applicationsService.getAreaOfExpertise();
+    if(result){
+        res.send(result);
+    } else {
+        res.status(403);
+        res.send();
+    }
+};
+
 exports.submitApplication = (req, res, next) => {
 
     // Validating body params
@@ -55,10 +67,10 @@ exports.validate = (method) => {
         }
 
         case 'submitApplication': {
-            return [ 
-                check('areaOfExpertise', 'Parameter ´areaOfExpertis´ not provided').exists(),
-                check('areaOfExpertise.areaId', 'Parameter ´areaOfExpertis.areaId´ not provided').exists().isInt(),
-                check('areaOfExpertise.yearsOfExperience', 'Parameter ´areaOfExpertis.yearsOfExperience´ not provided').exists(),
+            return [
+                check('areaOfExpertise', 'Parameter ´areaOfExpertise´ not provided').exists(),
+                check('areaOfExpertise.areaId', 'Parameter ´areaOfExpertise.areaId´ not provided').exists().isInt(),
+                check('areaOfExpertise.yearsOfExperience', 'Parameter ´areaOfExpertise.yearsOfExperience´ not provided').exists(),
                 check('availabilityPeriod', 'Parameter ´availabilityPeriod´ not provided').exists(),
                 check('availabilityPeriod.fromDate', 'Parameter ´availabilityPeriod´ not provided').exists(),
                 check('availabilityPeriod.toDate', 'Parameter ´availabilityPeriod´ not provided').exists(),
@@ -68,4 +80,4 @@ exports.validate = (method) => {
         default:
             return null;
     }
-}
+};

@@ -9,8 +9,13 @@ exports.getApplications = async (page, limit) => {
         console.log('Error reached service')
         throw err;
     }
+
 };
 
 exports.submitApplication = (areaOfExpertise,availPeriods) => {
     return applicationRepository.getApplications(areaOfExpertise,availPeriods);
 };
+exports.getAreaOfExpertise = async () => {
+    await applicationRepository.getAreaOfExpertise();
+};
+

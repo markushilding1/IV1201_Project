@@ -9,15 +9,19 @@ import authReducer from '../common/auth/reducer.js';
 import signInReducer from '../containers/SignIn/reducer.js';
 import signUpReducer from '../containers/SignUp/reducer.js';
 import applicantsReducer from '../containers/Applicants/reducer.js';
+import applicationsReducer from '../containers/Applications/reducer';
+
 
 // Firebase & Firestore reducers
 import {firebaseReducer} from 'react-redux-firebase';
+
 
 // Combining all reducers
 const appReducer = combineReducers({
   auth: authReducer,
   signUp: signUpReducer,
   signIn: signInReducer,
+  applications: applicationsReducer,
   firebase: firebaseReducer,
   applicants: applicantsReducer,
 });

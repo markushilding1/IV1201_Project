@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const View = (props) => {
-  const {error, loading, onFormSubmit, onFormChange} = props;
+  const {error, loading, onFormSubmit, onFormChange, areaOfExpertise} = props;
   const buttonText = loading ? 'Submitting...' : 'Submit';
   return (
     <Container className="Applications">
@@ -20,11 +20,11 @@ const View = (props) => {
           <Form onChange={onFormChange} onSubmit={onFormSubmit}>
             <Form.Group controlId="areaOfExpertise">
               <Form.Label>Area of Expertise</Form.Label>
-              <Form.Control as="select"
-                name={'areaOfExperties'}>
-                <option>Välj Kompetens...</option>
-                <option>Korvgrillning</option>
-                <option>Karuselldrift</option>
+              <Form.Control as="select">
+                {areaOfExpertise.map((option,index) =>
+                  <option key={index} value={option.obj}>
+                    {option.name}
+                  </option>)}
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="yearsOfExperience">
