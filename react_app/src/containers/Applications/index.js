@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {componse} from 'redux';
 import View from './view';
-
-import {exportedFunction} from './actions';
+import {getAreaOfExpertise} from './actions';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -19,7 +17,6 @@ class Applications extends Component {
   }
 
     handleFormChange = (e) => {
-      console.log(e.target.name)
         this.resetErrorMessage();
         const value = e.target.value;
         const name = e.target.name;
@@ -37,7 +34,6 @@ class Applications extends Component {
             toDate,
         };
 
-        this.props.signUpUser(data);
     };
     resetErrorMessage = () => {
         const { error } = this.props;
@@ -49,21 +45,27 @@ class Applications extends Component {
 
   render() {
       const { error, loading } = this.props;
+      this.props.getAreaOfExpertise();
     return <View
         error={error}
         loading={loading}
         onFormSubmit={this.handleFormSubmit}
         onFormChange={this.handleFormChange}
+        areaOfExperties={}
     />;
   }
 }
 
 const mapStateToProps = (state, initialProps) => {
-  return {};
+    const { loading, error } = state.applications;
+    return {
+        loading: loading,
+        error: error,
+    };
 };
 
 const mapDispatchToProps = {
-  exportedFunction,
+    getAreaOfExpertise
 };
 
 export default connect(mapStateToProps, mapDispatchToProps,)(withRouter(Applications));

@@ -14,7 +14,8 @@ const exampleMiddleware = require('./middlewares/exampleMiddleware.js');
 //router.use(authMiddleware.isAuthenticated);
 
 //Setup Controllers
-router.post('/submit', applicationsController.submitApplication);
-router.get('/', applicationsController.getApplications);
+//router.post('/submit', applicationsController.submitApplication);
+// router.get('/', applicationsController.getApplications);
+router.get('/expertise',applicationsController.getAreaOfExpertise);
 
 module.exports = router;

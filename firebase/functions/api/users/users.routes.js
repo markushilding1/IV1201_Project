@@ -9,7 +9,7 @@ const authMiddleware = require('./../common/middlewares/authentication.js');
 
 //Middleware for all routes here to check if the requests
 //Are made from authenticated users with valid token
-router.use(authMiddleware.isAuthenticated);
+//router.use(authMiddleware.isAuthenticated);
 
 
 //Setup Controllers
