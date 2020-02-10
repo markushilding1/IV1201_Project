@@ -1,5 +1,9 @@
 import { SUCCESS, ERROR, SEARCH } from './constants';
 
+/**
+ * @author Philip Romin
+ * @description Fetch a list of applicants
+ */
 export const fetchApplicants = () => {
   return (dispatch) => {
     console.log('ff');
@@ -19,6 +23,12 @@ export const fetchApplicants = () => {
   };
 };
 
+/**
+ * @author Philip Romin
+ * @description Dispatches a successful search
+ * @param {function} dispatch Redux dispatch
+ * @param {} applicants Found applicants
+ */
 const searchSuccess = (dispatch, applicants) => {
   console.log('ss');
   dispatch({
@@ -27,6 +37,12 @@ const searchSuccess = (dispatch, applicants) => {
   });
 };
 
+/**
+ * @author Philip Romin
+ * @description Dispatches a failed search
+ * @param {function} dispatch Redux dispatch
+ * @param {string} err Error message
+ */
 const searchFail = (dispatch, err) => {
   console.log('sf');
   dispatch({
