@@ -11,6 +11,11 @@ import {
 import Applicant from './components/applicant';
 import './style.css';
 
+/**
+ * @description View functional component for applicants page
+ * @author Philip Romn
+ */
+
 const view = (props) => {
   const { applicants, loading, authorized, onFormChange } = props;
   console.log(props);

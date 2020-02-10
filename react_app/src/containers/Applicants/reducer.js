@@ -3,10 +3,10 @@
  * @author Philip Romn
  */
 
-import { SEARCH } from './constants.js';
+import { SEARCH, SUCCESS, ERROR } from './constants.js';
 
 const INITIAL_STATE = {
-  loading: false,
+  loading: true,
   error: null,
   applicants: [],
 };
@@ -19,30 +19,24 @@ function applicantsReducer(state = INITIAL_STATE, action) {
         loading: true,
         error: null,
       };
-    case SIGN_IN_SUCCESS:
+    case SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
+        applicants: action.payload,
       };
-    case SIGN_IN_FAILED:
+    case ERROR:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: 'Failed to find applicants',
       };
-    case SIGN_IN_STATUS_RESET:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-      };
-
     default:
-      break;
+      return {
+        ...state,
+      };
   }
-
-  return state;
 }
 
-export default signInReducer;
+export default applicantsReducer;

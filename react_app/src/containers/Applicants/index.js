@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
 import { permissionCheck } from './../../utils/permissionCheck';
+import { fetchApplicants } from './actions';
 
-class index extends Component {
+/**
+ * @description Container smart component for applicants page,
+ * Should contain login and be connected to redux
+ * @author Philip Romn
+ */
+
+class Applicants extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       namn: '',
       kompetens: '',
-      data: null,
-      loading: true,
-      error: null,
       authorized: false,
     };
   }
@@ -24,7 +28,7 @@ class index extends Component {
         authorized: true,
       });
       if (!this.state.data) {
-        this.fetchData();
+        this.props.fetchApplicants();
       }
     }
   }
@@ -47,7 +51,7 @@ class index extends Component {
       .then((response) => response.json())
       .then((data) => {
         this.setState({
-          data: data,
+          applicants: data,
           loading: false,
           error: null,
         });
@@ -60,8 +64,8 @@ class index extends Component {
   handleFormChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
-    console.log(value)
-    console.log(name)
+    console.log(value);
+    console.log(name);
     this.setState({ [name]: value }, () => console.log(this.state));
   };
 
@@ -69,8 +73,9 @@ class index extends Component {
     return (
       <View
         authorized={this.state.authorized}
-        applicants={this.state.data}
-        loading={this.state.loading}
+        applicants={this.props.applicants}
+        loading={this.props.loading}
+        error={this.props.error}
         onFormChange={this.handleFormChange}
       />
     );
@@ -79,13 +84,22 @@ class index extends Component {
 
 const mapDispatchToProps = {
   permissionCheck,
+  fetchApplicants,
 };
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     user: state.auth.user,
     auth: state.firebase.auth,
+    loading: state.applicants.loading,
+    error: state.applicants.error,
+    applicants: state.applicants.applicants,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps, mapDispatchToProps)(Applicants);
+
+/*
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));
+*/
