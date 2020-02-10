@@ -9,7 +9,7 @@ import authReducer from '../common/auth/reducer.js';
 import signInReducer from '../containers/SignIn/reducer.js';
 import signUpReducer from '../containers/SignUp/reducer.js';
 import applicationsReducer from '../containers/Applications/reducer';
-
+import submissionReducer from '../containers/Applications/Submission/reducer';
 // Firebase & Firestore reducers
 import {firebaseReducer} from 'react-redux-firebase';
 
@@ -20,6 +20,7 @@ const appReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
   applications: applicationsReducer,
+  submission: submissionReducer,
   firebase: firebaseReducer,
 });
 

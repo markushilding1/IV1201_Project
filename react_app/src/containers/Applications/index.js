@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import View from './view';
-import {getAreaOfExpertise} from './actions';
+import {getAreaOfExpertise, submitForm} from './actions';
+import Submission from "./Submission/index.js";
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -11,10 +12,14 @@ class Applications extends Component {
     this.state = {
     areaOfExpertise: '',
     yearsOfExperience: '',
-    fromDate:'',
-    toDate:'',
+    date: [new Date(), new Date()],
+    data: '',
     };
   }
+
+    handleDateSelect = (date) => {
+        this.setState({date})
+    };
 
     handleFormChange = (e) => {
         this.resetErrorMessage();
@@ -25,15 +30,14 @@ class Applications extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const { areaOfExpertise, yearsOfExperience, fromDate, toDate } = this.state;
+        const { areaOfExpertise, yearsOfExperience, date, } = this.state;
 
         const data = {
             areaOfExpertise,
             yearsOfExperience,
-            fromDate,
-            toDate,
+            date,
         };
-
+        this.props.submitForm(data);
     };
     resetErrorMessage = () => {
         const { error } = this.props;
@@ -44,28 +48,32 @@ class Applications extends Component {
 
 
   render() {
-      const { error, loading } = this.props;
-      this.props.getAreaOfExpertise();
+    const { error, loading, list } = this.props;
     return <View
         error={error}
         loading={loading}
+        expertiseDropDown={list}
+        date={this.state.date}
         onFormSubmit={this.handleFormSubmit}
         onFormChange={this.handleFormChange}
-        areaOfExperties={}
+        onDateSelect={this.handleDateSelect}
+        component={<Submission/>}
     />;
   }
 }
 
 const mapStateToProps = (state, initialProps) => {
-    const { loading, error } = state.applications;
+    const { loading, error, list } = state.applications;
     return {
         loading: loading,
         error: error,
+        list: list,
     };
 };
 
 const mapDispatchToProps = {
-    getAreaOfExpertise
+    getAreaOfExpertise,
+    submitForm
 };
 
 export default connect(mapStateToProps, mapDispatchToProps,)(withRouter(Applications));

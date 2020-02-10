@@ -15,22 +15,18 @@ class Submission extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.data != prevProps.data){
+      const area = {id : this.props.data.areaOfExpertise, years : this.props.data.yearsOfExperience}
+      this.state.areaOfExpertise.push(area);
+    }
+  }
+
   /**
    * @author Josef Federspiel
    * @description Calls submission method from actions.
    * @param {object} e onSubmit event.
    */
-  handleFormSubmit = (e) => {
-    e.preventDefault();
-    const { areaOfExpertise, availabilityPeriods } = this.state;
-
-    const data = {
-      areaOfExpertise,
-      availabilityPeriods,
-    };
-
-    this.props.signUpUser(data);
-  };
 
   /**
    * @description Resets the error message when
@@ -44,22 +40,23 @@ class Submission extends Component {
     }
   };
 
+
   render() {
     const { error, loading } = this.props;
-
     return (
       <View
         error={error}
         loading={loading}
-        onFormSubmit={this.handleFormSubmit}
-        onFormChange={this.handleFormChange}
+        areaOfExpertise={this.state.areaOfExpertise}
       />
     );
   }
 }
 
 const mapStateToProps = (state, initialProps) => {
-  const { loading, error } = state.signIn;
+  debugger;
+  const temp = state.applications.application;
+  const { loading, error } = state;
   return {
     loading: loading,
     error: error,
@@ -67,8 +64,7 @@ const mapStateToProps = (state, initialProps) => {
 };
 
 const mapDispatchToProps = {
-  signInUser,
-  resetError,
+
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignIn));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Submission));
