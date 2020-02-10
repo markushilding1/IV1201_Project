@@ -63,8 +63,6 @@ export const signUpUser = (data) => {
       .then(async (result) => {
         if (result) {
           const user = result.user;
-          console.log(getState().firebase);
-          //const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
           const profileData = {
             ...data,
             uid: user.uid,
