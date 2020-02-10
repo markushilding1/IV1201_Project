@@ -12,10 +12,11 @@ exports.getApplications = async (page, limit) => {
 
 };
 
-exports.submitApplication = (areaOfExpertise,availPeriods) => {
-    return applicationRepository.getApplications(areaOfExpertise,availPeriods);
-};
 exports.getAreaOfExpertise = async () => {
     await applicationRepository.getAreaOfExpertise();
+
+exports.submitApplication = async (areaOfExpertise,date,uid) => {
+    await applicationRepository.submitAvailability(areaOfExpertise,date,uid);
+    await applicationRepository.submitExpertise(areaOfExpertise,date,uid);
 };
 

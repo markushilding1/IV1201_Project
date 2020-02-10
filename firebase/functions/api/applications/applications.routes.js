@@ -18,16 +18,10 @@ router.post('/submit',
   applicationsController.validate('submitApplication'), 
   applicationsController.submitApplication
 );
-
-
 router.get('/', 
   applicationsController.validate('getApplications'),
   applicationsController.getApplications
 );
-
 router.get('/expertise',applicationsController.getAreaOfExpertise);
-
-//router.post('/submit', applicationsController.submitApplication);
-// router.get('/', applicationsController.getApplications);
 
 module.exports = router;

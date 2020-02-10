@@ -4,27 +4,21 @@ const { check, validationResult} = require('express-validator');
 
 //Controller to handle submission of an application
 
+exports.submitApplication = async (req, res, next) => {
 
-exports.getAreaOfExpertise = async (req,res,next)=> {
-    const result = await applicationsService.getAreaOfExpertise();
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).json({ errors: errors.array() });
+        return;
+    }
+
+    const result = await applicationsService.submitApplication(req.body.areaOfExpertise,req.body.date,req.body.uid);
     if(result){
         res.send(result);
     } else {
         res.status(403);
         res.send();
     }
-};
-
-exports.submitApplication = (req, res, next) => {
-
-    // Validating body params
-    const errors = validationResult(req); 
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-
-    console.log('From Applications Controller');
-    return applicationsService.submitApplication(req.body.areaOfExpertise,req.body.availPeriods);
 };
 
 //Controller to handle get applications

@@ -6,29 +6,27 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import './style.scss';
+import './styles.scss';
 import {Spinner} from 'react-bootstrap';
 import availabilityPeriod from './components/availabilityPeriod';
 import competenceArea from './components/competenceArea';
 
 const SubmissionView = (props) => {
-  const {competenceArea, availabilityPeriod} = props;
+  const {error, loading, areaOfExpertise} = props;
+  let area = '';
+  if (!(areaOfExpertise === undefined || areaOfExpertise.length === 0 )) {
+    area = areaOfExpertise[0].id;
+  }
   return (
     <Container className="outerContainer">
       <Row className="d-flex align-items-center align-content-center justify-content-center">
         <Col>
-          {competenceArea.map((area) => (
-            <competenceArea
-              name={area.name}
-              yearsOfExperience={area.yearsOfExperience}
-            />
-          ))}
-          {availabilityPeriod.map((date) => (
-            <availabilityPeriod
-              fromDate={date.fromDate}
-              yearsOfExperience={date.toDate}
-            />
-          ))}
+          <Form >
+            <Form.Group controlId="formFirstName">
+              <Form.Label>Area of experties</Form.Label>
+              <p>{area}</p>
+            </Form.Group>
+          </Form>
         </Col>
       </Row>
     </Container>
