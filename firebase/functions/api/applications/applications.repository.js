@@ -57,11 +57,10 @@ exports.getApplications = async searchQuery => {
   const limits = ` LIMIT ${limit} OFFSET ${page * limit}`;
   const sql =
     `
-  SELECT DISTINCT p.name, p.surname, ap."createdAt" , count(*) over(PARTITION BY p.name) as total_count
+  SELECT DISTINCT p.name, p.surname, ap."createdAt"
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
-  WHERE p.person_id = cp.person
+  WHERE p.person_id = cp.person::varchar
   AND p.person_id = ap.person
-  AND p.person_id = a.person
   AND cp.competence_id = c.competence_id AND ` +
     conditions.where +
     sorts +
@@ -95,55 +94,66 @@ exports.getAreaOfExpertise = async () => {
   const client = db.conn();
 
   return await new Promise((resolve, reject) => {
-    client.query('SELECT * FROM competence',
-        (err, res) => {
-          if (err) {
-            // eslint-disable-next-line prefer-promise-reject-errors
-            reject();
-            throw err;
-          }
-          console.log(res.rows);
-          resolve(res.rows);
-          client.end();
-        });
-  })
-};
-
-exports.submitAvailability = async (date,uid) => {
-  const client = db.conn();
-
-  const values = [uid,date.fromDate,date.toDate];
-  return await new Promise((resolve, reject) => {
-    client.query(`INSERT INTO availability (person,from_date ,to_date) 
-       VALUES ($1, $2, $3)` ,values, (err, res) => {
+    client.query("SELECT * FROM competence", (err, res) => {
       if (err) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
         throw err;
       }
-      console.log("Profile Created");
-      resolve("Profile Created");
+      console.log(res.rows);
+      resolve(res.rows);
       client.end();
     });
   });
 };
 
-exports.submitExpertise = async (areaOfExpertise,uid) => {
+exports.submitAvailability = async (date, uid) => {
   const client = db.conn();
 
-  const values = [uid,areaOfExpertise.areaOfExpertiseId,areaOfExpertise.yearsOfExperience,]
-  //INSERT INTO competence osv
-    return await new Promise((resolve, reject) => {
-    client.query(`INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
-    VALUES ($1, $2, $3)`,values ,(err, res) => {
-      if (err) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-        throw err;
+  const values = [uid, date.fromDate, date.toDate];
+  return await new Promise((resolve, reject) => {
+    client.query(
+      `INSERT INTO availability (person,from_date ,to_date) 
+       VALUES ($1, $2, $3)`,
+      values,
+      (err, res) => {
+        if (err) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject();
+          throw err;
+        }
+        console.log("Profile Created");
+        resolve("Profile Created");
+        client.end();
       }
-      console.log("Profile Created");
-      resolve("Profile Created");
-      client.end();
-    });
+    );
+  });
+};
+
+exports.submitExpertise = async (areaOfExpertise, uid) => {
+  const client = db.conn();
+
+  const values = [
+    uid,
+    areaOfExpertise.areaOfExpertiseId,
+    areaOfExpertise.yearsOfExperience
+  ];
+  //INSERT INTO competence osv
+  return await new Promise((resolve, reject) => {
+    client.query(
+      `INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
+    VALUES ($1, $2, $3)`,
+      values,
+      (err, res) => {
+        if (err) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject();
+          throw err;
+        }
+        console.log("Profile Created");
+        resolve("Profile Created");
+        client.end();
+      }
+    );
   });
 };

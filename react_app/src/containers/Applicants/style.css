@@ -35,7 +35,3 @@
 .spinner {
   align-self: center;
 }
-
-#react-paginate li {
-  cursor: pointer;
-}
