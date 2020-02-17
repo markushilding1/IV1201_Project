@@ -15,8 +15,8 @@ class Applicants extends Component {
 
     this.state = {
       page: 1,
-      namn: '',
-      kompetens: '',
+      name: '',
+      competence: '',
       startDate: null,
       endDate: null,
       sort: '',
@@ -57,13 +57,13 @@ class Applicants extends Component {
   };
 
   getApplicants = () => {
-    const { namn, kompetens, startDate, endDate, sort } = this.state;
+    const { name, competence, startDate, endDate, sort } = this.state;
 
     const data = {
-      namn,
-      kompetens,
-      startDate: startDate?.format('YYYY-MM-DD'),
-      endDate: endDate?.format('YYYY-MM-DD'),
+      name,
+      competence,
+      fromDate: startDate?.format('YYYY-MM-DD'),
+      toDate: endDate?.format('YYYY-MM-DD'),
       sort,
     };
 
@@ -75,6 +75,7 @@ class Applicants extends Component {
   };
 
   onFocusChange = (focusedInput) => {
+    console.log(focusedInput);
     this.setState({ focusedInput });
   };
 

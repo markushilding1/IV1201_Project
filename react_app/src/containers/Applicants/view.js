@@ -47,7 +47,7 @@ const view = (props) => {
             <Form.Row>
               <Form.Group as={Col} controlId="formGridNamn">
                 <Form.Label className="formLabel">Name</Form.Label>
-                <Form.Control name="namn" />
+                <Form.Control name="name" />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridNamn">
@@ -67,7 +67,7 @@ const view = (props) => {
 
               <Form.Group as={Col} controlId="formGridCompetence">
                 <Form.Label className="formLabel">Competence</Form.Label>
-                <Form.Control name="kompetens" as="select">
+                <Form.Control name="competence" as="select">
                   <option></option>
                   <option>Korvgrillning</option>
                   <option>Karuselldrift</option>

@@ -15,7 +15,7 @@ export const fetchApplicants = (data) => {
   return (dispatch) => {
     dispatch({ type: SEARCH });
 
-    fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/applications')
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         searchSuccess(dispatch, data);
