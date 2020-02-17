@@ -9,7 +9,7 @@ const db = require("../common/db/index");
  */
 function buildConditions(searchQuery) {
   //Get search query values: Name, Competence, Availability Dates, Application Date
-  const { name, competence, fromDate, toDate, applicationDate } = searchQuery;
+  const { name, competence, fromDate, toDate, sort } = searchQuery;
 
   var conditions = [];
   var values = [];
