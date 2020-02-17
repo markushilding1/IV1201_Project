@@ -96,6 +96,7 @@ class Applicants extends Component {
    * @param focusedInput Containing information about which field is focused
    */
   onFocusChange = (focusedInput) => {
+    console.log(focusedInput);
     this.setState({ focusedInput });
   };
 
