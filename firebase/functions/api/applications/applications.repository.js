@@ -55,51 +55,51 @@ exports.getAreaOfExpertise = async () => {
   })
 };
 
-exports.submitAvailability = async (areaOfExpertise,date,uid) => {
+exports.submitAvailability = async (date,uid) => {
   const client = new Client({
     connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
     ssl: true,
   });
   client.connect();
-  const from_date = date[0];
-  const to_date = date[1];
-  console.log(date[0]);
-  console.log(date[1]);
-
+  console.log(date);
+  console.log(uid);
+  const values = [uid,date.fromDate,date.toDate];
   return await new Promise((resolve, reject) => {
-    client.query(`INSERT INTO availability (availability_id,person_id,from_date ,to_date) 
-      VALUES(3,2,${from_date}::text::date,${to_date}::text::date)`, (err, res) => {
+    client.query(`INSERT INTO availability (person,from_date ,to_date) 
+       VALUES ($1, $2, $3)` ,values, (err, res) => {
       if (err) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
         throw err;
       }
       client.end();
+      console.log("Profile Created");
       resolve("Profile Created");
     });
   });
 };
 
-  exports.submitExpertise = async (areaOfExpertise,date,uid) => {
+  exports.submitExpertise = async (areaOfExpertise,uid) => {
   const client = new Client({
     connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
     ssl: true,
   });
   
   client.connect();
+  const values = [uid,areaOfExpertise.areaOfExpertiseId,areaOfExpertise.yearsOfExperience,]
   //INSERT INTO competence osv
   return await new Promise((resolve, reject) => {
     console.log(areaOfExpertise);
-    console.log(date);
     console.log(uid);
-    client.query(`INSERT INTO competence_profile (Competence_profile_id,Person_id,Competence_id ,Years_of_experience) 
-    VALUES(6,${uid},2,4)`, (err, res) => {
+    client.query(`INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
+    VALUES ($1, $2, $3)`,values ,(err, res) => {
       if (err) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();
         throw err;
       }
       client.end();
+      console.log("Profile Created");
       resolve("Profile Created");
     });
   });

@@ -1,79 +1,143 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import View from './view';
-import {getAreaOfExpertise, submitForm} from './actions';
-import Submission from "./Submission/index.js";
+import { getAreaOfExpertise, submitAreaOfExpertise,submitAvailabilityPeriod } from './actions';
+import Submission from './Submission/index.js';
+import Moment from 'moment';
 
 const withRouter = require('react-router-dom').withRouter;
 
 class Applications extends Component {
   constructor(props) {
     super(props);
+    this.props.getAreaOfExpertise();
     this.state = {
-    areaOfExpertise: '',
-    yearsOfExperience: '',
-    date: [new Date(), new Date()],
-    data: '',
+      areaOfExpertise: '',
+      yearsOfExperience: '',
+      areaOfExpertiseId: '',
+      date: [new Date(), new Date()],
     };
   }
 
-    handleDateSelect = (date) => {
-        this.setState({date})
-    };
+  /**
+   * @author Josef Federspiel
+   * @description Updates state with dates
+   * @param {object} date onChange event Example{
+   *     date: (date)
+   *     date: (date)
+   * }.
+   */
 
-    handleFormChange = (e) => {
-        this.resetErrorMessage();
-        const value = e.target.value;
-        const name = e.target.name;
-        this.setState({ [name]: value });
-    };
+  handleDateSelect = (date) => {
+    this.setState({ date });
+  };
 
-    handleFormSubmit = (e) => {
-        e.preventDefault();
-        const { areaOfExpertise, yearsOfExperience, date, } = this.state;
+  /**
+   * @author Josef Federspiel
+   * @description Updates state with area of expertise form values.
+   * @param {object} e onChange event.
+   */
 
-        const data = {
-            areaOfExpertise,
-            yearsOfExperience,
-            date,
-        };
-        this.props.submitForm(data);
-    };
-    resetErrorMessage = () => {
-        const { error } = this.props;
-        if (error) {
-            this.props.resetError();
-        }
-    };
+  handleExpertiseChange = (e) => {
+    this.resetErrorMessage();
+    const value = e.target.value;
+    const id = e.target.selectedIndex;
+    const name = e.target.name;
+    this.setState({ [name]: value });
+    this.setState({ areaOfExpertiseId: id});
+  };
 
+  /**
+   * @author Josef Federspiel
+   * @description Updates state with year of expertise form values.
+   * @param {object} e onChange event.
+   */
+  handleYearChange = (e) => {
+    this.resetErrorMessage();
+    const value = e.target.value;
+    const name = e.target.name;
+    this.setState({ [name]: value });
+  };
+
+  /**
+   * @author Josef Federspiel
+   * @description Calls submit expertise method from actions.
+   * @param {object} e onSubmit event.
+   */
+
+  onExpertiseSubmit = (e) => {
+    e.preventDefault();
+    const {areaOfExpertise, yearsOfExperience,areaOfExpertiseId} = this.state;
+    const data = {
+      areaOfExpertise,
+      yearsOfExperience,
+      areaOfExpertiseId,
+    };
+    this.props.submitAreaOfExpertise(data);
+  };
+
+  /**
+   * @author Josef Federspiel
+   * @description Calls submit availability period method from actions.
+   * @param {object} e onSubmit event.
+   */
+
+  onAvailabilityPeriodSubmit = (e) => {
+    e.preventDefault();
+    const fromDate = Moment(this.state.date[0]).format('YYYY-MM-DD');
+    const toDate = Moment(this.state.date[1]).format('YYYY-MM-DD');
+    const date = {fromDate,toDate}
+    this.props.submitAvailabilityPeriod(date);
+  };
+
+  /**
+   * @description Resets the error message when
+   * the user starts to type in the form after
+   * a failed attempt to sign up.
+   */
+  resetErrorMessage = () => {
+    const { error } = this.props;
+    if (error) {
+      this.props.resetError();
+    }
+  };
 
   render() {
-    const { error, loading, list } = this.props;
-    return <View
+    const { error, loading, list} = this.props;
+    return (
+      <View
         error={error}
         loading={loading}
         expertiseDropDown={list}
         date={this.state.date}
-        onFormSubmit={this.handleFormSubmit}
-        onFormChange={this.handleFormChange}
+        onExpertiseChange = {this.handleExpertiseChange}
+        onYearsChange = {this.handleYearChange}
+        onExpertiseSubmit={this.onExpertiseSubmit}
+        onAvailabilitySubmit={this.onAvailabilityPeriodSubmit}
         onDateSelect={this.handleDateSelect}
         component={<Submission/>}
-    />;
+      />
+    );
   }
 }
 
 const mapStateToProps = (state, initialProps) => {
-    const { loading, error, list } = state.applications;
-    return {
-        loading: loading,
-        error: error,
-        list: list,
-    };
+  const { loading, error, list } = state.applications;
+
+  return {
+    loading: loading,
+    error: error,
+    list: list,
+  };
 };
 
 const mapDispatchToProps = {
-    getAreaOfExpertise,
-    submitForm
+  getAreaOfExpertise,
+  submitAreaOfExpertise,
+  submitAvailabilityPeriod,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps,)(withRouter(Applications));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Applications));

@@ -13,7 +13,6 @@ import submissionReducer from '../containers/Applications/Submission/reducer';
 // Firebase & Firestore reducers
 import {firebaseReducer} from 'react-redux-firebase';
 
-
 // Combining all reducers
 const appReducer = combineReducers({
   auth: authReducer,

@@ -3,6 +3,7 @@ const applicationsService = require('./applications.service');
 //Controller to handle submission of an application
 
 exports.submitApplication = async (req, res, next) => {
+    console.log(req.body);
     const result = await applicationsService.submitApplication(req.body.areaOfExpertise,req.body.date,req.body.uid);
     if(result){
         res.send(result);

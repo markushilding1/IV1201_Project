@@ -6,17 +6,20 @@
 import {
   AREA_OF_EXPERTISE_FETCH,
   AREA_OF_EXPERTISE_SUBMIT,
-  YEARS_OF_EXPERIENCE_SUBMIT,
+  AVAILABILITY_PERIOD_SUBMIT,
   AREA_OF_EXPERTISE_RECEIVED,
+  AREA_OF_EXPERTISE_FETCH_FAILED,
 } from './constants.js';
-
 
 const INITIAL_STATE = {
   loading: false,
   error: null,
   list: [],
+  expertise: null,
+  availability: null,
 };
 
+// eslint-disable-next-line require-jsdoc
 function applicationsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case AREA_OF_EXPERTISE_RECEIVED:
@@ -37,15 +40,22 @@ function applicationsReducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: null,
-        application: action.application,
-        getfucked: 'hello',
+        expertise: action.expertise,
       };
-    case YEARS_OF_EXPERIENCE_SUBMIT:
+    case AVAILABILITY_PERIOD_SUBMIT:
       return {
         ...state,
         loading: false,
         error: null,
+        availability: action.availability,
       };
+    case AREA_OF_EXPERTISE_FETCH_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     default:
       break;
   }
