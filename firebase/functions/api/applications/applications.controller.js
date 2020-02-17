@@ -64,6 +64,7 @@ exports.getApplications = async (req, res, next) => {
   try {
     //Get query parameters
     const query = req.query;
+    console.log(query);
     const result = await applicationsService.getApplications(query);
     return res.send(result);
   } catch (err) {
