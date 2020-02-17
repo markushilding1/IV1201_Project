@@ -43,9 +43,10 @@ exports.getApplications = async searchQuery => {
   const limits = ` LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
   const sql =
     `
-  SELECT DISTINCT p.name, p.surname
-  FROM person as p, competence as c, competence_profile as cp, availability as a
-  WHERE p.person_id = cp.person_id::varchar
+  SELECT DISTINCT p.name, p.surname, ap."createdAt"
+  FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
+  WHERE p.person_id = cp.person::varchar
+  AND p.person_id = ap.person
   AND cp.competence_id = c.competence_id AND ` +
     conditions.where +
     limits;

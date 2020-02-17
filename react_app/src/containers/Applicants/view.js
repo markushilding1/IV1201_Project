@@ -8,6 +8,11 @@ import {
   Button,
   Spinner,
 } from 'react-bootstrap';
+
+import 'react-dates/initialize';
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+
 import Applicant from './components/applicant';
 import './style.css';
 
@@ -17,8 +22,18 @@ import './style.css';
  */
 
 const view = (props) => {
-  const { applicants, loading, authorized, onFormChange } = props;
-  console.log(props);
+  const {
+    applicants,
+    loading,
+    authorized,
+    onFormChange,
+    onSubmit,
+    startDate,
+    endDate,
+    focusedInput,
+    onDatesChange,
+    onFocusChange,
+  } = props;
 
   if (!authorized) {
     return null;
@@ -31,25 +46,47 @@ const view = (props) => {
           <Form onChange={onFormChange}>
             <Form.Row>
               <Form.Group as={Col} controlId="formGridNamn">
-                <Form.Control name="namn" placeholder="Namn" />
+                <Form.Label className="formLabel">Name</Form.Label>
+                <Form.Control name="namn" />
+              </Form.Group>
+
+              <Form.Group as={Col} controlId="formGridNamn">
+                <Form.Label className="formLabel">Availability</Form.Label>
+                <DateRangePicker
+                  startDate={startDate}
+                  startDateId="your_unique_start_date_id"
+                  endDate={endDate}
+                  endDateId="your_unique_end_date_id"
+                  onDatesChange={({ startDate, endDate }) =>
+                    onDatesChange({ startDate, endDate })
+                  }
+                  focusedInput={focusedInput}
+                  onFocusChange={(focusedInput) => onFocusChange(focusedInput)}
+                />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridCompetence">
+                <Form.Label className="formLabel">Competence</Form.Label>
                 <Form.Control name="kompetens" as="select">
-                  <option>Välj Kompetens...</option>
+                  <option></option>
                   <option>Korvgrillning</option>
                   <option>Karuselldrift</option>
                 </Form.Control>
               </Form.Group>
-
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control />
-              </Form.Group>
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control />
+              <Form.Group as={Col} controlId="formGridSort">
+                <Form.Label className="formLabel">
+                  Sort by application date
+                </Form.Label>
+                <Form.Control name="sort" as="select">
+                  <option></option>
+                  <option>ASC</option>
+                  <option>DESC</option>
+                </Form.Control>
               </Form.Group>
             </Form.Row>
-            <Button className="searchBtn">Search</Button>
+            <Button onClick={onSubmit} className="searchBtn">
+              Search
+            </Button>
           </Form>
         </Col>
       </Row>
@@ -58,7 +95,10 @@ const view = (props) => {
           <Spinner animation="border" />
         ) : (
           applicants.map((applicant, i) => (
-            <Applicant name={applicant.name} apDate={'2020-01-25'} />
+            <Applicant
+              name={applicant.name}
+              apDate={applicant.createdAt.split('T')[0]}
+            />
           ))
         )}
       </Container>
