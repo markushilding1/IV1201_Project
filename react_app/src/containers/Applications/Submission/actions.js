@@ -4,25 +4,60 @@ import {
   SUBMIT_APPLICATION_SUCCESS,
   DISCARD_APPLICATION,
 } from './constants';
-import {AREA_OF_EXPERTISE_FETCH} from '../constants';
 
-export const submitApplication = (data) => {
-  return (dispatch, {getFirebase}) => {
-    dispatch({type: submitApplication()});
-    const auth = getFirebase.auth();
+/**
+ * @author Josef Federspiel
+ * @description Submits the application to the database.
+ */
+
+export const submitApplication = () => {
+  return (dispatch, getState, {getFirebase}) => {
+    dispatch({type: SUBMIT_APPLICATION});
+    const auth = getFirebase().auth();
     const uid = auth.getUID();
+    const areaOfExpertise = getState().submission.areaOfExpertise;
+    const date = getState().submission.availabilityPeriod;
     const applicationData = {
-      ...data,
-      uid: uid,
+      areaOfExpertise,
+      date,
+      uid,
     };
-    const createProfileResult = createApplication(applicationData);
-    console.log(createProfileResult);
+    createApplication(applicationData).then((res) => {
+      if (res) {
+        createApplicationSuccess(dispatch);
+      } else {
+        createApplicationFailure(dispatch, res);
+      }
+    });
   };
 };
 
+/**
+ * @author Josef Federspiel
+ * @description Discards the application
+ */
+
+export const discardApplication = () => {
+  return (dispatch) => {
+    dispatch({
+      type: DISCARD_APPLICATION,
+    });
+  };
+};
+
+/**
+ * @author Josef Federspiel
+ * @description posts the application to the rest api.
+ * @param {object} data Example {
+ *    areaOfExpertise: (array[object]),
+ *    date: (array[object]),
+ *    uid: (string),
+ * }
+ */
+
 const createApplication = (data) => {
   return new Promise((resolve) => {
-    fetch(`${API_URL}/users`, {
+    fetch(`http://localhost:5000/iv1201-g7/us-central1/widgets/applications/submit/`, {
       method: 'post',
       // Authorization: accessToken,
       headers: {
@@ -31,18 +66,40 @@ const createApplication = (data) => {
       body: JSON.stringify(data),
     })
         .then((res) => {
-          if (!res.ok) {
+          if (!res.ok || (res.ok && res.status !== 200)) {
             resolve(false);
           }
-
-          if (res.status === 200) {
-            resolve(true);
-          } else {
-            resolve(false);
-          }
+          return res.json();
+        })
+        .then((res) => {
+          resolve(res);
         })
         .catch((err) => {
           resolve(false);
         });
+  });
+};
+
+/**
+ * @author Josef Federspiel
+ * @description Dispatches a successful application submission.
+ * @param {function} dispatch Redux dispatch
+ */
+const createApplicationSuccess = (dispatch) => {
+  dispatch({type: SUBMIT_APPLICATION_SUCCESS});
+};
+
+/**
+ * @author Josef Federspiel
+ * @description Dispatches a failed post request and resets
+ * the status after 5 seconds.
+ * @param {function} dispatch Redux dispatch
+ * @param {string} err Error message
+ */
+
+const createApplicationFailure = (dispatch, err) => {
+  dispatch({
+    type: SUBMIT_APPLICATION_FAILED,
+    payload: err,
   });
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
-import { submitApplication, resetError } from './actions';
+import {discardApplication,submitApplication} from './actions';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -10,23 +10,8 @@ class Submission extends Component {
     super(props);
 
     this.state = {
-      areaOfExpertise: [],
-      availabilityPeriod: [],
     };
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.props.data != prevProps.data){
-      const area = {id : this.props.data.areaOfExpertise, years : this.props.data.yearsOfExperience}
-      this.state.areaOfExpertise.push(area);
-    }
-  }
-
-  /**
-   * @author Josef Federspiel
-   * @description Calls submission method from actions.
-   * @param {object} e onSubmit event.
-   */
 
   /**
    * @description Resets the error message when
@@ -40,31 +25,50 @@ class Submission extends Component {
     }
   };
 
+  /**
+   * @description calls the discard application
+   * from actions, on click function.
+   */
+  onDiscardApplication = () => {
+    this.props.discardApplication();
+  };
+
+  /**
+   * @description calls the submit application
+   * from actions, on click function.
+   */
+  handleSubmitApplication = () => {
+    this.props.submitApplication();
+  };
 
   render() {
-    const { error, loading } = this.props;
+    const {expertise,availability ,error, loading } = this.props;
     return (
       <View
         error={error}
         loading={loading}
-        areaOfExpertise={this.state.areaOfExpertise}
+        areaOfExpertise={expertise}
+        availabilityPeriod={availability}
+        onDiscardApplication={this.onDiscardApplication}
+        onSubmitApplication={this.handleSubmitApplication}
       />
     );
   }
 }
 
 const mapStateToProps = (state, initialProps) => {
-  debugger;
-  const temp = state.applications.application;
-  const { loading, error } = state;
+  const { loading, error,areaOfExpertise,availabilityPeriod} = state.submission;
   return {
+    expertise: areaOfExpertise,
+    availability: availabilityPeriod,
     loading: loading,
     error: error,
   };
 };
 
 const mapDispatchToProps = {
-
+  discardApplication,
+  submitApplication,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Submission));
+export default connect(mapStateToProps, mapDispatchToProps,)(withRouter(Submission));

@@ -5,6 +5,7 @@ const { check, validationResult} = require('express-validator');
 //Controller to handle submission of an application
 
 exports.submitApplication = async (req, res, next) => {
+<<<<<<< HEAD
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -12,6 +13,9 @@ exports.submitApplication = async (req, res, next) => {
         return;
     }
 
+=======
+    console.log(req.body);
+>>>>>>> submit application done
     const result = await applicationsService.submitApplication(req.body.areaOfExpertise,req.body.date,req.body.uid);
     if(result){
         res.send(result);

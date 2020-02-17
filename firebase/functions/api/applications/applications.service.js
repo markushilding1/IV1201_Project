@@ -14,9 +14,16 @@ exports.getApplications = async (page, limit) => {
 
 exports.getAreaOfExpertise = async () => {
     await applicationRepository.getAreaOfExpertise();
+}
 
 exports.submitApplication = async (areaOfExpertise,date,uid) => {
-    await applicationRepository.submitAvailability(areaOfExpertise,date,uid);
-    await applicationRepository.submitExpertise(areaOfExpertise,date,uid);
+    for(let i = 0; i < date.length; i++){
+        // eslint-disable-next-line no-await-in-loop
+        await applicationRepository.submitAvailability(date[i], uid);
+    }
+    for(let i = 0; i < areaOfExpertise.length; i++){
+        // eslint-disable-next-line no-await-in-loop
+        await applicationRepository.submitExpertise(areaOfExpertise[i], uid);
+    }
 };
 
