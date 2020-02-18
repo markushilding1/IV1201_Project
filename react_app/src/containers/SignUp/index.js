@@ -1,71 +1,70 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import View from './view';
-import { signUpUser, resetError } from './actions';
-import { checkSignedIn } from './../../utils/checkSignedIn';
+import {signUpUser, resetError} from './actions';
+import {checkSignedIn} from './../../utils/checkSignedIn';
 
 const withRouter = require('react-router-dom').withRouter;
 
+/**
+ * @description View model for sign up page.
+ */
 class SignUp extends Component {
+  /* eslint-disable require-jsdoc*/
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: '',
-      surame: '',
-      ssn: '',
-      email: '',
-      password: '',
-      passwordVerification: '',
-    };
+    this.state = {};
   }
 
   /**
    * @author Markus Hilding
-   * @description Updates state with sign up form values.
-   * @param {object} e onChange event.
-   */
-  handleFormChange = (e) => {
-    this.resetErrorMessage();
-    const value = e.target.value;
-    const name = e.target.name;
-    this.setState({ [name]: value });
-  };
-
-  /**
-   * @author Markus Hilding
    * @description Calls sign up method from actions.
-   * @param {object} e onSubmit event.
+   * @param {object} values form values
    */
-  handleFormSubmit = (e) => {
-    e.preventDefault();
-    const { name, surname, ssn, email, password } = this.state;
-
-    const data = {
+  handleFormSubmit(values) {
+    const {
       name,
       surname,
       ssn,
       email,
       password,
-    };
+      passwordVerification,
+    } = values;
 
-    this.props.signUpUser(data);
-  };
+    if (password === passwordVerification) {
+      const data = {
+        name,
+        surname,
+        ssn,
+        email,
+        password,
+      };
+
+      this.props.signUpUser(data);
+    } else {
+      this.setState({
+        passwordError: 'Passwords does not match',
+      });
+    }
+  }
 
   /**
    * @description Resets the error message when
    * the user starts to type in the form after
    * a failed attempt to sign up.
    */
-  resetErrorMessage = () => {
-    const { error } = this.props;
+  resetErrorMessage() {
+    const {error} = this.props;
     if (error) {
       this.props.resetError();
     }
-  };
+  }
 
+  /* eslint-disable require-jsdoc*/
   render() {
-    const { error, loading } = this.props;
+    const {error, loading} = this.props;
 
     this.props.checkSignedIn();
 
@@ -74,14 +73,21 @@ class SignUp extends Component {
         error={error}
         loading={loading}
         onFormSubmit={this.handleFormSubmit}
-        onFormChange={this.handleFormChange}
       />
     );
   }
 }
 
+SignUp.propTypes = {
+  error: PropTypes.object,
+  loading: PropTypes.bool,
+  checkSignedIn: PropTypes.func,
+  resetError: PropTypes.func,
+  signUpUser: PropTypes.func,
+};
+
 const mapStateToProps = (state) => {
-  const { loading, error } = state.signUp;
+  const {loading, error} = state.signUp;
   return {
     loading: loading,
     error: error,

@@ -17,7 +17,7 @@ import './style.css';
  */
 
 const view = (props) => {
-  const { applicants, loading, authorized, onFormChange } = props;
+  const {applicants, loading, authorized, onFormChange} = props;
   console.log(props);
 
   if (!authorized) {

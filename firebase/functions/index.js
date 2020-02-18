@@ -2,6 +2,7 @@
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
+const expressValidator = require('express-validator')
 
 //Import Routes
 const routes = require('./api/routes');

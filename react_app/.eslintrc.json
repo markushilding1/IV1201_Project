@@ -22,5 +22,17 @@
         "react"
     ],
     "rules": {
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "*serviceWorker.js",
+                "*reducer.js"
+            ],
+            "rules": {
+              "require-jsdoc":"off",
+              "max-len":"off"
+            }
+        }
+    ]
 }

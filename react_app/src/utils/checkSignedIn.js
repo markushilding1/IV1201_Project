@@ -4,6 +4,7 @@ import history from './history';
  * @author Markus Hilding
  * @description Used on pages that must not
  * be accessible when the user is signed in.
+ * @return {function}
  */
 export const checkSignedIn = () => {
   return (_, getState) => {

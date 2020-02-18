@@ -1,21 +1,21 @@
-import { SUCCESS, ERROR, SEARCH } from './constants';
+import {SUCCESS, ERROR, SEARCH} from './constants';
 
 export const fetchApplicants = () => {
   return (dispatch) => {
     console.log('ff');
 
-    dispatch({ type: SEARCH });
+    dispatch({type: SEARCH});
 
     fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        searchSuccess(dispatch, data);
-      })
-      .catch((err) => {
-        console.log('err');
-        searchFail(dispatch, err);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          searchSuccess(dispatch, data);
+        })
+        .catch((err) => {
+          console.log('err');
+          searchFail(dispatch, err);
+        });
   };
 };
 

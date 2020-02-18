@@ -1,4 +1,4 @@
-import { RESET_NEXT } from './../common/auth/constants';
+import {RESET_NEXT} from './../common/auth/constants';
 import history from './history';
 
 /**
@@ -10,6 +10,7 @@ import history from './history';
  * return false.
  * @param {string} permission [null, applicant, recruiter]
  * @param {string} page page for eventual redirect after sign in
+ * @return {function}
  */
 export const permissionCheck = (permission, page) => {
   return (dispatch, getState) => {
@@ -28,7 +29,7 @@ export const permissionCheck = (permission, page) => {
     } else if (auth.uid && user && user.role === permission) {
       return true;
     } else {
-      dispatch({ type: RESET_NEXT });
+      dispatch({type: RESET_NEXT});
       history.push(`/`);
     }
   };

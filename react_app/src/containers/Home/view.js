@@ -7,7 +7,13 @@ import Col from 'react-bootstrap/Col';
 const HomeView = (props) => {
   return (
     <Container className="mt-5">
-      <Row className="d-flex align-items-center align-content-center justify-content-center">
+      <Row
+        className={`
+        d-flex 
+        align-items-center 
+        align-content-center 
+        justify-content-center`}
+      >
         <Col>
           <h1>Recruitment Applications</h1>
         </Col>

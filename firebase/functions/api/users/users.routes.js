@@ -9,6 +9,10 @@ const authMiddleware = require('./../common/middlewares/authentication.js');
 
 //Setup Controllers
 router.get('/:uid', authMiddleware.isAuthenticated, usersController.getUserProfile);
-router.post('/', usersController.createUserProfile);
+router.post(
+  '/', 
+  usersController.validate('createUserProfile'),
+  usersController.createUserProfile
+);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -10,13 +11,20 @@ import Nav from 'react-bootstrap/Nav';
 import './style.css';
 
 const TopNavbar = (props) => {
-  const { auth, user, userLoading } = props;
+  const {auth, user, userLoading} = props;
   const home = <Nav.Link href="/">Home</Nav.Link>;
   const signOut = <Nav.Link onClick={props.onSignOutClick}>Sign Out</Nav.Link>;
 
   return (
     <Container fluid="true" className="top-navbar">
-      <Row className="d-flex align-items-center align-content-center justify-content-center">
+      <Row
+        className={`
+        d-flex 
+        align-items-center 
+        align-content-center 
+        justify-content-center
+      `}
+      >
         <Col xs="12">
           <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">Logo</Navbar.Brand>
@@ -39,12 +47,30 @@ const TopNavbar = (props) => {
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
                 {signOut}
               </Nav>
+            ) : user && user.role === 'admin' ? (
+              <Nav className="mr-auto">
+                {home}
+                <Nav.Link href="/applicants">Applicants</Nav.Link>
+                <Nav.Link href="/apply">Apply for job</Nav.Link>
+                {signOut}
+              </Nav>
             ) : null}
           </Navbar>
         </Col>
       </Row>
     </Container>
   );
+};
+
+TopNavbar.propTypes = {
+  auth: PropTypes.object({
+    isLoaded: PropTypes.bool,
+  }),
+  user: PropTypes.object({
+    role: PropTypes.string,
+  }),
+  userLoading: PropTypes.bool,
+  onSignOutClick: PropTypes.func,
 };
 
 export default TopNavbar;

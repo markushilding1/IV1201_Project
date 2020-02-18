@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Route, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {PropTypes} from 'prop-types';
 
 // Actions
-import { signOutUser, authListener } from './common/auth/actions.js';
+import {signOutUser, authListener} from './common/auth/actions.js';
 
 // Containers
 import Home from './containers/Home';
@@ -15,19 +16,27 @@ import TopNavbar from './components/TopNavbar';
 
 import './App.css';
 
+/**
+ * @description Root component. Manages mostly routing and rendering
+ * top navigation bar.
+ */
 class App extends Component {
+  /* eslint-disable require-jsdoc*/
   constructor(props) {
     super(props);
-
     this.authListener = this.props.authListener();
   }
 
-  handleSignOut = () => {
+  /**
+   * @description Calls action to sign out user.
+   */
+  handleSignOut() {
     this.props.signOutUser();
-  };
+  }
 
+  /* eslint-disable require-jsdoc*/
   render() {
-    const { auth, user, userLoading } = this.props;
+    const {auth, user, userLoading} = this.props;
 
     if (!auth.isLoaded) {
       return null;
@@ -54,6 +63,14 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  auth: PropTypes.object,
+  user: PropTypes.object,
+  userLoading: PropTypes.bool,
+  authListener: PropTypes.func,
+  signOutUser: PropTypes.func,
+};
 
 const mapDispatchToProps = {
   signOutUser,

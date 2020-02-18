@@ -9,30 +9,28 @@ import history from './../../utils/history';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+/**
+ * @description Sends request to create a user to the server.
+ * @param {object} data
+ * @return {Promise}
+ */
 const createUserProfile = (data) => {
   return new Promise((resolve) => {
     fetch(`${API_URL}/users`, {
       method: 'post',
-      //Authorization: accessToken,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
-      .then((res) => {
-        if (!res.ok) {
+        .then((res) => {
+          if (!res.ok) resolve(false);
+          if (res.status === 200) resolve(true);
           resolve(false);
-        }
-
-        if (res.status === 200) {
-          resolve(true);
-        } else {
+        })
+        .catch((err) => {
           resolve(false);
-        }
-      })
-      .catch((err) => {
-        resolve(false);
-      });
+        });
   });
 };
 
@@ -48,49 +46,49 @@ const createUserProfile = (data) => {
  *    email: (string),
  *    password: (string),
  * }
+ * @return {function}
  */
 export const signUpUser = (data) => {
-  return (dispatch, getState, { getFirebase }) => {
-    dispatch({ type: SIGN_UP });
+  return (dispatch, _, {getFirebase}) => {
+    dispatch({type: SIGN_UP});
     const auth = getFirebase().auth();
 
     auth
-      .createUserWithEmailAndPassword(data.email, data.password)
-      .catch(function(error) {
-        const errorMessage = error.message;
-        signUpFailed(dispatch, errorMessage);
-      })
-      .then(async (result) => {
-        if (result) {
-          const user = result.user;
-          const profileData = {
-            ...data,
-            uid: user.uid,
-            ssn: '19940101-1234',
-          };
+        .createUserWithEmailAndPassword(data.email, data.password)
+        .catch(function(error) {
+          const errorMessage = error.message;
+          signUpFailed(dispatch, errorMessage);
+        })
+        .then(async (result) => {
+          if (result) {
+            const user = result.user;
+            const profileData = {
+              ...data,
+              uid: user.uid,
+            };
 
-          // Creaste user with call to rest api. If failed, remove
-          // the user from firebase users.
-          const createProfileResult = await createUserProfile(profileData);
-          console.log(createProfileResult);
-          if (createProfileResult) {
+            // Creaste user with call to rest api. If failed, remove
+            // the user from firebase users.
+            const createProfileResult = await createUserProfile(profileData);
+
+            if (createProfileResult) {
             // Send verificaton email to user.
-            user
-              .sendEmailVerification()
-              .then(function() {
-                auth.signOut();
-                signUpSuccess(dispatch);
-              })
-              .catch(function() {
-                console.log('Failed to send email.');
-              });
+              user
+                  .sendEmailVerification()
+                  .then(function() {
+                    auth.signOut();
+                    signUpSuccess(dispatch);
+                  })
+                  .catch(function(err) {
+                    console.err('Failed to send email.');
+                  });
+            }
           }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        signUpFailed(dispatch, 'Oops, something went wrong...');
-      });
+        })
+        .catch((err) => {
+          console.err(err);
+          signUpFailed(dispatch, 'Oops, something went wrong...');
+        });
   };
 };
 
@@ -115,7 +113,7 @@ const signUpFailed = (dispatch, err) => {
  */
 const signUpSuccess = (dispatch) => {
   setTimeout(() => {
-    dispatch({ type: SIGN_UP_SUCCESS });
+    dispatch({type: SIGN_UP_SUCCESS});
     history.push('/sign-up-success');
   }, 1000);
 };
@@ -124,7 +122,8 @@ const signUpSuccess = (dispatch) => {
  * @author Markus Hilding
  * @description Dispatches action to reset
  * error message.
+ * @return {function}
  */
 export const resetError = () => {
-  return (dispatch) => dispatch({ type: SIGN_UP_STATUS_RESET });
+  return (dispatch) => dispatch({type: SIGN_UP_STATUS_RESET});
 };

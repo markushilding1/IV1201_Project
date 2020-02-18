@@ -3,7 +3,7 @@
  * @author Philip Romn
  */
 
-import { SEARCH, SUCCESS, ERROR } from './constants.js';
+import {SEARCH, SUCCESS, ERROR} from './constants.js';
 
 const INITIAL_STATE = {
   loading: true,
