@@ -108,13 +108,21 @@ const view = (props) => {
         previousLabel={'previous'}
         nextLabel={'next'}
         breakLabel={'...'}
-        breakClassName={'break-me'}
         pageCount={10}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}
-        containerClassName={'pagination'}
         subContainerClassName={'pages pagination'}
+        activeClassName={'active'}
+        breakClassName={'page-item'}
+        breakLinkClassName={'page-link'}
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousClassName={'page-item'}
+        previousLinkClassName={'page-link'}
+        nextClassName={'page-item'}
+        nextLinkClassName={'page-link'}
         activeClassName={'active'}
       />
     </Container>
