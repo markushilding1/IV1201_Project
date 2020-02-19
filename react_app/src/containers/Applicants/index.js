@@ -14,7 +14,7 @@ class Applicants extends Component {
     super(props);
 
     this.state = {
-      page: 1,
+      page: 0,
       name: '',
       competence: '',
       startDate: null,
@@ -57,7 +57,7 @@ class Applicants extends Component {
   };
 
   getApplicants = () => {
-    const { name, competence, startDate, endDate, sort } = this.state;
+    const { name, competence, startDate, endDate, sort, page } = this.state;
 
     const data = {
       name,
@@ -65,6 +65,7 @@ class Applicants extends Component {
       fromDate: startDate?.format('YYYY-MM-DD'),
       toDate: endDate?.format('YYYY-MM-DD'),
       sort,
+      page,
     };
 
     this.props.fetchApplicants(data);
@@ -77,6 +78,16 @@ class Applicants extends Component {
   onFocusChange = (focusedInput) => {
     console.log(focusedInput);
     this.setState({ focusedInput });
+  };
+
+  handlePageClick = (data) => {
+    console.log(data);
+    const selected = data.selected;
+    const page = Math.ceil(selected);
+
+    this.setState({ page }, () => {
+      this.getApplicants();
+    });
   };
 
   render() {
@@ -94,6 +105,7 @@ class Applicants extends Component {
         focusedInput={this.state.focusedInput}
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
+        handlePageClick={this.handlePageClick}
       />
     );
   }
