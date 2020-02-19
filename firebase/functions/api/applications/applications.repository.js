@@ -57,7 +57,7 @@ exports.getApplications = async searchQuery => {
   const limits = ` LIMIT ${limit} OFFSET ${page * limit}`;
   const sql =
     `
-  SELECT DISTINCT p.name, p.surname, ap."createdAt"
+  SELECT DISTINCT p.name, p.surname, ap."createdAt" , count(*) over(PARTITION BY p.name) as total_count
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
   WHERE p.person_id = cp.person::varchar
   AND p.person_id = ap.person

@@ -28,7 +28,6 @@ const View = (props) => {
   if (!authorized) {
     return null;
   }
-
   return (
     <Container className="outerContainer">
       <Row className="searchBar">
