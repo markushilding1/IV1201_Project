@@ -36,19 +36,25 @@ function buildConditions(searchQuery) {
  * @param searchQuery The search query provided by user.
  */
 exports.getApplications = async searchQuery => {
-  const { page = 1, limit = 10 } = searchQuery;
+  const { page = 0, limit = 10, sort } = searchQuery;
+  console.log(searchQuery);
 
-  //Initialize conditions, limits and build db query
+  //Initialize conditions, sort , limits and build db query
   const conditions = buildConditions(searchQuery);
-  const limits = ` LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
+  let sorts = "";
+  if (sort) {
+    sorts = ` ORDER BY "createdAt" ${sort}`;
+  }
+  const limits = ` LIMIT ${limit} OFFSET ${page * limit}`;
   const sql =
     `
-  SELECT DISTINCT p.name, p.surname, ap."createdAt"
+  SELECT DISTINCT p.name, p.surname, ap."createdAt" , count(*) over(PARTITION BY p.name) as total_count
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
   WHERE p.person_id = cp.person::varchar
   AND p.person_id = ap.person
   AND cp.competence_id = c.competence_id AND ` +
     conditions.where +
+    sorts +
     limits;
 
   console.log(sql);

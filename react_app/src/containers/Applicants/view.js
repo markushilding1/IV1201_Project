@@ -12,6 +12,7 @@ import {
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import ReactPaginate from 'react-paginate';
 
 import Applicant from './components/applicant';
 import './style.css';
@@ -33,12 +34,12 @@ const view = (props) => {
     focusedInput,
     onDatesChange,
     onFocusChange,
+    handlePageClick,
   } = props;
 
   if (!authorized) {
     return null;
   }
-
   return (
     <Container className="outerContainer">
       <Row className="searchBar">
@@ -97,19 +98,25 @@ const view = (props) => {
           applicants.map((applicant, i) => (
             <Applicant
               name={applicant.name}
+              surname={applicant.surname}
               apDate={applicant.createdAt.split('T')[0]}
             />
           ))
         )}
       </Container>
-      <Row className="navButtons">
-        <ButtonGroup className="mr-2" aria-label="First group">
-          <Button variant="light">1</Button>
-          <Button variant="light">2</Button>
-          <Button variant="light">3</Button>
-          <Button variant="light">4</Button>
-        </ButtonGroup>
-      </Row>
+      <ReactPaginate
+        previousLabel={'previous'}
+        nextLabel={'next'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={10}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        subContainerClassName={'pages pagination'}
+        activeClassName={'active'}
+      />
     </Container>
   );
 };
