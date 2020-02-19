@@ -83,7 +83,7 @@ class Applicants extends Component {
   handlePageClick = (data) => {
     console.log(data);
     const selected = data.selected;
-    const page = Math.ceil(selected);
+    const page = selected;
 
     this.setState({ page }, () => {
       this.getApplicants();
