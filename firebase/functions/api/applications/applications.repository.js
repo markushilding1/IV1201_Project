@@ -9,7 +9,7 @@ const db = require("../common/db/index");
  */
 function buildConditions(searchQuery) {
   //Get search query values: Name, Competence, Availability Dates, Application Date
-  const { name, competence, fromDate, toDate, sort } = searchQuery;
+  const { name, competence, fromDate, toDate } = searchQuery;
 
   var conditions = [];
   var values = [];
@@ -22,6 +22,15 @@ function buildConditions(searchQuery) {
   if (competence) {
     conditions.push(`c.name = $${conditions.length + 1}`);
     values.push(competence);
+  }
+
+  if (fromDate !== "undefined" && toDate !== "undefined") {
+    conditions.push(
+      `(a.from_date, a.to_date) OVERLAPS ($${conditions.length +
+        1}::DATE, $${conditions.length + 2}::DATE)`
+    );
+    values.push(fromDate);
+    values.push(toDate);
   }
 
   return {
@@ -50,8 +59,9 @@ exports.getApplications = async searchQuery => {
     `
   SELECT DISTINCT p.name, p.surname, ap."createdAt" , count(*) over(PARTITION BY p.name) as total_count
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
-  WHERE p.person_id = cp.person::varchar
+  WHERE p.person_id = cp.person
   AND p.person_id = ap.person
+  AND p.person_id = a.person
   AND cp.competence_id = c.competence_id AND ` +
     conditions.where +
     sorts +
