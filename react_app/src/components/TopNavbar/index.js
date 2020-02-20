@@ -63,10 +63,10 @@ const TopNavbar = (props) => {
 };
 
 TopNavbar.propTypes = {
-  auth: PropTypes.object({
+  auth: PropTypes.shape({
     isLoaded: PropTypes.bool,
   }),
-  user: PropTypes.object({
+  user: PropTypes.shape({
     role: PropTypes.string,
   }),
   userLoading: PropTypes.bool,

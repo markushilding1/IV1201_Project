@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Bootstrap
 import Container from 'react-bootstrap/Container';

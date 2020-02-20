@@ -58,8 +58,8 @@ class SignIn extends Component {
 }
 
 SignIn.propTypes = {
-  match: PropTypes.object({
-    params: PropTypes.object({
+  match: PropTypes.shape({
+    params: PropTypes.shape({
       next: PropTypes.string,
     }),
   }),
