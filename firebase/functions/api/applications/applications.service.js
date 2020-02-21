@@ -13,7 +13,8 @@ exports.getApplications = async (page, limit) => {
 };
 
 exports.getAreaOfExpertise = async () => {
-    await applicationRepository.getAreaOfExpertise();
+    const result = await applicationRepository.getAreaOfExpertise();
+    return result;
 }
 
 exports.submitApplication = async (areaOfExpertise,date,uid) => {

@@ -32,12 +32,15 @@ function submissionReducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: null,
+        submissionSuccess: true,
       };
     case SUBMIT_APPLICATION_FAILED:
+      debugger;
       return {
         ...state,
         loading: false,
         error: action.payload,
+        submissionSuccess: false,
       };
     case DISCARD_APPLICATION:
       return {
@@ -47,9 +50,9 @@ function submissionReducer(state = INITIAL_STATE, action) {
         areaOfExpertise: [],
         availabilityPeriod: [],
         areaOfExpertiseId: [],
+        submissionSuccess: false,
       };
     case SUBMIT_EXPERTISE:
-      debugger;
       return {
         ...state,
         loading: false,

@@ -28,7 +28,6 @@ class SignIn extends Component {
     const next = this.props.match.params.next;
     this.props.signInUser(email, password, next);
   }
-
   /**
    * @description Resets the error message when
    * the user starts to type in the form after
@@ -48,7 +47,6 @@ class SignIn extends Component {
 
     return (
       <View
-        d
         error={error}
         loading={loading}
         onFormSubmit={this.handleFormSubmit}

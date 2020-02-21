@@ -33,24 +33,26 @@ const TopNavbar = (props) => {
               <Nav className="mr-auto">
                 {home}
                 <Nav.Link href="/sign-in">Sign In</Nav.Link>
+                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/sign-up">Sign Up</Nav.Link>
-                <Nav.Link href="/applications">Applications</Nav.Link>
               </Nav>
             ) : user && user.role === 'applicant' ? (
               <Nav className="mr-auto">
                 {home}
-                <Nav.Link href="/apply">Apply for job</Nav.Link>
+                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 {signOut}
               </Nav>
             ) : user && user.role === 'recruit' ? (
               <Nav className="mr-auto">
                 {home}
+                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
                 {signOut}
               </Nav>
             ) : user && user.role === 'admin' ? (
               <Nav className="mr-auto">
                 {home}
+                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
                 <Nav.Link href="/apply">Apply for job</Nav.Link>
                 {signOut}

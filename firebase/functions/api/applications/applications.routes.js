@@ -18,7 +18,7 @@ router.post('/submit',
   applicationsController.validate('submitApplication'), 
   applicationsController.submitApplication
 );
-router.get('/', 
+router.get('/',
   applicationsController.validate('getApplications'),
   applicationsController.getApplications
 );

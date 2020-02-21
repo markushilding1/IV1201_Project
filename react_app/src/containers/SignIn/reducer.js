@@ -12,7 +12,7 @@ import {
 
 const INITIAL_STATE = {
   loading: false,
-  error: null,
+  error: false,
 };
 
 function signInReducer(state = INITIAL_STATE, action) {

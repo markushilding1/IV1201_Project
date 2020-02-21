@@ -75,36 +75,26 @@ exports.getApplications = async searchQuery => {
 };
 
 exports.getAreaOfExpertise = async () => {
-  const client = new Client({
-    connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
-    ssl: true,
-  });
-
-  client.connect();
+  const client = db.conn();
 
   return await new Promise((resolve, reject) => {
-    client.query('SELECT *\n' +
-        '      FROM competence',
+    client.query('SELECT * FROM competence',
         (err, res) => {
           if (err) {
             // eslint-disable-next-line prefer-promise-reject-errors
             reject();
             throw err;
           }
-          client.end();
+          console.log(res.rows);
           resolve(res.rows);
+          client.end();
         });
   })
 };
 
 exports.submitAvailability = async (date,uid) => {
-  const client = new Client({
-    connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
-    ssl: true,
-  });
-  client.connect();
-  console.log(date);
-  console.log(uid);
+  const client = db.conn();
+
   const values = [uid,date.fromDate,date.toDate];
   return await new Promise((resolve, reject) => {
     client.query(`INSERT INTO availability (person,from_date ,to_date) 
@@ -114,25 +104,19 @@ exports.submitAvailability = async (date,uid) => {
         reject();
         throw err;
       }
-      client.end();
       console.log("Profile Created");
       resolve("Profile Created");
+      client.end();
     });
   });
 };
 
-  exports.submitExpertise = async (areaOfExpertise,uid) => {
-  const client = new Client({
-    connectionString: 'postgres://kehcgpyfmyhjwv:3b48b7924bc552ae528190e7d8c9910693950ffd2d4ef8cf5ec550e571b3f0e5@ec2-54-247-82-14.eu-west-1.compute.amazonaws.com:5432/d52vsqj13b5hgk',
-    ssl: true,
-  });
-  
-  client.connect();
+exports.submitExpertise = async (areaOfExpertise,uid) => {
+  const client = db.conn();
+
   const values = [uid,areaOfExpertise.areaOfExpertiseId,areaOfExpertise.yearsOfExperience,]
   //INSERT INTO competence osv
     return await new Promise((resolve, reject) => {
-    console.log(areaOfExpertise);
-    console.log(uid);
     client.query(`INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
     VALUES ($1, $2, $3)`,values ,(err, res) => {
       if (err) {
@@ -140,9 +124,9 @@ exports.submitAvailability = async (date,uid) => {
         reject();
         throw err;
       }
-      client.end();
       console.log("Profile Created");
       resolve("Profile Created");
+      client.end();
     });
   });
 };

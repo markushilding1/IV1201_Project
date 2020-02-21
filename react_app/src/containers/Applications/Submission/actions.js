@@ -13,8 +13,7 @@ import {
 export const submitApplication = () => {
   return (dispatch, getState, {getFirebase}) => {
     dispatch({type: SUBMIT_APPLICATION});
-    const auth = getFirebase().auth();
-    const uid = auth.getUID();
+    const uid = getState().auth.user.person_id;
     const areaOfExpertise = getState().submission.areaOfExpertise;
     const date = getState().submission.availabilityPeriod;
     const applicationData = {
@@ -24,10 +23,15 @@ export const submitApplication = () => {
     };
     createApplication(applicationData).then((res) => {
       if (res) {
+        console.log("Successes");
         createApplicationSuccess(dispatch);
       } else {
+        console.log("Good Failure");
         createApplicationFailure(dispatch, res);
       }
+    }).catch((err) => {
+      console.err(err);
+      createApplicationFailure(dispatch, 'Oops, something went wrong...');
     });
   };
 };

@@ -67,7 +67,7 @@ export const submitAvailabilityPeriod = (data) => {
 };
 
 /**
- * @author Markus Hilding
+ * @author Josef Federspiel
  * @description Dispatches a failed fetch request and resets
  * the status after 5 seconds.
  * @param {function} dispatch Redux dispatch
@@ -82,7 +82,7 @@ const areaOfExpertiseFetchFailed = (dispatch, err) => {
 };
 
 /**
- * @author Markus Hilding
+ * @author Josef Federspiel
  * @description Dispatches a successful fetch request and resets
  * the status after 5 seconds.
  * @param {function} dispatch Redux dispatch

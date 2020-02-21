@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 // Bootstrap
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -102,7 +101,7 @@ const SignInView = (props) => {
 };
 
 SignInView.propTypes = {
-  error: PropTypes.object,
+  error: PropTypes.shape,
   loading: PropTypes.bool,
   onFormSubmit: PropTypes.func,
 };

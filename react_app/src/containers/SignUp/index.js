@@ -87,6 +87,7 @@ SignUp.propTypes = {
   signUpUser: PropTypes.func,
 };
 
+
 const mapStateToProps = (state) => {
   const {loading, error} = state.signUp;
   return {

@@ -42,13 +42,14 @@ class Submission extends Component {
   };
 
   render() {
-    const {expertise,availability ,error, loading } = this.props;
+    const {expertise,availability ,error, loading ,success} = this.props;
     return (
       <View
         error={error}
         loading={loading}
         areaOfExpertise={expertise}
         availabilityPeriod={availability}
+        submissionSuccess={success}
         onDiscardApplication={this.onDiscardApplication}
         onSubmitApplication={this.handleSubmitApplication}
       />
@@ -57,12 +58,13 @@ class Submission extends Component {
 }
 
 const mapStateToProps = (state, initialProps) => {
-  const { loading, error,areaOfExpertise,availabilityPeriod} = state.submission;
+  const { loading, error,areaOfExpertise,availabilityPeriod,submissionSuccess} = state.submission;
   return {
     expertise: areaOfExpertise,
     availability: availabilityPeriod,
     loading: loading,
     error: error,
+    success: submissionSuccess,
   };
 };
 
