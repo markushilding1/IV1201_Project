@@ -56,10 +56,13 @@ exports.submitApplication = (req, res, next) => {
  */
 exports.getApplications = async (req, res, next) => {
   // Validating body params
+  /*
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
+  */
 
   try {
     //Get query parameters
@@ -108,24 +111,23 @@ exports.validate = method => {
   switch (method) {
     case "getApplications": {
       return [
-        check("name", "Parameter ´name´ not provided")
-          .exists()
-          .isLength({ min: 2 }),
-        check("competence", "Parameter ´competence´ not provided")
-          .exists()
-          .isLength({ min: 2 }),
-        check("fromDate", "Parameter ´fromDate´ not provided")
-          .exists()
-          .isLength({ min: 10 }),
-        check("toDate", "Parameter ´toDate´ not provided")
-          .exists()
-          .isLength({ min: 10 }),
+        check("name", "Parameter ´name´ not provided"),
+        check("competence", "Parameter ´competence´ not provided").isLength({
+          min: 2
+        }),
+        check("fromDate", "Parameter ´fromDate´ not provided").isLength({
+          min: 10
+        }),
+        check("toDate", "Parameter ´toDate´ not provided").isLength({
+          min: 10
+        }),
         check("page", "Parameter ´page´ not provided")
           .exists()
           .isInt(),
-        check("dateOrder", "Parameter ´dateOrder´ not provided")
-          .exists()
-          .isIn(["asc", "desc"])
+        check("sort", "Parameter ´dateOrder´ not provided").isIn([
+          "ASC",
+          "DESC"
+        ])
       ];
     }
 >>>>>>> now fetching applicants from our database

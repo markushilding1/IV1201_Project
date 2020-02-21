@@ -26,6 +26,7 @@ const view = (props) => {
     onDatesChange,
     onFocusChange,
     handlePageClick,
+    error,
   } = props;
 
   if (!authorized) {

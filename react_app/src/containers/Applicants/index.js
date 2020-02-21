@@ -135,6 +135,7 @@ class Applicants extends Component {
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         handlePageClick={this.handlePageClick}
+        error={this.props.error}
       />
     );
   }

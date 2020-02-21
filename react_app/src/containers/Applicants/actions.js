@@ -16,12 +16,19 @@ export const fetchApplicants = (data) => {
     dispatch({ type: SEARCH });
 
     fetch(url)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); //we only get here if there is no error
+      })
       .then((data) => {
         searchSuccess(dispatch, data);
       })
       .catch((err) => {
-        searchFail(dispatch, err);
+        err.text().then((errorMessage) => {
+          searchFail(dispatch, 'Failed to query applicants');
+        });
       });
   };
 };
