@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  ButtonGroup,
-  Button,
-  Spinner,
-} from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
@@ -21,7 +13,6 @@ import './style.css';
  * @description View functional component for applicants page
  * @author Philip Romn
  */
-
 const view = (props) => {
   const {
     applicants,
