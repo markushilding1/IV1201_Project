@@ -1,25 +1,28 @@
-import {SUCCESS, ERROR, SEARCH} from './constants';
+import { SUCCESS, ERROR, SEARCH } from './constants';
 
 /**
  * @author Philip Romin
  * @description Fetch a list of applicants
  */
-export const fetchApplicants = () => {
+export const fetchApplicants = (data) => {
+  const url = new URL(
+    'http://localhost:5000/iv1201-g7/us-central1/widgets/applications',
+  );
+  url.search = new URLSearchParams(data);
+  console.log(url.toString());
+
+  console.log(data);
   return (dispatch) => {
-    console.log('ff');
+    dispatch({ type: SEARCH });
 
-    dispatch({type: SEARCH});
-
-    fetch('https://jsonplaceholder.typicode.com/users')
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          searchSuccess(dispatch, data);
-        })
-        .catch((err) => {
-          console.log('err');
-          searchFail(dispatch, err);
-        });
+    fetch('http://localhost:5000/iv1201-g7/us-central1/widgets/applications')
+      .then((response) => response.json())
+      .then((data) => {
+        searchSuccess(dispatch, data);
+      })
+      .catch((err) => {
+        searchFail(dispatch, err);
+      });
   };
 };
 
@@ -30,7 +33,6 @@ export const fetchApplicants = () => {
  * @param {} applicants Found applicants
  */
 const searchSuccess = (dispatch, applicants) => {
-  console.log('ss');
   dispatch({
     type: SUCCESS,
     payload: applicants,
@@ -44,7 +46,6 @@ const searchSuccess = (dispatch, applicants) => {
  * @param {string} err Error message
  */
 const searchFail = (dispatch, err) => {
-  console.log('sf');
   dispatch({
     type: ERROR,
     payload: err,

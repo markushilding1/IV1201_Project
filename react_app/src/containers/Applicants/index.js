@@ -7,16 +7,20 @@ import { fetchApplicants } from './actions';
 /**
  * @description Container smart component for applicants page,
  * Should contain login and be connected to redux
- * @author Philip Romn
+ * @author Philip Romin
  */
-
 class Applicants extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      page: 1,
       namn: '',
       kompetens: '',
+      startDate: null,
+      endDate: null,
+      sort: '',
+      focusedInput: null,
       authorized: false,
     };
   }
@@ -27,8 +31,8 @@ class Applicants extends Component {
       this.setState({
         authorized: true,
       });
-      if (!this.state.data) {
-        this.props.fetchApplicants();
+      if (this.props.applicants.length === 0) {
+        this.getApplicants();
       }
     }
   }
@@ -46,37 +50,49 @@ class Applicants extends Component {
     this.permissionCheck();
   }
 
-  fetchData() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          applicants: data,
-          loading: false,
-          error: null,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   handleFormChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
-    console.log(value);
-    console.log(name);
-    this.setState({ [name]: value }, () => console.log(this.state));
+    this.setState({ [name]: value });
+  };
+
+  getApplicants = () => {
+    const { namn, kompetens, startDate, endDate, sort } = this.state;
+
+    const data = {
+      namn,
+      kompetens,
+      startDate: startDate?.format('YYYY-MM-DD'),
+      endDate: endDate?.format('YYYY-MM-DD'),
+      sort,
+    };
+
+    this.props.fetchApplicants(data);
+  };
+
+  onDatesChange = ({ startDate, endDate }) => {
+    this.setState({ startDate, endDate });
+  };
+
+  onFocusChange = (focusedInput) => {
+    this.setState({ focusedInput });
   };
 
   render() {
     return (
       <View
+        {...this.props}
         authorized={this.state.authorized}
         applicants={this.props.applicants}
         loading={this.props.loading}
         error={this.props.error}
+        startDate={this.state.startDate}
+        endDate={this.state.endDate}
         onFormChange={this.handleFormChange}
+        onSubmit={this.getApplicants}
+        focusedInput={this.state.focusedInput}
+        onDatesChange={this.onDatesChange}
+        onFocusChange={this.onFocusChange}
       />
     );
   }
@@ -88,7 +104,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     user: state.auth.user,
     auth: state.firebase.auth,
@@ -99,7 +114,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Applicants);
-
-/*
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));
-*/
