@@ -50,12 +50,21 @@ class Applicants extends Component {
     this.permissionCheck();
   }
 
+  /**
+   * @description Function to handle input changes in form
+   * @author Philip Romin
+   * @param e Event object containing information about which input changed
+   */
   handleFormChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
     this.setState({ [name]: value });
   };
 
+  /**
+   * @description Function to fetch applicants from server
+   * @author Philip Romin
+   */
   getApplicants = () => {
     const { name, competence, startDate, endDate, sort, page } = this.state;
 
@@ -71,21 +80,41 @@ class Applicants extends Component {
     this.props.fetchApplicants(data);
   };
 
+  /**
+   * @description Function to handle input changes in our data range picker
+   * @author Philip Romin
+   * @param startDate Containing information about the selected start date
+   * @param endDate Containing information about the selected end date
+   */
   onDatesChange = ({ startDate, endDate }) => {
     this.setState({ startDate, endDate });
   };
 
+  /**
+   * @description Function to handle focused range date picker
+   * @author Philip Romin
+   * @param focusedInput Containing information about which field is focused
+   */
   onFocusChange = (focusedInput) => {
-    console.log(focusedInput);
     this.setState({ focusedInput });
   };
 
+  /**
+   * @description Function to handle pagination page clicks
+   * @author Philip Romin
+   * @param data Object containing information about which page is clicked
+   */
   handlePageClick = (data) => {
-    console.log(data);
     const selected = data.selected;
     const page = selected;
 
     this.setState({ page }, () => {
+      this.getApplicants();
+    });
+  };
+
+  handleFormSubmit = () => {
+    this.setState({ page: 0 }, () => {
       this.getApplicants();
     });
   };
