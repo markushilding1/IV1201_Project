@@ -33,7 +33,6 @@ const TopNavbar = (props) => {
               <Nav className="mr-auto">
                 {home}
                 <Nav.Link href="/sign-in">Sign In</Nav.Link>
-                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/sign-up">Sign Up</Nav.Link>
               </Nav>
             ) : user && user.role === 'applicant' ? (

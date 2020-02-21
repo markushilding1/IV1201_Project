@@ -31,7 +31,7 @@ class App extends Component {
   /**
    * @description Calls action to sign out user.
    */
-  handleSignOut() {
+  handleSignOut = () => {
     this.props.signOutUser();
   }
 
