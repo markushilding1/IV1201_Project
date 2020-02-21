@@ -16,6 +16,7 @@ class SignUp extends Component {
     super(props);
 
     this.state = {};
+
   }
 
   /**
@@ -23,7 +24,7 @@ class SignUp extends Component {
    * @description Calls sign up method from actions.
    * @param {object} values form values
    */
-  handleFormSubmit(values) {
+  handleFormSubmit = (values) => {
     const {
       name,
       surname,

@@ -8,8 +8,7 @@ exports.submitApplication = (req, res, next) => {
     // Validating body params
     const errors = validationResult(req); 
     if (!errors.isEmpty()) {
-        res.status(422).json({ errors: errors.array() });
-        return;
+        return res.status(422).json({ errors: errors.array() });
     }
 
     console.log('From Applications Controller');
@@ -22,15 +21,14 @@ exports.getApplications = async (req, res, next) => {
     // Validating body params
     const errors = validationResult(req); 
     if (!errors.isEmpty()) {
-        res.status(422).json({ errors: errors.array() });
-        return;
+        return res.status(422).json({ errors: errors.array() });
     }
 
     try {
         //Get query parameters
         const query = req.query;    
         const result = await applicationsService.getApplications(query);
-        return res.send(result);
+        return es.send(result);
     } catch(err) {
         console.log('Error reached controller')
         return next(err);
@@ -52,7 +50,7 @@ exports.validate = (method) => {
                 check('fromDate', 'Parameter ´fromDate´ not provided').exists().isLength({min:10}),
                 check('toDate', 'Parameter ´toDate´ not provided').exists().isLength({min:10}),
                 check('page', 'Parameter ´page´ not provided').exists().isInt(),
-                check('dateOrder', 'Parameter ´dateOrder´ not provided').exists().isIn['asc', 'desc'],  
+                check('dateOrder', 'Parameter ´dateOrder´ not provided').exists().isIn(['asc', 'desc']),  
             ]   
         }
 
@@ -61,7 +59,6 @@ exports.validate = (method) => {
                 check('areaOfExpertise', 'Parameter ´areaOfExpertis´ not provided').exists(),
                 check('areaOfExpertise.areaId', 'Parameter ´areaOfExpertis.areaId´ not provided').exists().isInt(),
                 check('areaOfExpertise.yearsOfExperience', 'Parameter ´areaOfExpertis.yearsOfExperience´ not provided').exists(),
-            
                 check('availabilityPeriod', 'Parameter ´availabilityPeriod´ not provided').exists(),
                 check('availabilityPeriod.fromDate', 'Parameter ´availabilityPeriod´ not provided').exists(),
                 check('availabilityPeriod.toDate', 'Parameter ´availabilityPeriod´ not provided').exists(),

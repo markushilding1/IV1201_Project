@@ -184,7 +184,7 @@ const SignUpView = (props) => {
 };
 
 SignUpView.propTypes = {
-  error: PropTypes.object,
+  error: PropTypes.string,
   loading: PropTypes.bool,
   onFormSubmit: PropTypes.func,
 };

@@ -23,7 +23,7 @@ class SignIn extends Component {
    * @description Calls sign in method from actions.
    * @param {object} values form values.
    */
-  handleFormSubmit(values) {
+  handleFormSubmit = (values) => {
     const {email, password} = values;
     const next = this.props.match.params.next;
     this.props.signInUser(email, password, next);
