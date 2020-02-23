@@ -24,7 +24,6 @@ const pageBar = (props) => {
       previousLinkClassName={'page-link'}
       nextClassName={'page-item'}
       nextLinkClassName={'page-link'}
-      activeClassName={'active'}
     />
   );
 };
