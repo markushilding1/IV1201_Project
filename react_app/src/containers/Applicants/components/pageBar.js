@@ -9,7 +9,7 @@ const pageBar = (props) => {
       previousLabel={'previous'}
       nextLabel={'next'}
       breakLabel={'...'}
-      pageCount={10}
+      pageCount={100}
       marginPagesDisplayed={2}
       pageRangeDisplayed={5}
       onPageChange={handlePageClick}

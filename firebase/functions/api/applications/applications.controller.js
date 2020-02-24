@@ -67,6 +67,26 @@ exports.getApplications = async (req, res, next) => {
 };
 
 /**
+ * @author Philip Romin
+ * @description Controller function to handle get route to /applicants/:id
+ * @param req The request object
+ * @param res The response object
+ * @param next Function to pass through to next middleware
+ */
+exports.getApplication = async (req, res, next) => {
+  try {
+    //Get query parameters
+    const id = req.params.id;
+    console.log(id);
+    const result = await applicationsService.getApplication(id);
+    return res.send(result);
+  } catch (err) {
+    console.log("Error reached controller");
+    return next(err);
+  }
+};
+
+/**
  * @author Markus Hilding
  * @description Parameter validation for all controller functions where
  * params are sent via body.

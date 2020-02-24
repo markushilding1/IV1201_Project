@@ -26,7 +26,7 @@ export const fetchApplicants = (data) => {
         searchSuccess(dispatch, data);
       })
       .catch((err) => {
-        searchFail(dispatch, err);
+        searchFail(dispatch, 'Failed to query applicants');
       });
   };
 };

@@ -1,14 +1,13 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
 
-const applicant = ({ name, surname, apDate }) => {
+const applicant = ({ name, surname, apDate, onClick }) => {
   return (
-    <Row className="applicants">
+    <li className="applicants" onClick={onClick}>
       <p>
         {name} {surname}
       </p>
       <p>{apDate}</p>
-    </Row>
+    </li>
   );
 };
 

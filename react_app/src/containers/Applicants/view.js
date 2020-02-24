@@ -23,6 +23,7 @@ const View = (props) => {
     onDatesChange,
     onFocusChange,
     handlePageClick,
+    handleApplicantClick,
   } = props;
 
   if (!authorized) {
@@ -51,7 +52,9 @@ const View = (props) => {
             <Applicant
               name={applicant.name}
               surname={applicant.surname}
-              apDate={applicant.createdAt.split('T')[0]}
+              key={applicant.person_id}
+              apDate={applicant.createdAt?.split('T')[0]}
+              onClick={() => handleApplicantClick(applicant.person_id)}
             />
           ))
         )}

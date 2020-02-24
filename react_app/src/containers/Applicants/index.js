@@ -119,6 +119,10 @@ class Applicants extends Component {
     });
   };
 
+  handleApplicantClick = (applicantId) => {
+    console.log('Applicant with id ' + applicantId + ' clicked');
+  };
+
   render() {
     return (
       <View
@@ -135,6 +139,7 @@ class Applicants extends Component {
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         handlePageClick={this.handlePageClick}
+        handleApplicantClick={this.handleApplicantClick}
       />
     );
   }
