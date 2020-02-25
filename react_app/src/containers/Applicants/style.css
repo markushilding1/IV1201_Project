@@ -39,3 +39,7 @@
 #react-paginate li {
   cursor: pointer;
 }
+
+.inlineList {
+  display: inline;
+}

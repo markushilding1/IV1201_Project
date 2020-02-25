@@ -1,23 +1,46 @@
-const ExampleError = require("../errors/exampleError");
 const applicationRepository = require("./applications.repository");
 
-exports.getApplications = async (page, limit) => {
+/**
+ * @author Philip Romin
+ * @description Function to get a paginated list of all applications
+ * @param query search query
+ */
+exports.getApplications = async query => {
   try {
-    const result = await applicationRepository.getApplications(page, limit);
-    return result;
+    return await applicationRepository.getApplications(query);
   } catch (err) {
-    console.log("Error reached service");
-    throw err;
+    throw new Error("Failed to get applications");
   }
 };
 
+/**
+ * @author Philip Romin
+ * @description Function to get a single application
+ * @param query application id
+ */
 exports.getApplication = async id => {
   try {
     const result = await applicationRepository.getApplication(id);
     return result;
   } catch (err) {
-    console.log("Error reached service");
-    throw err;
+    throw new Error("Failed to get application " + id);
+  }
+};
+
+/**
+ * @author Philip Romin
+ * @description Function to update status of an application
+ * @param id id of the application
+ * @param status new status
+ */
+exports.updateStatus = async (id, status) => {
+  try {
+    const result = await applicationRepository.updateStatus(id, status);
+    return result;
+  } catch (err) {
+    throw new Error(
+      "Failed to set status to " + status + " on application " + id
+    );
   }
 };
 

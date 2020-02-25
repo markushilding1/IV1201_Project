@@ -42,7 +42,7 @@ function buildConditions(searchQuery) {
 
 /**
  * @author Philip Romin
- * @description Function to get a paginated list of all applications. Which information do we want to show?
+ * @description Function to get a paginated list of all applications.
  * @param searchQuery The search query provided by user.
  */
 exports.getApplications = async searchQuery => {
@@ -109,13 +109,14 @@ exports.getApplications = async searchQuery => {
 
 /**
  * @author Philip Romin
- * @description Function to get a paginated list of all applications. Which information do we want to show?
- * @param id The id of the applicant.
+ * @description Function to get full information about an application
+ * @param id The id of the application.
  */
 exports.getApplication = async id => {
-  const sql = `
+  const getSql = `
   SELECT DISTINCT 
-    ap.id, p.name, p.surname, 
+    ap.id, 
+    p.name, p.surname, p.ssn, 
     ap.status, ap."createdAt", 
     ARRAY_AGG(c.name) as competence, 
     ARRAY_AGG(cp.years_of_experience) as yoe,
@@ -130,12 +131,13 @@ exports.getApplication = async id => {
   GROUP BY ap.id,
   p.name,
   p.surname,
+  p.ssn,
   ap."createdAt",
   ap.status`;
 
   //Query object for pg-node
-  const sqlQuery = {
-    text: sql,
+  const getQuery = {
+    text: getSql,
     values: [id]
   };
 
@@ -143,8 +145,42 @@ exports.getApplication = async id => {
   const client = db.conn();
 
   try {
-    const results = await client.query(sqlQuery);
+    const results = await client.query(getQuery);
     console.table(results.rows);
+    return results.rows;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to query applications");
+  } finally {
+    await client.end();
+  }
+};
+
+/**
+ * @author Philip Romin
+ * @description Function to update status of an application
+ * @param id The id of application to update
+ */
+exports.updateStatus = async (id, status) => {
+  const updateSql = `
+  UPDATE application
+  SET status = $1
+  WHERE id = $2
+  RETURNING status`;
+
+  //Query object for pg-node
+  const updateQuery = {
+    text: updateSql,
+    values: [status, id]
+  };
+
+  //Connect to database via helper function
+  const client = db.conn();
+
+  try {
+    //const total = await client.query(sqlTotal);
+    const results = await client.query(updateQuery);
+    console.log(results);
     return results.rows;
   } catch (err) {
     console.log(err);

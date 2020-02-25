@@ -4,6 +4,7 @@ import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import Applicant from './components/applicant';
 import SearchForm from './components/seachForm';
 import PageBar from './components/pageBar';
+import Modal from './components/modal';
 import './style.css';
 
 /**
@@ -23,7 +24,8 @@ const View = (props) => {
     onDatesChange,
     onFocusChange,
     handlePageClick,
-    handleApplicantClick,
+    showModal,
+    toggleModal,
   } = props;
 
   if (!authorized) {
@@ -31,6 +33,7 @@ const View = (props) => {
   }
   return (
     <Container className="outerContainer">
+      <Modal showModal={showModal} toggleModal={toggleModal} />
       <Row className="searchBar">
         <Col>
           <SearchForm
@@ -54,7 +57,7 @@ const View = (props) => {
               surname={applicant.surname}
               key={applicant.id}
               apDate={applicant.createdAt?.split('T')[0]}
-              onClick={() => handleApplicantClick(applicant.id)}
+              onClick={() => toggleModal(applicant.id)}
             />
           ))
         )}

@@ -2,7 +2,6 @@ const applicationsService = require("./applications.service");
 const { check, validationResult } = require("express-validator");
 
 //Controller to handle submission of an application
-
 exports.submitApplication = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -39,7 +38,7 @@ exports.getAreaOfExpertise = async (req, res, next) => {
 
 /**
  * @author Philip Romin
- * @description Controller function to handle get route to /applicants
+ * @description Controller function to handle get request to /applicants
  * @param req The request object
  * @param res The response object
  * @param next Function to pass through to next middleware
@@ -61,14 +60,13 @@ exports.getApplications = async (req, res, next) => {
     const result = await applicationsService.getApplications(query);
     return res.send(result);
   } catch (err) {
-    console.log("Error reached controller");
     return next(err);
   }
 };
 
 /**
  * @author Philip Romin
- * @description Controller function to handle get route to /applicants/:id
+ * @description Controller function to handle get request to /applicants/:id
  * @param req The request object
  * @param res The response object
  * @param next Function to pass through to next middleware
@@ -80,7 +78,26 @@ exports.getApplication = async (req, res, next) => {
     const result = await applicationsService.getApplication(id);
     return res.send(result);
   } catch (err) {
-    console.log("Error reached controller");
+    return next(err);
+  }
+};
+
+/**
+ * @author Philip Romin
+ * @description Controller function to handle patch request to /applicants/:id
+ * @param req The request object
+ * @param res The response object
+ * @param next Function to pass through to next middleware
+ */
+exports.updateStatus = async (req, res, next) => {
+  try {
+    //Get id and status from request
+    const id = req.params.id;
+    const status = req.body.status;
+
+    const result = await applicationsService.updateStatus(id, status);
+    return res.send(result);
+  } catch (err) {
     return next(err);
   }
 };

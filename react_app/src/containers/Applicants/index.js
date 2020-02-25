@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
 import { permissionCheck } from './../../utils/permissionCheck';
-import { fetchApplicants } from './actions';
+import { fetchApplicants, fetchApplicant } from './actions';
 
 /**
  * @description Container smart component for applicants page,
@@ -114,15 +114,25 @@ class Applicants extends Component {
     });
   };
 
+  /**
+   * @description Function to handle submission of search form
+   * @author Philip Romin
+   */
   handleFormSubmit = () => {
     this.setState({ page: 0 }, () => {
       this.getApplicants();
     });
   };
 
-  handleApplicantClick = (applicantId) => {
+  toggleModal = (applicantId) => {
     console.log('Applicant with id ' + applicantId + ' clicked');
-    this.setState({ showModal: true });
+    this.setState((prevState) => ({
+      showModal: !prevState.showModal,
+    }));
+
+    if (applicantId) {
+      this.props.fetchApplicant(applicantId);
+    }
   };
 
   render() {
@@ -141,8 +151,8 @@ class Applicants extends Component {
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         handlePageClick={this.handlePageClick}
-        handleApplicantClick={this.handleApplicantClick}
         showModal={this.state.showModal}
+        toggleModal={this.toggleModal}
       />
     );
   }
@@ -151,6 +161,7 @@ class Applicants extends Component {
 const mapDispatchToProps = {
   permissionCheck,
   fetchApplicants,
+  fetchApplicant,
 };
 
 const mapStateToProps = (state) => {
