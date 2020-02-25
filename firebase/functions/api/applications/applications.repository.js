@@ -127,7 +127,9 @@ exports.getApplication = async id => {
   AND p.person_id = a.person
   AND cp.competence_id = c.competence_id
   AND ap.id = $1
-  GROUP BY p.person_id,
+  GROUP BY ap.id,
+  p.name,
+  p.surname,
   ap."createdAt",
   ap.status`;
 
