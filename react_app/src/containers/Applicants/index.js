@@ -135,6 +135,33 @@ class Applicants extends Component {
     }
   };
 
+  updateApplicationStatus = (applicationId, status) => {
+    console.log(applicationId);
+    console.log(status);
+    fetch(
+      `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${applicationId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ status: status }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); //we only get here if there is no error
+      })
+      .then(() => {
+        console.log('UPDATE SUCCESSFUL');
+      })
+      .catch((err) => {
+        console.log('ERROR UPDATING STATUS');
+      });
+  };
+
   render() {
     return (
       <View
@@ -153,6 +180,7 @@ class Applicants extends Component {
         handlePageClick={this.handlePageClick}
         showModal={this.state.showModal}
         toggleModal={this.toggleModal}
+        updateApplicationStatus={this.updateApplicationStatus}
       />
     );
   }

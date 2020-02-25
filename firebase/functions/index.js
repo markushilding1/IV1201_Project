@@ -2,6 +2,7 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
 
 //Import Routes
@@ -9,6 +10,8 @@ const routes = require("./api/routes");
 
 //Setup Express App
 const app = express();
+
+app.use(bodyParser.json());
 
 //Automatically allow cross-origin requests
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));

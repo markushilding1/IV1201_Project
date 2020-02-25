@@ -3,9 +3,13 @@ import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 const modal = (props) => {
-  const { showModal, toggleModal } = props;
-  const { loading, error, applicant } = props.applicant;
-  console.log(applicant);
+  const {
+    showModal,
+    toggleModal,
+    updateApplicationStatus,
+    applicationId,
+  } = props;
+  const { loading, error, applicant, id } = props.applicant;
 
   const competence = applicant?.competence?.map((competence) => {
     return competence;
@@ -55,8 +59,18 @@ const modal = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <DropdownButton id="dropdown-basic-button" title="Handle application">
-          <Dropdown.Item href="#/action-1">Accept</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Reject</Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-1"
+            onClick={() => updateApplicationStatus(applicant.id, 'Accepted')}
+          >
+            Accept
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-2"
+            onClick={() => updateApplicationStatus(applicant.id, 'Rejected')}
+          >
+            Reject
+          </Dropdown.Item>
         </DropdownButton>
       </Modal.Footer>
     </Modal>

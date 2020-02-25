@@ -26,6 +26,7 @@ const View = (props) => {
     handlePageClick,
     showModal,
     toggleModal,
+    updateApplicationStatus,
   } = props;
 
   if (!authorized) {
@@ -33,7 +34,11 @@ const View = (props) => {
   }
   return (
     <Container className="outerContainer">
-      <Modal showModal={showModal} toggleModal={toggleModal} />
+      <Modal
+        showModal={showModal}
+        toggleModal={toggleModal}
+        updateApplicationStatus={updateApplicationStatus}
+      />
       <Row className="searchBar">
         <Col>
           <SearchForm
