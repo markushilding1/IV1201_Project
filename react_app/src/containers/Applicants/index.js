@@ -22,6 +22,7 @@ class Applicants extends Component {
       sort: '',
       focusedInput: null,
       authorized: false,
+      showModal: false,
     };
   }
 
@@ -121,6 +122,7 @@ class Applicants extends Component {
 
   handleApplicantClick = (applicantId) => {
     console.log('Applicant with id ' + applicantId + ' clicked');
+    this.setState({ showModal: true });
   };
 
   render() {
@@ -140,6 +142,7 @@ class Applicants extends Component {
         onFocusChange={this.onFocusChange}
         handlePageClick={this.handlePageClick}
         handleApplicantClick={this.handleApplicantClick}
+        showModal={this.state.showModal}
       />
     );
   }
