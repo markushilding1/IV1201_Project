@@ -75,9 +75,8 @@ exports.getApplications = async (req, res, next) => {
  */
 exports.getApplication = async (req, res, next) => {
   try {
-    //Get query parameters
+    //Get id parameter
     const id = req.params.id;
-    console.log(id);
     const result = await applicationsService.getApplication(id);
     return res.send(result);
   } catch (err) {

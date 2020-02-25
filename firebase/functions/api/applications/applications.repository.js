@@ -58,7 +58,7 @@ exports.getApplications = async searchQuery => {
   const limits = ` LIMIT ${limit} OFFSET ${page * limit}`;
   const sql =
     `
-  SELECT DISTINCT p.person_id, p.name, p.surname, ap."createdAt" 
+  SELECT DISTINCT ap.id, p.name, p.surname, ap."createdAt" 
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
   WHERE p.person_id = cp.person
   AND p.person_id = ap.person
@@ -126,7 +126,7 @@ exports.getApplication = async id => {
   AND p.person_id = ap.person
   AND p.person_id = a.person
   AND cp.competence_id = c.competence_id
-  AND p.person_id = $1
+  AND ap.id = $1
   GROUP BY p.person_id,
   ap."createdAt",
   ap.status`;

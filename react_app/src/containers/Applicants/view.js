@@ -52,9 +52,9 @@ const View = (props) => {
             <Applicant
               name={applicant.name}
               surname={applicant.surname}
-              key={applicant.person_id}
+              key={applicant.id}
               apDate={applicant.createdAt?.split('T')[0]}
-              onClick={() => handleApplicantClick(applicant.person_id)}
+              onClick={() => handleApplicantClick(applicant.id)}
             />
           ))
         )}
