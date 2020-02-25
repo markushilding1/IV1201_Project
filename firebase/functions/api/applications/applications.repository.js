@@ -115,7 +115,7 @@ exports.getApplications = async searchQuery => {
 exports.getApplication = async id => {
   const sql = `
   SELECT DISTINCT 
-    p.person_id, p.name, p.surname, 
+    ap.id, p.name, p.surname, 
     ap.status, ap."createdAt", 
     ARRAY_AGG(c.name) as competence, 
     ARRAY_AGG(cp.years_of_experience) as yoe,
