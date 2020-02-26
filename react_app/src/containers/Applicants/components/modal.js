@@ -3,13 +3,8 @@ import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 const modal = (props) => {
-  const {
-    showModal,
-    toggleModal,
-    updateApplicationStatus,
-    applicationId,
-  } = props;
-  const { loading, error, applicant, id } = props.applicant;
+  const { showModal, toggleModal, updateApplicationStatus } = props;
+  const { loading, applicant } = props.applicant;
 
   const competence = applicant?.competence?.map((competence) => {
     return competence;

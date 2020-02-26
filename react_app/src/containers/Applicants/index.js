@@ -124,14 +124,14 @@ class Applicants extends Component {
     });
   };
 
-  toggleModal = (applicantId) => {
-    console.log('Applicant with id ' + applicantId + ' clicked');
+  toggleModal = (applicationId) => {
+    console.log('Applicant with id ' + applicationId + ' clicked');
     this.setState((prevState) => ({
       showModal: !prevState.showModal,
     }));
 
-    if (applicantId) {
-      this.props.fetchApplicant(applicantId);
+    if (applicationId) {
+      this.props.fetchApplicant(applicationId);
     }
   };
 
@@ -156,6 +156,7 @@ class Applicants extends Component {
       })
       .then(() => {
         console.log('UPDATE SUCCESSFUL');
+        this.props.fetchApplicant(applicationId);
       })
       .catch((err) => {
         console.log('ERROR UPDATING STATUS');
