@@ -19,13 +19,15 @@ export const fetchApplicants = (data) => {
   console.log(url.toString());
 
   console.log(data);
-  return (dispatch) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
     dispatch({ type: SEARCH_APPLICANTS });
 
     fetch(url, {
-      withCredentials: true,
-      credentials: 'include',
-      headers: {},
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -47,11 +49,18 @@ export const fetchApplicants = (data) => {
  * @description Fetch a list of applicants
  */
 export const fetchApplicant = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
     dispatch({ type: SEARCH_APPLICANT });
 
     fetch(
       `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${id}`,
+      {
+        headers: {
+          authorization: accessToken,
+          'Content-Type': 'application/json',
+        },
+      },
     )
       .then((response) => {
         if (!response.ok) {

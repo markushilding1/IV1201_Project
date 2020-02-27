@@ -16,16 +16,25 @@ exports.isAuthenticated = async (req, res, next) => {
   }
 };
 
+/**
+ * @author Philip Romin
+ * @description Checks if the request is coming from a user with the recruiter role
+ * @param req The request object
+ * @param res The response object
+ * @param next Function to pass through to next middleware
+ */
 exports.isRecruiter = async (req, res, next) => {
   // JWT Token
   const idToken = req.headers.authorization;
   // Check if token is valid.
   try {
     const isAuthenticated = await verifyIdToken(idToken);
-    console.log(isAuthenticated);
     const role = await userRepository.getUserRole(isAuthenticated.uid);
-    console.log(role);
-    return next();
+    if (role.name === "recruit") {
+      return next();
+    } else {
+      return next(new UnauthorizedError());
+    }
   } catch (err) {
     console.log(err);
     return next(new UnauthorizedError());

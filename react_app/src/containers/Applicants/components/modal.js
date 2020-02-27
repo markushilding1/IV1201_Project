@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const modal = (props) => {
   const { showModal, toggleModal, updateApplicationStatus } = props;
-  const { loading, applicant } = props.applicant;
+  const { loading, applicant, error } = props.applicant;
 
   const competence = applicant?.competence?.map((competence) => {
     return competence;
@@ -22,6 +22,9 @@ const modal = (props) => {
     return date.split('T')[0];
   });
 
+  if (error) {
+    console.log(error);
+  }
   return (
     <Modal
       size="lg"
@@ -33,7 +36,9 @@ const modal = (props) => {
         <Modal.Title id="example-modal-sizes-title-lg">
           {loading
             ? 'Loading...'
-            : applicant?.name + ' ' + applicant?.surname + ' ' + applicant?.ssn}
+            : !error
+            ? applicant?.name + ' ' + applicant?.surname + ' ' + applicant?.ssn
+            : 'Error getting applicant information'}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

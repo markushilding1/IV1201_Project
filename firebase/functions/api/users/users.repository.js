@@ -60,7 +60,7 @@ exports.getUserRole = async uid => {
     text: `
     SELECT role.name 
     FROM role, person
-    WHERE person.person_id = role.person
+    WHERE person.role_id = role.role_id
     AND person.person_id = $1
     `,
     values: [uid]
@@ -71,9 +71,9 @@ exports.getUserRole = async uid => {
 
   try {
     const results = await client.query(query);
-    console.log(results);
-    return results.rows;
+    return results.rows[0];
   } catch (err) {
+    console.log(err);
     throw new Error("Failed to query database");
   } finally {
     await client.end();

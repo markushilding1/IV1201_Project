@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import View from './view';
 import { permissionCheck } from './../../utils/permissionCheck';
 import { fetchApplicants, fetchApplicant } from './actions';
+import { store } from '../../store';
 
 /**
  * @description Container smart component for applicants page,
@@ -136,14 +137,15 @@ class Applicants extends Component {
   };
 
   updateApplicationStatus = (applicationId, status) => {
-    console.log(applicationId);
-    console.log(status);
+    const accessToken = store.getState().firebase.auth.stsTokenManager
+      .accessToken;
     fetch(
       `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${applicationId}`,
       {
         method: 'PATCH',
         body: JSON.stringify({ status: status }),
         headers: {
+          authorization: accessToken,
           'Content-Type': 'application/json',
         },
       },
