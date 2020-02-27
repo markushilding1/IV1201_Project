@@ -74,7 +74,7 @@ const View = (props) => {
 };
 
 View.propTypes = {
-  applicants: PropTypes.object,
+  applicants: PropTypes.array,
   loading: PropTypes.bool,
   authorized: PropTypes.bool,
   onFormChange: PropTypes.func,
@@ -85,7 +85,7 @@ View.propTypes = {
   onDatesChange: PropTypes.func,
   onFocusChange: PropTypes.func,
   handlePageClick: PropTypes.func,
-  showModal: PropTypes.func,
+  showModal: PropTypes.bool,
   toggleModal: PropTypes.func,
   updateApplicationStatus: PropTypes.func,
 };

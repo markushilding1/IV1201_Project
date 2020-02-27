@@ -149,19 +149,17 @@ class Applicants extends Component {
    * @param status The new status to set.
    */
   updateApplicationStatus = (applicationId, status) => {
+    const API_URL = process.env.REACT_APP_API_URL;
     const accessToken = store.getState().firebase.auth.stsTokenManager
       .accessToken;
-    fetch(
-      `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${applicationId}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ status: status }),
-        headers: {
-          authorization: accessToken,
-          'Content-Type': 'application/json',
-        },
+    fetch(`${API_URL}/applications/${applicationId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: status }),
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
       },
-    )
+    })
       .then((response) => {
         if (!response.ok) {
           throw response;
@@ -205,7 +203,7 @@ Applicants.propTypes = {
   auth: PropTypes.object,
   loading: PropTypes.bool,
   error: PropTypes.object,
-  applicants: PropTypes.object,
+  applicants: PropTypes.array,
   permissionCheck: PropTypes.func,
   fetchApplicant: PropTypes.func,
   fetchApplicants: PropTypes.func,
