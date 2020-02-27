@@ -47,7 +47,6 @@ function buildConditions(searchQuery) {
  */
 exports.getApplications = async searchQuery => {
   const { page = 0, limit = 10, sort } = searchQuery;
-  console.log(searchQuery);
 
   //Initialize conditions, sort , limits and build db query
   const conditions = buildConditions(searchQuery);
@@ -68,19 +67,6 @@ exports.getApplications = async searchQuery => {
     sorts +
     limits;
 
-  /*
-  const sqlTotal =
-    `
-  SELECT count(*) as total_count
-  FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
-  WHERE p.person_id = cp.person
-  AND p.person_id = ap.person
-  AND p.person_id = a.person
-  AND cp.competence_id = c.competence_id AND ` +
-    conditions.where +
-    sorts;
-  */
-
   console.log(sql);
   console.log(conditions.values);
 
@@ -94,10 +80,8 @@ exports.getApplications = async searchQuery => {
   const client = db.conn();
 
   try {
-    //const total = await client.query(sqlTotal);
     const results = await client.query(sqlQuery);
     console.table(results.rows);
-    //console.table(total.rows);
     return results.rows;
   } catch (err) {
     console.log(err);
@@ -178,7 +162,6 @@ exports.updateStatus = async (id, status) => {
   const client = db.conn();
 
   try {
-    //const total = await client.query(sqlTotal);
     const results = await client.query(updateQuery);
     console.log(results);
     return results.rows;
