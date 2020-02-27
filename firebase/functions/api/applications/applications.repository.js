@@ -114,14 +114,14 @@ exports.getApplications = async searchQuery => {
  */
 exports.getApplication = async id => {
   const getSql = `
-  SELECT DISTINCT 
+  SELECT  
     ap.id, 
     p.name, p.surname, p.ssn, 
     ap.status, ap."createdAt", 
-    ARRAY_AGG(c.name) as competence, 
-    ARRAY_AGG(cp.years_of_experience) as yoe,
-    ARRAY_AGG(a.from_date) as fromDate,
-    ARRAY_AGG(a.to_date) as toDate
+    ARRAY_AGG(DISTINCT c.name) as competence, 
+    ARRAY_AGG(DISTINCT cp.years_of_experience) as yoe,
+    ARRAY_AGG(DISTINCT a.from_date) as fromDate,
+    ARRAY_AGG(DISTINCT a.to_date) as toDate
   FROM person as p, competence as c, competence_profile as cp, availability as a, application as ap
   WHERE p.person_id = cp.person
   AND p.person_id = ap.person
