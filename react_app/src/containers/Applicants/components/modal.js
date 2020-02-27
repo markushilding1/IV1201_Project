@@ -45,17 +45,13 @@ const modal = (props) => {
       <Modal.Body>
         <div className="inlineBox">
           <h1>Competence</h1>
-          <div>
-            <ul className="inlineList">{competence}</ul>
-            <ul className="inlineList">{yearsOfExperience}</ul>
-          </div>
+          <ul className="inlineList">{competence}</ul>
+          <ul className="inlineList">{yearsOfExperience}</ul>
         </div>
         <div className="inlineBox">
           <h1>Availability</h1>
-          <div>
-            <ul className="inlineList">{availableFrom}</ul>
-            <ul className="inlineList">{availableTo}</ul>
-          </div>
+          <ul className="inlineList">{availableFrom}</ul>
+          <ul className="inlineList">{availableTo}</ul>
         </div>
         <div className="inlineBox">
           <h1>Status</h1>

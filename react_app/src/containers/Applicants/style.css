@@ -43,6 +43,7 @@
 .inlineList {
   float: left;
   list-style-type: none;
+  padding: 0 10px 0 0;
 }
 
 .inlineBox {
