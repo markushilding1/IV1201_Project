@@ -4,7 +4,7 @@ import {
   SUBMIT_APPLICATION_SUCCESS,
   DISCARD_APPLICATION,
 } from './constants';
-import Moment from "moment";
+import Moment from 'moment';
 
 /**
  * @author Josef Federspiel
@@ -13,30 +13,30 @@ import Moment from "moment";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-
 export const submitApplication = () => {
   return (dispatch, getState, {getFirebase}) => {
     dispatch({type: SUBMIT_APPLICATION});
     const uid = getState().auth.user.person_id;
-    const accessToken = getState().firebase.auth.stsTokenManager
-        .accessToken;
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
     const areaOfExpertise = getState().submission.areaOfExpertise;
     const date = getState().submission.availabilityPeriod;
     // eslint-disable-next-line new-cap
-    const todayDate = Moment(new Date()).format('YYYY-MM-DD')
+    const todayDate = Moment(new Date()).format('YYYY-MM-DD');
     const applicationData = {
       areaOfExpertise,
       date,
       uid,
       todayDate,
     };
-    createApplication(applicationData, accessToken).then((res) => {
-      console.log(res);
-      createApplicationSuccess(dispatch);
-    }).catch((err) => {
-      console.err(err);
-      createApplicationFailure(dispatch, 'Oops, something went wrong...');
-    });
+    createApplication(applicationData, accessToken)
+        .then((res) => {
+          console.log(res);
+          createApplicationSuccess(dispatch);
+        })
+        .catch((err) => {
+          console.err(err);
+          createApplicationFailure(dispatch, 'Oops, something went wrong...');
+        });
   };
 };
 
@@ -95,7 +95,7 @@ const createApplication = (data, accessToken) => {
  * @param {function} dispatch Redux dispatch
  */
 const createApplicationSuccess = (dispatch) => {
-  console.log("******************************************");
+  console.log('******************************************');
   dispatch({type: SUBMIT_APPLICATION_SUCCESS});
 };
 
@@ -113,4 +113,3 @@ const createApplicationFailure = (dispatch, err) => {
     payload: err,
   });
 };
-

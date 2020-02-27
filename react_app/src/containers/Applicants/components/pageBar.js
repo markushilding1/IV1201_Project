@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 
 const pageBar = (props) => {
-  const { handlePageClick } = props;
+  const {handlePageClick} = props;
 
   return (
     <ReactPaginate
