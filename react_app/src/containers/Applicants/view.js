@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 
 import Applicant from './components/applicant';
@@ -70,6 +71,23 @@ const View = (props) => {
       <PageBar handlePageClick={handlePageClick} />
     </Container>
   );
+};
+
+View.propTypes = {
+  applicants: PropTypes.array,
+  loading: PropTypes.bool,
+  authorized: PropTypes.bool,
+  onFormChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  focusedInput: PropTypes.object,
+  onDatesChange: PropTypes.func,
+  onFocusChange: PropTypes.func,
+  handlePageClick: PropTypes.func,
+  showModal: PropTypes.bool,
+  toggleModal: PropTypes.func,
+  updateApplicationStatus: PropTypes.func,
 };
 
 export default View;

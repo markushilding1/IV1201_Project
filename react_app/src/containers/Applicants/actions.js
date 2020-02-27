@@ -13,9 +13,9 @@ import {
  * @param data Contains the search query
  */
 export const fetchApplicants = (data) => {
-  const url = new URL(
-    'http://localhost:5000/iv1201-g7/us-central1/widgets/applications',
-  );
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const url = new URL(`${API_URL}/applications`);
   url.search = new URLSearchParams(data);
   console.log(url.toString());
 
@@ -51,19 +51,18 @@ export const fetchApplicants = (data) => {
  * @param id ID of applicaton to fetch
  */
 export const fetchApplicant = (id) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+
   return (dispatch, getState, { getFirebase }) => {
     const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
     dispatch({ type: SEARCH_APPLICANT });
 
-    fetch(
-      `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${id}`,
-      {
-        headers: {
-          authorization: accessToken,
-          'Content-Type': 'application/json',
-        },
+    fetch(`${API_URL}/applications/${id}`, {
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
       },
-    )
+    })
       .then((response) => {
         if (!response.ok) {
           throw response;

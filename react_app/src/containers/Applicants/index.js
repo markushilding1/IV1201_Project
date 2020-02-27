@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import View from './view';
 import { permissionCheck } from './../../utils/permissionCheck';
@@ -148,19 +149,17 @@ class Applicants extends Component {
    * @param status The new status to set.
    */
   updateApplicationStatus = (applicationId, status) => {
+    const API_URL = process.env.REACT_APP_API_URL;
     const accessToken = store.getState().firebase.auth.stsTokenManager
       .accessToken;
-    fetch(
-      `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${applicationId}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ status: status }),
-        headers: {
-          authorization: accessToken,
-          'Content-Type': 'application/json',
-        },
+    fetch(`${API_URL}/applications/${applicationId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: status }),
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
       },
-    )
+    })
       .then((response) => {
         if (!response.ok) {
           throw response;
@@ -198,6 +197,17 @@ class Applicants extends Component {
     );
   }
 }
+
+Applicants.propTypes = {
+  user: PropTypes.object,
+  auth: PropTypes.object,
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  applicants: PropTypes.array,
+  permissionCheck: PropTypes.func,
+  fetchApplicant: PropTypes.func,
+  fetchApplicants: PropTypes.func,
+};
 
 const mapDispatchToProps = {
   permissionCheck,
