@@ -20,10 +20,6 @@ export const permissionCheck = (permission, page) => {
     const user = state.auth.user;
     const userLoading = state.auth.loading;
 
-    console.log(!auth.uid);
-    console.log(!authWaiting);
-    console.log(permission);
-
     if (authWaiting || userLoading) {
       return false;
     } else if (!auth.uid && !authWaiting && permission) {
