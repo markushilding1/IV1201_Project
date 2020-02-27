@@ -41,5 +41,14 @@
 }
 
 .inlineList {
-  display: inline;
+  float: left;
+  list-style-type: none;
+}
+
+.inlineBox {
+  margin: 10px;
+}
+
+.modal-body {
+  display: flex;
 }

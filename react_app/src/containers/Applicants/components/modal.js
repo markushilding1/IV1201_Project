@@ -5,21 +5,22 @@ import { connect } from 'react-redux';
 const modal = (props) => {
   const { showModal, toggleModal, updateApplicationStatus } = props;
   const { loading, applicant, error } = props.applicant;
+  console.log(props.applicant);
 
   const competence = applicant?.competence?.map((competence) => {
-    return competence;
+    return <li>{competence}</li>;
   });
 
   const yearsOfExperience = applicant?.yoe?.map((yoe) => {
-    return yoe;
+    return <li>{yoe}</li>;
   });
 
   const availableFrom = applicant?.fromdate?.map((date) => {
-    return date.split('T')[0];
+    return <li>{date.split('T')[0]}</li>;
   });
 
   const availableTo = applicant?.todate?.map((date) => {
-    return date.split('T')[0];
+    return <li>{date.split('T')[0]}</li>;
   });
 
   if (error) {
@@ -42,17 +43,21 @@ const modal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div>
+        <div className="inlineBox">
           <h1>Competence</h1>
-          <ul className="inlineList">{competence}</ul>
-          <ul className="inlineList">{yearsOfExperience}</ul>
+          <div>
+            <ul className="inlineList">{competence}</ul>
+            <ul className="inlineList">{yearsOfExperience}</ul>
+          </div>
         </div>
-        <div>
+        <div className="inlineBox">
           <h1>Availability</h1>
-          <ul className="inlineList">{availableFrom}</ul>
-          <ul className="inlineList">{availableTo}</ul>
+          <div>
+            <ul className="inlineList">{availableFrom}</ul>
+            <ul className="inlineList">{availableTo}</ul>
+          </div>
         </div>
-        <div>
+        <div className="inlineBox">
           <h1>Status</h1>
           {applicant?.status}
         </div>

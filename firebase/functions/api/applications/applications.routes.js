@@ -12,7 +12,7 @@ const {
 
 //Middleware for all routes here to check if the requests
 //Are made from authenticated users with valid token
-//router.use(isAuthenticated);
+router.use(isAuthenticated);
 
 //Setup Controllers
 router.post(
