@@ -5,11 +5,14 @@ const router = express.Router();
 const applicationsController = require("./applications.controller");
 
 //Import middleware
-const { isRecruiter } = require("../common/middlewares/authentication");
+const {
+  isRecruiter,
+  isAuthenticated
+} = require("../common/middlewares/authentication");
 
 //Middleware for all routes here to check if the requests
 //Are made from authenticated users with valid token
-//router.use(authMiddleware.isAuthenticated);
+//router.use(isAuthenticated);
 
 //Setup Controllers
 router.post(

@@ -125,6 +125,11 @@ class Applicants extends Component {
     });
   };
 
+  /**
+   * @author Philip Romin
+   * @description Used to toggle the modal which will display a single application.
+   * @param applicationId The id of the application to show.
+   */
   toggleModal = (applicationId) => {
     console.log('Applicant with id ' + applicationId + ' clicked');
     this.setState((prevState) => ({
@@ -136,6 +141,12 @@ class Applicants extends Component {
     }
   };
 
+  /**
+   * @author Philip Romin
+   * @description Function to update the status of an application.
+   * @param applicationId The id of application to update.
+   * @param status The new status to set.
+   */
   updateApplicationStatus = (applicationId, status) => {
     const accessToken = store.getState().firebase.auth.stsTokenManager
       .accessToken;

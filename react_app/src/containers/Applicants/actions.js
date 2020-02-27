@@ -10,6 +10,7 @@ import {
 /**
  * @author Philip Romin
  * @description Fetch a list of applicants
+ * @param data Contains the search query
  */
 export const fetchApplicants = (data) => {
   const url = new URL(
@@ -47,6 +48,7 @@ export const fetchApplicants = (data) => {
 /**
  * @author Philip Romin
  * @description Fetch a list of applicants
+ * @param id ID of applicaton to fetch
  */
 export const fetchApplicant = (id) => {
   return (dispatch, getState, { getFirebase }) => {
