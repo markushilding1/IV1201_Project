@@ -10,19 +10,18 @@ exports.createUserProfile = async body => {
       `INSERT INTO person (person_id, name, surname, ssn, role_id)
     VALUES ($1, $2, $3, $4, $5)
     `,
-      values,
-      (err, res) => {
-        if (err) {
-          reject();
-          throw err;
-        }
-        client.end();
-        console.log("User created");
-        resolve("USER CREATED");
+    values, 
+    (err, res) => {
+      if (err) {
+        reject(err);
+        throw err;
       }
-    );
-  });
-};
+      client.end();
+      resolve(true);
+    });
+  })
+}
+
 
 exports.getUserProfile = async uid => {
   const values = [uid];
@@ -39,7 +38,7 @@ exports.getUserProfile = async uid => {
       values,
       (err, res) => {
         if (err) {
-          reject();
+          reject(err);
           throw err;
         }
         client.end();
@@ -79,54 +78,3 @@ exports.getUserRole = async uid => {
     await client.end();
   }
 };
-
-/*
-const dropPersonTable = () => {
-  
-  const client = new Client({
-    connectionString: connectionString,
-    ssl: true,
-  });
-
-  client.connect();
-
-  //INSERT INTO competence osv
-  client.query(`
-    DROP TABLE person CASCADE
-  `, 
-  (err, res) => {
-    if (err) throw err;
-    console.log(res);
-    client.end();
-  });
-
-}
-
-const createPersonTable = () => {
-  
-  const client = new Client({
-    connectionString: connectionString,
-    ssl: true,
-  });
-
-  client.connect();
-
-  //INSERT INTO competence osv
-  client.query(`
-    CREATE TABLE person (
-      person_id VARCHAR(255) PRIMARY KEY,
-      name VARCHAR(255),
-      surname VARCHAR(255),
-      ssn VARCHAR(255),
-      role_id BIGINT REFERENCES role
-    )
-  `, 
-  (err, res) => {
-    if (err) throw err;
-    console.log(res);
-    client.end();
-  });
-
-}
-
-*/

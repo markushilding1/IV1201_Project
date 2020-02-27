@@ -4,7 +4,6 @@ import {
   AREA_OF_EXPERTISE_RECEIVED,
   AREA_OF_EXPERTISE_SUBMIT,
   AVAILABILITY_PERIOD_SUBMIT,
-
 } from './constants';
 /**
  * @author Josef Federspiel
@@ -27,7 +26,6 @@ export const getAreaOfExpertise = () => {
     });
   };
 };
-
 
 /**
  * @author Josef Federspiel

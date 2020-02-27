@@ -43,12 +43,16 @@ const ApplicationsView = (props) => {
     );
   return (
     <Container className="Applications">
-      <Row className="d-flex align-items-center align-content-center
-      justify-content-center">
+      <Row
+        className="d-flex align-items-center align-content-center
+      justify-content-center"
+      >
         <Col className="form-wrapper mt-5">
           <Form onSubmit={onExpertiseSubmit}>
-            <Form.Group controlId="formAreaOfExpertise"
-              onChange={onExpertiseChange}>
+            <Form.Group
+              controlId="formAreaOfExpertise"
+              onChange={onExpertiseChange}
+            >
               <Form.Label>Area of Expertise</Form.Label>
               {dropDown}
             </Form.Group>

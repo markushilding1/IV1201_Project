@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
-import { getAreaOfExpertise, submitAreaOfExpertise,submitAvailabilityPeriod } from './actions';
+import {
+  getAreaOfExpertise,
+  submitAreaOfExpertise,
+  submitAvailabilityPeriod,
+} from './actions';
 import Submission from './Submission/index.js';
 import { permissionCheck } from './../../utils/permissionCheck';
 import Moment from 'moment';
@@ -70,7 +74,7 @@ class Applications extends Component {
     const id = e.target.selectedIndex;
     const name = e.target.name;
     this.setState({ [name]: value });
-    this.setState({ areaOfExpertiseId: id});
+    this.setState({ areaOfExpertiseId: id });
   };
 
   /**
@@ -93,7 +97,11 @@ class Applications extends Component {
 
   onExpertiseSubmit = (e) => {
     e.preventDefault();
-    const {areaOfExpertise, yearsOfExperience,areaOfExpertiseId} = this.state;
+    const {
+      areaOfExpertise,
+      yearsOfExperience,
+      areaOfExpertiseId,
+    } = this.state;
     const data = {
       areaOfExpertise,
       yearsOfExperience,
@@ -112,7 +120,7 @@ class Applications extends Component {
     e.preventDefault();
     const fromDate = Moment(this.state.date[0]).format('YYYY-MM-DD');
     const toDate = Moment(this.state.date[1]).format('YYYY-MM-DD');
-    const date = {fromDate,toDate}
+    const date = { fromDate, toDate };
     this.props.submitAvailabilityPeriod(date);
   };
 
@@ -129,19 +137,19 @@ class Applications extends Component {
   };
 
   render() {
-    const { error, loading, list} = this.props;
+    const { error, loading, list } = this.props;
     return (
       <View
         error={error}
         loading={loading}
         expertiseDropDown={list}
         date={this.state.date}
-        onExpertiseChange = {this.handleExpertiseChange}
-        onYearsChange = {this.handleYearChange}
+        onExpertiseChange={this.handleExpertiseChange}
+        onYearsChange={this.handleYearChange}
         onExpertiseSubmit={this.onExpertiseSubmit}
         onAvailabilitySubmit={this.onAvailabilityPeriodSubmit}
         onDateSelect={this.handleDateSelect}
-        component={<Submission/>}
+        component={<Submission />}
       />
     );
   }

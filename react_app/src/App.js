@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 
 // Actions
-import {signOutUser, authListener} from './common/auth/actions.js';
+import { signOutUser, authListener } from './common/auth/actions.js';
 
 // Containers
 import Home from './containers/Home';
@@ -33,11 +33,11 @@ class App extends Component {
    */
   handleSignOut = () => {
     this.props.signOutUser();
-  }
+  };
 
   /* eslint-disable require-jsdoc*/
   render() {
-    const {auth, user, userLoading} = this.props;
+    const { auth, user, userLoading } = this.props;
 
     if (!auth.isLoaded) {
       return null;

@@ -40,3 +40,22 @@ exports.isRecruiter = async (req, res, next) => {
     return next(new UnauthorizedError());
   }
 };
+
+/**
+ * @author Markus Hilding
+ * @description Checks if JWT token sent from client
+ * is valid and passes on the person 'uid' if valid. 
+ * @throws UnauthorizedError
+ */
+exports.isAuthorized = async (req, res, next) => {
+    // JWT Token
+    const idToken = req.headers.authorization;
+    // Check if token is valid.
+    try {
+        const isAuthorized = await verifyIdToken(idToken);
+        req.uid = isAuthorized.uid;
+        return next();
+    } catch(err) {
+        return next(new UnauthorizedError());
+    }
+};

@@ -30,6 +30,7 @@ export const submitApplication = () => {
       uid,
       todayDate,
     };
+<<<<<<< HEAD
     createApplication(applicationData, accessToken).then((res) => {
       console.log(res);
       createApplicationSuccess(dispatch);
@@ -37,6 +38,22 @@ export const submitApplication = () => {
       console.err(err);
       createApplicationFailure(dispatch, 'Oops, something went wrong...');
     });
+=======
+    createApplication(applicationData)
+        .then((res) => {
+          if (res) {
+            console.log('Successes');
+            createApplicationSuccess(dispatch);
+          } else {
+            console.log('Good Failure');
+            createApplicationFailure(dispatch, res);
+          }
+        })
+        .catch((err) => {
+          console.err(err);
+          createApplicationFailure(dispatch, 'Oops, something went wrong...');
+        });
+>>>>>>> db migration and docstrings
   };
 };
 
@@ -65,6 +82,7 @@ export const discardApplication = () => {
 
 const createApplication = (data, accessToken) => {
   return new Promise((resolve) => {
+<<<<<<< HEAD
     fetch(`${API_URL}/submit/`, {
       method: 'post',
       // Authorization: accessToken,
@@ -74,6 +92,19 @@ const createApplication = (data, accessToken) => {
       },
       body: JSON.stringify(data),
     })
+=======
+    fetch(
+        `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/submit/`,
+        {
+          method: 'post',
+          // Authorization: accessToken,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+    )
+>>>>>>> db migration and docstrings
         .then((res) => {
           if (!res.ok || (res.ok && res.status !== 200)) {
             resolve(false);

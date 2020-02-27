@@ -29,10 +29,13 @@ export const signInUser = (email, password, next) => {
           signInFailed(dispatch, errorMessage);
         })
         .then((result) => {
+        /* Uncomment to activate email verification check.
           if (result && !result.user.emailVerified) {
             auth.signOut();
             signInFailed(dispatch, 'Account not verified.');
-          } else if (result) {
+          } else
+          */
+          if (result) {
             dispatch({
               type: AUTH_WAITING,
               payload: next,

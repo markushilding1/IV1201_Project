@@ -16,7 +16,7 @@ const SignUpSchema = yup.object({
   ssn: yup
       .string()
       .matches(
-          /^[1-9]{1}[0-9]{1}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{1}-[0-9]{4}$/,
+          /^[1-2]{1}[0-9]{3}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{1}-[0-9]{4}$/,
           'Invalid social security number. Must be of form yymmdd-xxxx',
       ),
   email: yup
@@ -179,7 +179,6 @@ const SignUpView = (props) => {
     </Container>
   );
 };
-
 
 SignUpView.propTypes = {
   error: PropTypes.string,

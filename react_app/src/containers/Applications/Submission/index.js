@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './view';
-import {discardApplication,submitApplication} from './actions';
+import { discardApplication, submitApplication } from './actions';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -9,8 +9,7 @@ class Submission extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   /**
@@ -42,7 +41,7 @@ class Submission extends Component {
   };
 
   render() {
-    const {expertise,availability ,error, loading ,success} = this.props;
+    const { expertise, availability, error, loading, success } = this.props;
     return (
       <View
         error={error}
@@ -58,7 +57,13 @@ class Submission extends Component {
 }
 
 const mapStateToProps = (state, initialProps) => {
-  const { loading, error,areaOfExpertise,availabilityPeriod,submissionSuccess} = state.submission;
+  const {
+    loading,
+    error,
+    areaOfExpertise,
+    availabilityPeriod,
+    submissionSuccess,
+  } = state.submission;
   return {
     expertise: areaOfExpertise,
     availability: availabilityPeriod,
@@ -73,4 +78,7 @@ const mapDispatchToProps = {
   submitApplication,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps,)(withRouter(Submission));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Submission));

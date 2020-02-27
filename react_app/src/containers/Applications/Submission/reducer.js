@@ -63,7 +63,13 @@ function submissionReducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: null,
+<<<<<<< HEAD
         availabilityPeriod: action.availability,
+=======
+        availabilityPeriod: state.availabilityPeriod.concat(
+            action.availability,
+        ),
+>>>>>>> db migration and docstrings
       };
     default:
       break;

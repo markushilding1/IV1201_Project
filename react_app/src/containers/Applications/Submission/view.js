@@ -10,9 +10,13 @@ import PropTypes from 'prop-types';
 
 const SubmissionView = (props) => {
   const {
+<<<<<<< HEAD
     // eslint-disable-next-line no-unused-vars
     error,
     // eslint-disable-next-line no-unused-vars
+=======
+    error,
+>>>>>>> db migration and docstrings
     loading,
     areaOfExpertise,
     availabilityPeriod,
@@ -26,6 +30,7 @@ const SubmissionView = (props) => {
   if (!(areaOfExpertise === undefined || areaOfExpertise.length < 1)) {
     area = (
       <Container>
+<<<<<<< HEAD
         {areaOfExpertise.map((singleArea) =>
           (<Row className="application">
             <p>
@@ -37,21 +42,28 @@ const SubmissionView = (props) => {
           </Row>))
         }
       </Container>);
+=======
+        {areaOfExpertise.map((singleArea) => (
+          <Row>
+            <p>Area: {singleArea.areaOfExpertise}</p>
+            <p>Years of experience: {singleArea.yearsOfExperience}</p>
+          </Row>
+        ))}
+      </Container>
+    );
+>>>>>>> db migration and docstrings
   }
   if (!(availabilityPeriod === undefined || availabilityPeriod.length < 1)) {
     availability = (
-      <Container >
-        {availabilityPeriod.map((date) =>
-          (<Row className="application">
-            <p>
-              From: {date.fromDate}
-            </p>
-            <p>
-              To : {date.toDate}
-            </p>
-          </Row>))
-        }
-      </Container>);
+      <Container>
+        {availabilityPeriod.map((date) => (
+          <Row className="application">
+            <p>From: {date.fromDate}</p>
+            <p>To : {date.toDate}</p>
+          </Row>
+        ))}
+      </Container>
+    );
   }
   return (
     <Container className="outerContainer">
@@ -68,11 +80,19 @@ const SubmissionView = (props) => {
           </Form>
           <Form>
             <Row>
-              <Button variant="primary" type="submit" onClick={() => onSubmitApplication()} >
-                  Submit
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={() => onSubmitApplication()}
+              >
+                Submit
               </Button>
-              <Button variant="primary" type="submit" onClick={() => onDiscardApplication()}>
-                  Discard
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={() => onDiscardApplication()}
+              >
+                Discard
               </Button>
             </Row>
             <p>{submissionResult}</p>

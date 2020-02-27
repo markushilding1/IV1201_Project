@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import View from './view';
-import { signInUser, resetError } from './actions';
-import { checkSignedIn } from './../../utils/checkSignedIn';
+import {signInUser, resetError} from './actions';
+import {checkSignedIn} from './../../utils/checkSignedIn';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -14,8 +14,7 @@ class SignIn extends Component {
   /* eslint-disable require-jsdoc*/
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   /**
@@ -23,11 +22,11 @@ class SignIn extends Component {
    * @description Calls sign in method from actions.
    * @param {object} values form values.
    */
-  handleFormSubmit = (values) => {
-    const { email, password } = values;
+  handleFormSubmit(values) {
+    const {email, password} = values;
     const next = this.props.match.params.next;
     this.props.signInUser(email, password, next);
-  };
+  }
 
   /**
    * @description Resets the error message when
@@ -35,14 +34,14 @@ class SignIn extends Component {
    * a failed attempt to login.
    */
   resetErrorMessage() {
-    const { error } = this.props;
+    const {error} = this.props;
     if (error) {
       this.props.resetError();
     }
   }
 
   render() {
-    const { error, loading } = this.props;
+    const {error, loading} = this.props;
 
     this.props.checkSignedIn();
 
@@ -70,7 +69,7 @@ SignIn.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { loading, error } = state.signIn;
+  const {loading, error} = state.signIn;
 
   return {
     loading: loading,

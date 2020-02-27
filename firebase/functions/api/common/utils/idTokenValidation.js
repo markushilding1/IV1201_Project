@@ -10,13 +10,14 @@ exports.verifyIdToken = (idToken) => {
   let checkRevoked = true;
   
   return new Promise((resolve, reject) => {
-      if(!idToken){
-        reject('No JWT token provided');
-      }
+    if(!idToken){
+      reject(new Error('No JWT token provided'));
+    }
 
-      firebaseAuth.verifyIdToken(idToken, checkRevoked)
+    firebaseAuth.verifyIdToken(idToken, checkRevoked)
       .then(res => {
-        resolve(res)
+        resolve(res);
+        return;
       })
       .catch((err) => {
         reject(err);

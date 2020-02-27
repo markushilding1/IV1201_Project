@@ -31,4 +31,3 @@ firebase deploy
 firebase serve --only functions
 ```
 
-

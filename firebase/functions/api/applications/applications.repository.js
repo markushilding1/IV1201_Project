@@ -198,7 +198,7 @@ exports.createApplication = async (date, uid) => {
         if (err) {
           // eslint-disable-next-line prefer-promise-reject-errors
           console.log(err);
-          reject();
+          reject(err);
           throw new Error("Failed to add application");
         }
         console.log("Application Created");
@@ -302,3 +302,81 @@ exports.getAreaOfExpertise = async () => {
     });
   });
 };
+
+
+/**
+ * @description Creates an entry in the table 'competence'
+ * @author Markus Hilding
+ * @param {name} string Name of competence
+ */
+exports.createCompetence = async (name) => {
+  const client = db.conn();
+  return await new Promise((resolve, reject) => {
+    client.query(`
+      INSERT INTO competence
+      (name) 
+      VALUES ($1)`
+      ,[name] ,(err, res) => {
+        if (err) return reject(err);
+        console.log("COMPETENCE row created");
+        client.end();
+        return resolve();
+      }
+    );
+  });
+};
+
+/**
+ * @description Creates an entry in the table 'role'
+ * @author Markus Hilding
+ * @param {data} object
+ *       {
+ *          id (number),
+ *          name (string)
+ *       }
+ */
+exports.createRole = async (data) => {
+  const client = db.conn();
+  return await new Promise((resolve, reject) => {
+    client.query(`
+      INSERT INTO role
+      (role_id, name) 
+      VALUES ($1, $2)`
+      ,[data.id, data.name] ,(err, res) => {
+        if (err) return reject(err);
+        console.log("ROLE row created");
+        client.end();
+        return resolve();
+      }
+    );
+  });
+};
+
+/**
+ * @author Markus Hilding
+ * @description Creates the initial application row
+ * for a person. Used during database migration.
+ * @param {object} data
+ */
+exports.addInitialApplication = async (uid) => {
+  const client = db.conn();
+  const today = new Date().toISOString().slice(0,10);
+  const insertData = [
+    uid,
+    today,
+  ];
+
+  return await new Promise((resolve, reject) => {
+    client.query(`
+      INSERT INTO application
+      (person, createdAt) 
+      VALUES ($1, $2)`
+      ,insertData ,(err, res) => {
+        if (err) return reject(err);
+        console.log("APPLICAITON row created");
+        client.end();
+        return resolve();
+      }
+    );
+  });
+}
