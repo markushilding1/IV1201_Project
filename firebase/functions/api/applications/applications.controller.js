@@ -11,10 +11,7 @@ exports.submitApplication = async (req, res, next) => {
         res.status(422).json({ errors: errors.array() });
         return;
     }
-
-    console.log(req.body);
-    console.log(req.body.uid);
-    const result = await applicationsService.submitApplication(req.body.areaOfExpertise,req.body.date,req.body.uid);
+    const result = await applicationsService.submitApplication(req.body.areaOfExpertise,req.body.date,req.body.uid,req.body.todayDate);
     console.log(result)
     if(result){
         res.send(result);
@@ -27,7 +24,6 @@ exports.submitApplication = async (req, res, next) => {
 
 exports.getAreaOfExpertise = async (req,res,next)=> {
     const result = await applicationsService.getAreaOfExpertise();
-
     if(result){
         res.send(result);
     } else {
@@ -49,7 +45,7 @@ exports.getApplications = async (req, res, next) => {
         //Get query parameters
         const query = req.query;    
         const result = await applicationsService.getApplications(query);
-        return es.send(result);
+        return res.send(result);
     } catch(err) {
         console.log('Error reached controller')
         return next(err);
@@ -81,6 +77,7 @@ exports.validate = (method) => {
                 check('areaOfExpertise', 'Parameter ´areaOfExpertise´ not provided').exists(),
                 check('date', 'Parameter ´date´ not provided').exists(),
                 check('uid', 'Parameter ´uid´ not provided').exists(),
+                check('todayDate', 'Parameter ´todayDate´ not provided').exists().isLength({min:10}),
             ]
         }
 

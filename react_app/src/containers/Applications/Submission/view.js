@@ -16,7 +16,7 @@ const SubmissionView = (props) => {
     area = (
       <Container>
         {areaOfExpertise.map((singleArea) =>
-          (<Row>
+          (<Row className="application">
             <p>
               Area: {singleArea.areaOfExpertise}
             </p>
@@ -48,7 +48,7 @@ const SubmissionView = (props) => {
         <Col>
           <Form>
             <Form.Group controlId="areaOfExpertise">
-              <Form.Label>Application</Form.Label>
+              <Form.Label className="applicationLabel">Application</Form.Label>
               {area}
             </Form.Group>
             <Form.Group controlId="availabilityPeriod">

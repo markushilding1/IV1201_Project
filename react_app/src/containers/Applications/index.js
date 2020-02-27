@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import View from './view';
 import { getAreaOfExpertise, submitAreaOfExpertise,submitAvailabilityPeriod } from './actions';
 import Submission from './Submission/index.js';
+import { permissionCheck } from './../../utils/permissionCheck';
 import Moment from 'moment';
 
 const withRouter = require('react-router-dom').withRouter;
@@ -16,8 +17,32 @@ class Applications extends Component {
       yearsOfExperience: '',
       areaOfExpertiseId: '',
       date: [new Date(), new Date()],
+      authorized: false,
     };
   }
+
+  permissionCheck() {
+    const result = this.props.permissionCheck('recruit', 'applications');
+    if (result) {
+      this.setState({
+        authorized: true,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+        JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
+        JSON.stringify(prevProps.auth) !== JSON.stringify(this.props.auth)
+    ) {
+      this.permissionCheck();
+    }
+  }
+
+  componentDidMount() {
+    this.permissionCheck();
+  }
+
 
   /**
    * @author Josef Federspiel
@@ -135,6 +160,7 @@ const mapDispatchToProps = {
   getAreaOfExpertise,
   submitAreaOfExpertise,
   submitAvailabilityPeriod,
+  permissionCheck,
 };
 
 export default connect(

@@ -68,17 +68,19 @@ const View = (props) => {
               </Form.Group>
             )}
             <Button variant="primary" type="submit">
-              {buttonText}
+              Add expertise to application
             </Button>
           </Form>
         </Col>
         <Col className="form-wrapper mt-5">
           <Form onSubmit={onAvailabilitySubmit}>
             <Form.Group controlId="availabilityPeriod">
-              <Form.Label>Availability Period</Form.Label>
-              <Row>
-                <DateRangePicker onChange={onDateSelect} value={date} />
-              </Row>
+              <Col>
+                <Form.Label>Availability Period</Form.Label>
+                <Row>
+                  <DateRangePicker onChange={onDateSelect} value={date} />
+                </Row>
+              </Col>
             </Form.Group>
             {error && (
               <Form.Group controlId="formErrorMessage">
@@ -86,7 +88,7 @@ const View = (props) => {
               </Form.Group>
             )}
             <Button variant="primary" type="submit">
-              {buttonText}
+              Add period to application
             </Button>
           </Form>
         </Col>

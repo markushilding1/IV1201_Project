@@ -92,6 +92,40 @@ exports.getAreaOfExpertise = async () => {
   })
 };
 
+exports.createApplication = async (date,  uid) => {
+  const client = db.conn();
+
+  const values = [uid,date];
+    return await new Promise((resolve, reject) => {
+    client.query(`
+    INSERT INTO application (person,"createdAt")
+    VALUES ($1,$2) 
+    ON CONFLICT (person) 
+    DO UPDATE
+    SET "createdAt" = $2;`,values, (err) => {
+        if (err) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          console.log(err)
+          reject();
+          throw new Error("Failed to add application");;
+        }
+        console.log("Application Created");
+        resolve("Application Created");
+        client.end();
+      });
+    });
+}
+
+/**
+ @author Josef Federspiel
+ * @description Adds a to and from dates to the database and
+ *  throws an error on a failed attempt.
+ *  @param {object,string} data Example {
+ *    date:(object),
+ *    uid: (uid),
+ * }
+ **/
+
 exports.submitAvailability = async (date,uid) => {
   const client = db.conn();
 
@@ -111,6 +145,16 @@ exports.submitAvailability = async (date,uid) => {
   });
 };
 
+/**
+ @author Josef Federspiel
+ * @description Adds an area of expertise to the database and
+ *  throws an error on a failed attempt.
+ *  @param {object,string} data Example {
+ *    areaOfExpertise:(object),
+ *    uid: (uid),
+ * }
+ **/
+
 exports.submitExpertise = async (areaOfExpertise,uid) => {
   const client = db.conn();
 
@@ -118,7 +162,10 @@ exports.submitExpertise = async (areaOfExpertise,uid) => {
   //INSERT INTO competence osv
     return await new Promise((resolve, reject) => {
     client.query(`INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
-    VALUES ($1, $2, $3)`,values ,(err, res) => {
+    VALUES ($1, $2, $3)
+    ON CONFLICT (person,competence_id) 
+    DO UPDATE
+    SET "years_of_experience" = $3;`,values ,(err, res) => {
       if (err) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject();

@@ -28,7 +28,9 @@ export const getAreaOfExpertise = () => {
 /**
  * @author Josef Federspiel
  * @description Dispatches an area of expertise and passes the
- * users data to the application.
+ * users data to the application assuming that
+ * the data does not already exist in the application
+ * Then the data is update appropriately .
  *  @param {object} data Example {
  *    areaOfExpertise:(string),
  *    yearsOfExperience: (int),
@@ -38,11 +40,24 @@ export const getAreaOfExpertise = () => {
  */
 
 export const submitAreaOfExpertise = (data) => {
-  return (dispatch) => {
-    dispatch({
-      type: AREA_OF_EXPERTISE_SUBMIT,
-      expertise: data,
-    });
+  return (dispatch, getState) => {
+    const duplicateCheck = [...getState().submission.areaOfExpertise];
+    if (data.areaOfExpertiseId !== null && data.yearsOfExperience !== null) {
+      let dupe = false;
+      for (let i = 0; i < duplicateCheck.length; i++) {
+        if (duplicateCheck[i].areaOfExpertiseId === data.areaOfExpertiseId) {
+          duplicateCheck[i] = data;
+          dupe = true;
+        }
+      }
+      if (!dupe) {
+        duplicateCheck.push(data);
+      }
+      dispatch({
+        type: AREA_OF_EXPERTISE_SUBMIT,
+        expertise: duplicateCheck,
+      });
+    }
   };
 };
 
@@ -53,16 +68,28 @@ export const submitAreaOfExpertise = (data) => {
  *  @param {object} data Example {
  *    fromDate:(date),
  *    toDate: (date),
- *    areaOfExpertiseId: (int),
  * }
  **/
 
 export const submitAvailabilityPeriod = (data) => {
-  return (dispatch) => {
-    dispatch({
-      type: AVAILABILITY_PERIOD_SUBMIT,
-      availability: data,
-    });
+  return (dispatch, getState) => {
+    if (data !== null) {
+      const duplicateCheck = [...getState().submission.availabilityPeriod];
+      let dupe = false;
+      for (let i = 0; i < duplicateCheck.length; i++) {
+        if (duplicateCheck[i].fromDate === data.fromDate) {
+          duplicateCheck[i] = data;
+          dupe = true;
+        }
+      }
+      if (!dupe) {
+        duplicateCheck.push(data);
+      }
+      dispatch({
+        type: AVAILABILITY_PERIOD_SUBMIT,
+        availability: duplicateCheck,
+      });
+    }
   };
 };
 

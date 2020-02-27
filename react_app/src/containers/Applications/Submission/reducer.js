@@ -49,7 +49,6 @@ function submissionReducer(state = INITIAL_STATE, action) {
         error: null,
         areaOfExpertise: [],
         availabilityPeriod: [],
-        areaOfExpertiseId: [],
         submissionSuccess: false,
       };
     case SUBMIT_EXPERTISE:
@@ -57,14 +56,14 @@ function submissionReducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: null,
-        areaOfExpertise: state.areaOfExpertise.concat(action.expertise),
+        areaOfExpertise: action.expertise,
       };
     case SUBMIT_AVAILABILITY_PERIOD:
       return {
         ...state,
         loading: false,
         error: null,
-        availabilityPeriod: state.availabilityPeriod.concat(action.availability),
+        availabilityPeriod: action.availability,
       };
     default:
       break;

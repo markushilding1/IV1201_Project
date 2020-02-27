@@ -4,6 +4,7 @@ import {
   SUBMIT_APPLICATION_SUCCESS,
   DISCARD_APPLICATION,
 } from './constants';
+import Moment from "moment";
 
 /**
  * @author Josef Federspiel
@@ -14,21 +15,21 @@ export const submitApplication = () => {
   return (dispatch, getState, {getFirebase}) => {
     dispatch({type: SUBMIT_APPLICATION});
     const uid = getState().auth.user.person_id;
+    const accessToken = getState().firebase.auth.stsTokenManager
+        .accessToken;
     const areaOfExpertise = getState().submission.areaOfExpertise;
     const date = getState().submission.availabilityPeriod;
+    // eslint-disable-next-line new-cap
+    const todayDate = Moment(new Date()).format('YYYY-MM-DD')
     const applicationData = {
       areaOfExpertise,
       date,
       uid,
+      todayDate,
     };
-    createApplication(applicationData).then((res) => {
-      if (res) {
-        console.log("Successes");
-        createApplicationSuccess(dispatch);
-      } else {
-        console.log("Good Failure");
-        createApplicationFailure(dispatch, res);
-      }
+    createApplication(applicationData, accessToken).then((res) => {
+      console.log(res);
+      createApplicationSuccess(dispatch);
     }).catch((err) => {
       console.err(err);
       createApplicationFailure(dispatch, 'Oops, something went wrong...');
@@ -59,12 +60,13 @@ export const discardApplication = () => {
  * }
  */
 
-const createApplication = (data) => {
+const createApplication = (data, accessToken) => {
   return new Promise((resolve) => {
     fetch(`http://localhost:5000/iv1201-g7/us-central1/widgets/applications/submit/`, {
       method: 'post',
       // Authorization: accessToken,
       headers: {
+        'authorization': accessToken,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
@@ -90,6 +92,7 @@ const createApplication = (data) => {
  * @param {function} dispatch Redux dispatch
  */
 const createApplicationSuccess = (dispatch) => {
+  console.log("******************************************");
   dispatch({type: SUBMIT_APPLICATION_SUCCESS});
 };
 
@@ -107,3 +110,4 @@ const createApplicationFailure = (dispatch, err) => {
     payload: err,
   });
 };
+
