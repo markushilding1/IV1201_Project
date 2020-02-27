@@ -6,10 +6,20 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './styles.scss';
+import PropTypes from 'prop-types';
 
 const SubmissionView = (props) => {
-
-  const {error, loading, areaOfExpertise, availabilityPeriod,submissionSuccess ,onDiscardApplication, onSubmitApplication} = props;
+  const {
+    // eslint-disable-next-line no-unused-vars
+    error,
+    // eslint-disable-next-line no-unused-vars
+    loading,
+    areaOfExpertise,
+    availabilityPeriod,
+    submissionSuccess,
+    onDiscardApplication,
+    onSubmitApplication,
+  } = props;
   let area = '';
   let availability = '';
   const submissionResult = submissionSuccess ? 'Submission Success' : '';
@@ -71,6 +81,18 @@ const SubmissionView = (props) => {
       </Row>
     </Container>
   );
+};
+
+
+SubmissionView.propTypes = {
+  error: PropTypes.shape(),
+  loading: PropTypes.bool,
+  areaOfExpertise: PropTypes.array,
+  availabilityPeriod: PropTypes.array,
+  submissionSuccess: PropTypes.any,
+  onDiscardApplication: PropTypes.func,
+  onSubmitApplication: PropTypes.func,
+
 };
 
 export default SubmissionView;

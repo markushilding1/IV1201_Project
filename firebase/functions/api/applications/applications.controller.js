@@ -1,7 +1,15 @@
 const applicationsService = require("./applications.service");
 const { check, validationResult } = require("express-validator");
 
-//Controller to handle submission of an application
+
+
+/**
+ * @author Josef Federspiel
+ * @description //Controller to handle submission of an application
+ * @param req The request object
+ * @param res The response object
+ * @param next Function to pass through to next middleware
+ */
 exports.submitApplication = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -25,6 +33,15 @@ exports.submitApplication = async (req, res, next) => {
     res.send();
   }
 };
+
+/**
+ * @author Josef Federspiel
+ * @description Controller function to handle get competence areas
+ * @param req The request object
+ * @param res The response object
+ * @param next Function to pass through to next middleware
+ */
+
 
 exports.getAreaOfExpertise = async (req, res, next) => {
   const result = await applicationsService.getAreaOfExpertise();

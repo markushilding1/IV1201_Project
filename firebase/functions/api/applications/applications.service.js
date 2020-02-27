@@ -44,11 +44,19 @@ exports.updateStatus = async (id, status) => {
   }
 };
 
+/**
+ * @author Josef Federspiel
+ * @description Function to get areas of expertise
+ ***/
 exports.getAreaOfExpertise = async () => {
     const result = await applicationRepository.getAreaOfExpertise();
     return result;
 };
 
+/**
+ * @author Josef Federspiel
+ * @description Function to get submit application
+ ***/
 exports.submitApplication = async (areaOfExpertise,date,uid,todayDate) => {
    for(let i = 0; i < date.length; i++){
         // eslint-disable-next-line no-await-in-loop

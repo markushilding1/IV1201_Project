@@ -9,11 +9,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import * as yup from 'yup';
+import PropTypes from 'prop-types';
 
-const View = (props) => {
+const ApplicationsView = (props) => {
   const {
     error,
-    loading,
     expertiseDropDown,
     date,
     onExpertiseChange,
@@ -23,7 +24,6 @@ const View = (props) => {
     onDateSelect,
     component,
   } = props;
-  const buttonText = 'Submit';
   const dropDown =
     expertiseDropDown != (null && false) ? (
       <Form.Control as="select" name="areaOfExpertise">
@@ -98,4 +98,16 @@ const View = (props) => {
   );
 };
 
-export default View;
+ApplicationsView.propTypes = {
+  error: PropTypes.shape,
+  expertiseDropDown: PropTypes.any,
+  date: PropTypes.any,
+  onExpertiseChange: PropTypes.func,
+  onYearsChange: PropTypes.func,
+  onExpertiseSubmit: PropTypes.func,
+  onAvailabilitySubmit: PropTypes.func,
+  onDateSelect: PropTypes.func,
+  component: PropTypes.any,
+};
+
+export default ApplicationsView;

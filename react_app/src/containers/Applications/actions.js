@@ -11,8 +11,10 @@ import {
  * @description Gets the different areas of expertise listed in the database.
  */
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const getAreaOfExpertise = () => {
-  return (dispatch,getState,{getFirebase}) => {
+  return (dispatch, getState, {getFirebase}) => {
     dispatch({type: AREA_OF_EXPERTISE_FETCH});
     const accessToken = getState().firebase.auth.stsTokenManager
         .accessToken;
@@ -134,7 +136,7 @@ const areaOfExpertiseReceived = (dispatch, payload) => {
 const areaOfExpertise = (accessToken) => {
   return new Promise((resolve) => {
     fetch(
-        `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/expertise/`,
+        `${API_URL}/expertise/`,
         {
           headers: {
             'authorization': accessToken,

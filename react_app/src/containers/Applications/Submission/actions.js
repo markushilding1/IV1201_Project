@@ -11,6 +11,9 @@ import Moment from "moment";
  * @description Submits the application to the database.
  */
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 export const submitApplication = () => {
   return (dispatch, getState, {getFirebase}) => {
     dispatch({type: SUBMIT_APPLICATION});
@@ -62,7 +65,7 @@ export const discardApplication = () => {
 
 const createApplication = (data, accessToken) => {
   return new Promise((resolve) => {
-    fetch(`http://localhost:5000/iv1201-g7/us-central1/widgets/applications/submit/`, {
+    fetch(`${API_URL}/submit/`, {
       method: 'post',
       // Authorization: accessToken,
       headers: {

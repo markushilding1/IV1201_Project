@@ -5,6 +5,7 @@ import { getAreaOfExpertise, submitAreaOfExpertise,submitAvailabilityPeriod } fr
 import Submission from './Submission/index.js';
 import { permissionCheck } from './../../utils/permissionCheck';
 import Moment from 'moment';
+import PropTypes from "prop-types";
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -145,6 +146,17 @@ class Applications extends Component {
     );
   }
 }
+
+Applications.propTypes = {
+  getAreaOfExpertise: PropTypes.func,
+  submitAreaOfExpertise: PropTypes.func,
+  submitAvailabilityPeriod: PropTypes.func,
+  permissionCheck: PropTypes.func,
+  error: PropTypes.object,
+  resetError: PropTypes.func,
+  loading: PropTypes.bool,
+
+};
 
 const mapStateToProps = (state, initialProps) => {
   const { loading, error, list } = state.applications;

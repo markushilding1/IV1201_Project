@@ -173,6 +173,14 @@ exports.updateStatus = async (id, status) => {
   }
 };
 
+/**
+ @author Josef Federspiel
+ * @description Adds an application to the database if the user already
+ * has one it is updated. Throws error on failure
+ *  @param {date,string}
+ **/
+
+
 exports.createApplication = async (date, uid) => {
   const client = db.conn();
 
@@ -205,8 +213,8 @@ exports.createApplication = async (date, uid) => {
  @author Josef Federspiel
  * @description Adds a to and from dates to the database and
  *  throws an error on a failed attempt.
- *  @param {object,string} data Example {
- *    date:(object),
+ *  @param {object,string} Example {
+ *    date:({date,date}),
  *    uid: (uid),
  * }
  **/
@@ -272,6 +280,12 @@ exports.submitExpertise = async (areaOfExpertise, uid) => {
     );
   });
 };
+
+/**
+ @author Josef Federspiel
+ * @description Gets areas of expertise from the database.
+ * throws error on a failure
+**/
 exports.getAreaOfExpertise = async () => {
   const client = db.conn();
 
