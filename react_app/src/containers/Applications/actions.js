@@ -12,9 +12,11 @@ import {
  */
 
 export const getAreaOfExpertise = () => {
-  return (dispatch) => {
+  return (dispatch,getState,{getFirebase}) => {
     dispatch({type: AREA_OF_EXPERTISE_FETCH});
-    areaOfExpertise().then((res) => {
+    const accessToken = getState().firebase.auth.stsTokenManager
+        .accessToken;
+    areaOfExpertise(accessToken).then((res) => {
       if (res) {
         areaOfExpertiseReceived(dispatch, res);
       } else {
@@ -129,12 +131,13 @@ const areaOfExpertiseReceived = (dispatch, payload) => {
  * passes back the response.
  */
 
-const areaOfExpertise = () => {
+const areaOfExpertise = (accessToken) => {
   return new Promise((resolve) => {
     fetch(
         `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/expertise/`,
         {
           headers: {
+            'authorization': accessToken,
             'Content-Type': 'application/json',
           },
         },

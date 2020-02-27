@@ -20,9 +20,9 @@ router.post(
   applicationsController.validate("submitApplication"),
   applicationsController.submitApplication
 );
+router.get("/expertise", applicationsController.getAreaOfExpertise);
 router.get("/", isRecruiter, applicationsController.getApplications);
 router.patch("/:id", isRecruiter, applicationsController.updateStatus);
 router.get("/:id", isRecruiter, applicationsController.getApplication);
-router.get("/expertise", applicationsController.getAreaOfExpertise);
 
 module.exports = router;
