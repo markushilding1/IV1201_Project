@@ -1,56 +1,55 @@
 import React from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  ButtonGroup,
-  Button,
-  Spinner,
-} from 'react-bootstrap';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
+
 import Applicant from './components/applicant';
+import SearchForm from './components/seachForm';
+import PageBar from './components/pageBar';
+import Modal from './components/modal';
 import './style.css';
 
 /**
  * @description View functional component for applicants page
  * @author Philip Romn
  */
-
-const view = (props) => {
-  const {applicants, loading, authorized, onFormChange} = props;
-  console.log(props);
+const View = (props) => {
+  const {
+    applicants,
+    loading,
+    authorized,
+    onFormChange,
+    onSubmit,
+    startDate,
+    endDate,
+    focusedInput,
+    onDatesChange,
+    onFocusChange,
+    handlePageClick,
+    showModal,
+    toggleModal,
+    updateApplicationStatus,
+  } = props;
 
   if (!authorized) {
     return null;
   }
-
   return (
     <Container className="outerContainer">
+      <Modal
+        showModal={showModal}
+        toggleModal={toggleModal}
+        updateApplicationStatus={updateApplicationStatus}
+      />
       <Row className="searchBar">
         <Col>
-          <Form onChange={onFormChange}>
-            <Form.Row>
-              <Form.Group as={Col} controlId="formGridNamn">
-                <Form.Control name="namn" placeholder="Namn" />
-              </Form.Group>
-
-              <Form.Group as={Col} controlId="formGridCompetence">
-                <Form.Control name="kompetens" as="select">
-                  <option>Välj Kompetens...</option>
-                  <option>Korvgrillning</option>
-                  <option>Karuselldrift</option>
-                </Form.Control>
-              </Form.Group>
-
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control />
-              </Form.Group>
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control />
-              </Form.Group>
-            </Form.Row>
-            <Button className="searchBtn">Search</Button>
-          </Form>
+          <SearchForm
+            onFormChange={onFormChange}
+            onSubmit={onSubmit}
+            startDate={startDate}
+            endDate={endDate}
+            focusedInput={focusedInput}
+            onDatesChange={onDatesChange}
+            onFocusChange={onFocusChange}
+          />
         </Col>
       </Row>
       <Container className="innerContainer">
@@ -58,20 +57,19 @@ const view = (props) => {
           <Spinner animation="border" />
         ) : (
           applicants.map((applicant, i) => (
-            <Applicant name={applicant.name} apDate={'2020-01-25'} />
+            <Applicant
+              name={applicant.name}
+              surname={applicant.surname}
+              key={applicant.id}
+              apDate={applicant.createdAt?.split('T')[0]}
+              onClick={() => toggleModal(applicant.id)}
+            />
           ))
         )}
       </Container>
-      <Row className="navButtons">
-        <ButtonGroup className="mr-2" aria-label="First group">
-          <Button variant="light">1</Button>
-          <Button variant="light">2</Button>
-          <Button variant="light">3</Button>
-          <Button variant="light">4</Button>
-        </ButtonGroup>
-      </Row>
+      <PageBar handlePageClick={handlePageClick} />
     </Container>
   );
 };
 
-export default view;
+export default View;

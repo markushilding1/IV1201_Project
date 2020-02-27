@@ -1,36 +1,106 @@
-import {SUCCESS, ERROR, SEARCH} from './constants';
+import {
+  SUCCESS_APPLICANTS,
+  ERROR_APPLICANTS,
+  SEARCH_APPLICANTS,
+  SUCCESS_APPLICANT,
+  ERROR_APPLICANT,
+  SEARCH_APPLICANT,
+} from './constants';
 
-export const fetchApplicants = () => {
-  return (dispatch) => {
-    console.log('ff');
+/**
+ * @author Philip Romin
+ * @description Fetch a list of applicants
+ * @param data Contains the search query
+ */
+export const fetchApplicants = (data) => {
+  const url = new URL(
+    'http://localhost:5000/iv1201-g7/us-central1/widgets/applications',
+  );
+  url.search = new URLSearchParams(data);
+  console.log(url.toString());
 
-    dispatch({type: SEARCH});
+  console.log(data);
+  return (dispatch, getState, { getFirebase }) => {
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
+    dispatch({ type: SEARCH_APPLICANTS });
 
-    fetch('https://jsonplaceholder.typicode.com/users')
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          searchSuccess(dispatch, data);
-        })
-        .catch((err) => {
-          console.log('err');
-          searchFail(dispatch, err);
-        });
+    fetch(url, {
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); //we only get here if there is no error
+      })
+      .then((data) => {
+        searchSuccess(dispatch, SUCCESS_APPLICANTS, data);
+      })
+      .catch((err) => {
+        searchFail(dispatch, ERROR_APPLICANTS, 'Failed to query applicants');
+      });
   };
 };
 
-const searchSuccess = (dispatch, applicants) => {
-  console.log('ss');
+/**
+ * @author Philip Romin
+ * @description Fetch a list of applicants
+ * @param id ID of applicaton to fetch
+ */
+export const fetchApplicant = (id) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
+    dispatch({ type: SEARCH_APPLICANT });
+
+    fetch(
+      `http://localhost:5000/iv1201-g7/us-central1/widgets/applications/${id}`,
+      {
+        headers: {
+          authorization: accessToken,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); //we only get here if there is no error
+      })
+      .then((data) => {
+        searchSuccess(dispatch, SUCCESS_APPLICANT, data[0]);
+      })
+      .catch((err) => {
+        searchFail(dispatch, ERROR_APPLICANT, 'Failed to query applicants');
+      });
+  };
+};
+
+/**
+ * @author Philip Romin
+ * @description Dispatches a successful search
+ * @param {function} dispatch Redux dispatch
+ * @param {} applicants Found applicants
+ */
+const searchSuccess = (dispatch, type, data) => {
   dispatch({
-    type: SUCCESS,
-    payload: applicants,
+    type: type,
+    payload: data,
   });
 };
 
-const searchFail = (dispatch, err) => {
-  console.log('sf');
+/**
+ * @author Philip Romin
+ * @description Dispatches a failed search
+ * @param {function} dispatch Redux dispatch
+ * @param {string} err Error message
+ */
+const searchFail = (dispatch, type, err) => {
   dispatch({
-    type: ERROR,
+    type: type,
     payload: err,
   });
 };

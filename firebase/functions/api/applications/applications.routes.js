@@ -1,27 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 //Import Controllers
-const applicationsController = require('./applications.controller');
+const applicationsController = require("./applications.controller");
 
 //Import middleware
-const authMiddleware = require('./../common/middlewares/authentication.js');
-const exampleMiddleware = require('./middlewares/exampleMiddleware.js');
-
+const {
+  isRecruiter,
+  isAuthenticated
+} = require("../common/middlewares/authentication");
 
 //Middleware for all routes here to check if the requests
 //Are made from authenticated users with valid token
-//router.use(authMiddleware.isAuthenticated);
+router.use(isAuthenticated);
 
 //Setup Controllers
-router.post('/submit',
-  applicationsController.validate('submitApplication'), 
+router.post(
+  "/submit",
+  applicationsController.validate("submitApplication"),
   applicationsController.submitApplication
 );
-router.get('/',
-  applicationsController.validate('getApplications'),
-  applicationsController.getApplications
-);
-router.get('/expertise',applicationsController.getAreaOfExpertise);
+router.get("/", isRecruiter, applicationsController.getApplications);
+router.patch("/:id", isRecruiter, applicationsController.updateStatus);
+router.get("/:id", isRecruiter, applicationsController.getApplication);
+router.get("/expertise", applicationsController.getAreaOfExpertise);
 
 module.exports = router;

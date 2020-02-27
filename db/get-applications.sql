@@ -21,4 +21,4 @@ AND cp.competence_id = c.competence_id
 AND c.name = 'Korvgrillning'WHERE p.person_id = a.person_id
 AND '2014-05-26' BETWEEN a.from_date AND a.to_dateWHERE p.person_id = a.person_id
 AND '2014-05-26' BETWEEN a.from_date AND a.to_date
-LIMIT 20 OFFSET 0
+LIMIT 10 OFFSET 0

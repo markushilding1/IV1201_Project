@@ -1,37 +1,55 @@
 .outerContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 10px 0 10px 0;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px 0 10px 0;
+  overflow: hidden;
 }
 
 .innerContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin: 10px 0 10px 0;
-    align-items: center;
-    overflow-y: scroll;
-    overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 10px 0 10px 0;
+  align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .searchBtn {
-    width: 100%;
+  width: 100%;
 }
 
 .applicants {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    margin: 5px 0 5px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 5px 0 5px 0;
 }
 
 .btn {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .spinner {
-    align-self: center;
+  align-self: center;
+}
+
+#react-paginate li {
+  cursor: pointer;
+}
+
+.inlineList {
+  float: left;
+  list-style-type: none;
+  padding: 0 10px 0 0;
+}
+
+.inlineBox {
+  margin: 10px;
+}
+
+.modal-body {
+  display: flex;
 }

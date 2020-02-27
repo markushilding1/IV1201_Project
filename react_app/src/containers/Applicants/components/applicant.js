@@ -1,11 +1,13 @@
 import React from 'react';
-import {Row} from 'react-bootstrap';
 
-const applicant = ({name, apDate}) => {
+const applicant = ({ name, surname, apDate, onClick }) => {
   return (
-    <Row className="applicants">
-      <p>{name}</p> <p>{apDate}</p>
-    </Row>
+    <li className="applicants" onClick={onClick}>
+      <p>
+        {name} {surname}
+      </p>
+      <p>{apDate}</p>
+    </li>
   );
 };
 

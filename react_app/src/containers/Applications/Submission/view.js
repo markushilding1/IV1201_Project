@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import './styles.scss';
 
 const SubmissionView = (props) => {
+
   const {error, loading, areaOfExpertise, availabilityPeriod,submissionSuccess ,onDiscardApplication, onSubmitApplication} = props;
   let area = '';
   let availability = '';
