@@ -156,29 +156,67 @@ exports.getApplication = async id => {
   }
 };
 
-exports.createApplication = async (date,  uid) => {
+/**
+ * @author Philip Romin
+ * @description Function to update status of an application
+ * @param id The id of application to update
+ */
+exports.updateStatus = async (id, status) => {
+  const updateSql = `
+  UPDATE application
+  SET status = $1
+  WHERE id = $2
+  RETURNING status`;
+
+  //Query object for pg-node
+  const updateQuery = {
+    text: updateSql,
+    values: [status, id]
+  };
+
+  //Connect to database via helper function
   const client = db.conn();
 
-  const values = [uid,date];
-    return await new Promise((resolve, reject) => {
-    client.query(`
+  try {
+    //const total = await client.query(sqlTotal);
+    const results = await client.query(updateQuery);
+    console.log(results);
+    return results.rows;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to query applications");
+  } finally {
+    await client.end();
+  }
+};
+
+exports.createApplication = async (date, uid) => {
+  const client = db.conn();
+
+  const values = [uid, date];
+  return await new Promise((resolve, reject) => {
+    client.query(
+      `
     INSERT INTO application (person,"createdAt")
     VALUES ($1,$2) 
     ON CONFLICT (person) 
     DO UPDATE
-    SET "createdAt" = $2;`,values, (err) => {
+    SET "createdAt" = $2;`,
+      values,
+      err => {
         if (err) {
           // eslint-disable-next-line prefer-promise-reject-errors
-          console.log(err)
+          console.log(err);
           reject();
           throw new Error("Failed to add application");
         }
         console.log("Application Created");
         resolve("Application Created");
         client.end();
-      });
-    });
-}
+      }
+    );
+  });
+};
 
 /**
  @author Josef Federspiel
@@ -189,20 +227,6 @@ exports.createApplication = async (date,  uid) => {
  *    uid: (uid),
  * }
  **/
-
-
-
-
-/**
- @author Josef Federspiel
- * @description Adds an area of expertise to the database and
- *  throws an error on a failed attempt.
- *  @param {object,string} data Example {
- *    areaOfExpertise:(object),
- *    uid: (uid),
- * }
- **/
-
 exports.submitAvailability = async (date, uid) => {
   const client = db.conn();
 
@@ -226,6 +250,15 @@ exports.submitAvailability = async (date, uid) => {
   });
 };
 
+/**
+ @author Josef Federspiel
+ * @description Adds an area of expertise to the database and
+ *  throws an error on a failed attempt.
+ *  @param {object,string} data Example {
+ *    areaOfExpertise:(object),
+ *    uid: (uid),
+ * }
+ **/
 exports.submitExpertise = async (areaOfExpertise, uid) => {
   const client = db.conn();
 
@@ -235,21 +268,23 @@ exports.submitExpertise = async (areaOfExpertise, uid) => {
     areaOfExpertise.yearsOfExperience
   ];
   //INSERT INTO competence osv
-    return await new Promise((resolve, reject) => {
-    client.query(`INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
+  return await new Promise((resolve, reject) => {
+    client.query(
+      `INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
     VALUES ($1, $2, $3)
     ON CONFLICT (person,competence_id) 
     DO UPDATE
-    SET "years_of_experience" = $3;`,values ,(err, res) => {
-      if (err) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-        throw err;
+    SET "years_of_experience" = $3;`,
+      values,
+      (err, res) => {
+        if (err) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject();
+          throw err;
         }
         console.log("Profile Created");
         resolve("Profile Created");
         client.end();
-
       }
     );
   });

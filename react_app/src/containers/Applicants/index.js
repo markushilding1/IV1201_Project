@@ -168,7 +168,6 @@ class Applicants extends Component {
         return response.json(); //we only get here if there is no error
       })
       .then(() => {
-        console.log('UPDATE SUCCESSFUL');
         this.props.fetchApplicant(applicationId);
       })
       .catch((err) => {
