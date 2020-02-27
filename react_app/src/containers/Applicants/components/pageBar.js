@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 
 const pageBar = (props) => {
@@ -26,6 +27,10 @@ const pageBar = (props) => {
       nextLinkClassName={'page-link'}
     />
   );
+};
+
+pageBar.propTypes = {
+  handlePageClick: PropTypes.func,
 };
 
 export default pageBar;

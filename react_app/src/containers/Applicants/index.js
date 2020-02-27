@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import View from './view';
 import { permissionCheck } from './../../utils/permissionCheck';
@@ -198,6 +199,17 @@ class Applicants extends Component {
     );
   }
 }
+
+Applicants.propTypes = {
+  user: PropTypes.object,
+  auth: PropTypes.object,
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  applicants: PropTypes.object,
+  permissionCheck: PropTypes.func,
+  fetchApplicant: PropTypes.func,
+  fetchApplicants: PropTypes.func,
+};
 
 const mapDispatchToProps = {
   permissionCheck,

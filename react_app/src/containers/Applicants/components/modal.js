@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -76,6 +77,13 @@ const modal = (props) => {
       </Modal.Footer>
     </Modal>
   );
+};
+
+modal.propTypes = {
+  showModal: PropTypes.bool,
+  toggleModal: PropTypes.func,
+  updateApplicationStatus: PropTypes.func,
+  applicant: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

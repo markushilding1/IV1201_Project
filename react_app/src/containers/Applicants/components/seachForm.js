@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Col, Form, Button } from 'react-bootstrap';
 
 import 'react-dates/initialize';
@@ -63,6 +64,16 @@ const seachForm = (props) => {
       </Button>
     </Form>
   );
+};
+
+seachForm.propTypes = {
+  onFormChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  focusedInput: PropTypes.object,
+  onDatesChange: PropTypes.func,
+  onFocusChange: PropTypes.func,
 };
 
 export default seachForm;
