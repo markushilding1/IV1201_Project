@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Form, Button } from 'react-bootstrap';
+import {Col, Form, Button} from 'react-bootstrap';
 
 import 'react-dates/initialize';
-import { DateRangePicker } from 'react-dates';
+import {DateRangePicker} from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 const seachForm = (props) => {
@@ -32,8 +32,8 @@ const seachForm = (props) => {
             startDateId="your_unique_start_date_id"
             endDate={endDate}
             endDateId="your_unique_end_date_id"
-            onDatesChange={({ startDate, endDate }) =>
-              onDatesChange({ startDate, endDate })
+            onDatesChange={({startDate, endDate}) =>
+              onDatesChange({startDate, endDate})
             }
             focusedInput={focusedInput}
             onFocusChange={(focusedInput) => onFocusChange(focusedInput)}

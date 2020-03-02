@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
-import { SIGN_OUT } from './../common/auth/constants';
+import {SIGN_OUT} from './../common/auth/constants';
 
 // Common reducers
 import authReducer from '../common/auth/reducer.js';
@@ -15,7 +15,7 @@ import {
 import applicationsReducer from '../containers/Applications/reducer';
 import submissionReducer from '../containers/Applications/Submission/reducer';
 // Firebase & Firestore reducers
-import { firebaseReducer } from 'react-redux-firebase';
+import {firebaseReducer} from 'react-redux-firebase';
 
 // Combining all reducers
 const appReducer = combineReducers({

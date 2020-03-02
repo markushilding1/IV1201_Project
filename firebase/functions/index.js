@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 //Automatically allow cross-origin requests
-app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://iv1201-g7.web.app", "iv1201-g7.firebaseapp.com"] }));
+app.use(cors({origin: "*" }));
 
 //Mount Routes
 app.use(routes);

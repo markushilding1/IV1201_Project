@@ -50,9 +50,11 @@ exports.isRecruiter = async (req, res, next) => {
 exports.isAuthorized = async (req, res, next) => {
     // JWT Token
     const idToken = req.headers.authorization;
+    
     // Check if token is valid.
     try {
         const isAuthorized = await verifyIdToken(idToken);
+        console.log(isAuthorized);
         req.uid = isAuthorized.uid;
         return next();
     } catch(err) {

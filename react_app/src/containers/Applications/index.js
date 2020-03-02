@@ -9,7 +9,7 @@ import {
 import Submission from './Submission/index.js';
 import { permissionCheck } from './../../utils/permissionCheck';
 import Moment from 'moment';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const withRouter = require('react-router-dom').withRouter;
 
@@ -37,8 +37,8 @@ class Applications extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-        JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
-        JSON.stringify(prevProps.auth) !== JSON.stringify(this.props.auth)
+      JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(prevProps.auth) !== JSON.stringify(this.props.auth)
     ) {
       this.permissionCheck();
     }
@@ -47,7 +47,6 @@ class Applications extends Component {
   componentDidMount() {
     this.permissionCheck();
   }
-
 
   /**
    * @author Josef Federspiel
@@ -163,7 +162,6 @@ Applications.propTypes = {
   error: PropTypes.object,
   resetError: PropTypes.func,
   loading: PropTypes.bool,
-
 };
 
 const mapStateToProps = (state, initialProps) => {

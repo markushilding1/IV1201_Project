@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const applicant = ({ name, surname, apDate, onClick }) => {
+const applicant = ({name, surname, apDate, onClick}) => {
   return (
     <li className="applicants" onClick={onClick}>
       <p>

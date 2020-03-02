@@ -24,17 +24,14 @@ const SubmissionView = (props) => {
   if (!(areaOfExpertise === undefined || areaOfExpertise.length < 1)) {
     area = (
       <Container>
-        {areaOfExpertise.map((singleArea) =>
-          (<Row className="application">
-            <p>
-              Area: {singleArea.areaOfExpertise}
-            </p>
-            <p>
-             Years of experience: {singleArea.yearsOfExperience}
-            </p>
-          </Row>))
-        }
-      </Container>);
+        {areaOfExpertise.map((singleArea) => (
+          <Row className="application">
+            <p>Area: {singleArea.areaOfExpertise}</p>
+            <p>Years of experience: {singleArea.yearsOfExperience}</p>
+          </Row>
+        ))}
+      </Container>
+    );
   }
   if (!(availabilityPeriod === undefined || availabilityPeriod.length < 1)) {
     availability = (
@@ -86,7 +83,6 @@ const SubmissionView = (props) => {
   );
 };
 
-
 SubmissionView.propTypes = {
   error: PropTypes.shape(),
   loading: PropTypes.bool,
@@ -95,7 +91,6 @@ SubmissionView.propTypes = {
   submissionSuccess: PropTypes.any,
   onDiscardApplication: PropTypes.func,
   onSubmitApplication: PropTypes.func,
-
 };
 
 export default SubmissionView;
