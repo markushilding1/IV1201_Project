@@ -146,6 +146,9 @@ const areaOfExpertise = (accessToken) => {
         })
         .then((res) => {
           resolve(res);
+        })
+        .catch((err) => {
+          resolve(false);
         });
   });
 };
