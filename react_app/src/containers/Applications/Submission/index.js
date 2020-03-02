@@ -12,7 +12,7 @@ class Submission extends Component {
     this.state = {};
   }
 
-   /**
+  /**
    * @description calls the discard application
    * from actions, on click function.
    */
@@ -24,7 +24,8 @@ class Submission extends Component {
    * @description calls the submit application
    * from actions, on click function.
    */
-  handleSubmitApplication = () => {
+  handleSubmitApplication = (e) => {
+    e.preventDefault();
     this.props.submitApplication();
   };
 

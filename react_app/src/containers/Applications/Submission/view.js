@@ -23,7 +23,7 @@ const SubmissionView = (props) => {
     area = (
       <Container>
         {areaOfExpertise.map((singleArea) => (
-          <Row className="application" key ={singleArea.id}>
+          <Row className="application" key={singleArea.id}>
             <p>Area: {singleArea.areaOfExpertise}</p>
             <p>Years of experience: {singleArea.yearsOfExperience}</p>
           </Row>
@@ -35,7 +35,7 @@ const SubmissionView = (props) => {
     availability = (
       <Container>
         {availabilityPeriod.map((date) => (
-          <Row className="application" key ={date.id}>
+          <Row className="application" key={date.id}>
             <p>From: {date.fromDate}</p>
             <p>To : {date.toDate}</p>
           </Row>
@@ -45,8 +45,10 @@ const SubmissionView = (props) => {
   }
   return (
     <Container className="outerContainer">
-      <Row className="d-flex align-items-center
-       align-content-center justify-content-center">
+      <Row
+        className="d-flex align-items-center
+       align-content-center justify-content-center"
+      >
         <Col>
           <Form>
             <Form.Group controlId="areaOfExpertise">
@@ -62,7 +64,7 @@ const SubmissionView = (props) => {
               <Button
                 variant="primary"
                 type="submit"
-                onClick={() => onSubmitApplication()}
+                onClick={(e) => onSubmitApplication(e)}
               >
                 Submit
               </Button>
