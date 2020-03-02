@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 //Automatically allow cross-origin requests
-app.use(cors({origin: "*" }));
+app.use(cors({origin: true }));
 
 //Mount Routes
 app.use(routes);

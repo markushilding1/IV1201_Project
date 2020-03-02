@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 
 
 const env = process.env.FUNCTIONS_EMULATOR;
-
+/*
 if(env === 'true'){
   const serviceAccount = require('./configs/serviceAccount.js').serviceAccount;
   admin.initializeApp({
@@ -15,7 +15,12 @@ if(env === 'true'){
     databaseURL: "https://iv1201-g7.firebaseio.com"
   });
 }
-
+*/
+const serviceAccount = require('./configs/serviceAccount.js').serviceAccount;
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://iv1201-g7.firebaseio.com"
+});
 
 
 

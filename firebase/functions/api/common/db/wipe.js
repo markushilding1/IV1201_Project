@@ -12,13 +12,13 @@ const db = require("./index");
 exports.fullWipe = () => {
   return new Promise (async (resolve, reject) => {
     try{
-      await wipePerson();
-      await wipeApplications();
-      await wipeRole();
-      await wipeCompetence();
       await wipeCompetenceProfile();
       await wipeAvailability();
-
+      await wipeApplications();
+      await wipePerson();
+      await wipeRole();
+      await wipeCompetence();
+      
       return resolve();
     } catch (err) {
       return reject(err);
@@ -34,6 +34,7 @@ const wipePerson = () => {
   client = db.conn();
   return new Promise ((resolve, reject) => {
     client.query('DELETE FROM person', async (error, results) => {
+      console.log(results);
       if (error) return reject(error);
       if(!results) return reject(new Error("Could not delete from person."));
       return resolve();

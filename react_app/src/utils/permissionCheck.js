@@ -30,7 +30,7 @@ export const permissionCheck = (permission, page) => {
       return true;
     } else {
       dispatch({type: RESET_NEXT});
-      history.push(`/`);
+      history.push(`/permission-denied`);
     }
   };
 };

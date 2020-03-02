@@ -147,10 +147,10 @@ exports.getApplication = async id => {
  */
 exports.updateStatus = async (id, status) => {
   const updateSql = `
-  UPDATE application
-  SET status = $1
-  WHERE id = $2
-  RETURNING status`;
+    UPDATE application
+    SET status = $1
+    WHERE id = $2
+    RETURNING status`;
 
   //Query object for pg-node
   const updateQuery = {
@@ -161,14 +161,12 @@ exports.updateStatus = async (id, status) => {
   //Connect to database via helper function
   const client = db.conn();
 
-  try {
+  try{
     const results = await client.query(updateQuery);
-    console.log(results);
     return results.rows;
-  } catch (err) {
-    console.log(err);
+  } catch (err){
     throw new Error("Failed to query applications");
-  } finally {
+  } finally{
     await client.end();
   }
 };
@@ -179,32 +177,25 @@ exports.updateStatus = async (id, status) => {
  * has one it is updated. Throws error on failure
  *  @param {date,string}
  **/
-
-
 exports.createApplication = async (date, uid) => {
   const client = db.conn();
-
   const values = [uid, date];
-  return await new Promise((resolve, reject) => {
-    client.query(
-      `
-    INSERT INTO application (person,"createdAt")
-    VALUES ($1,$2) 
-    ON CONFLICT (person) 
-    DO UPDATE
-    SET "createdAt" = $2;`,
-      values,
-      err => {
-        if (err) {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          console.log(err);
-          reject(err);
-          throw new Error("Failed to add application");
-        }
-        resolve("Application Created");
-        client.end();
-      }
-    );
+
+  return await new Promise(async (resolve, reject) => {
+    try{
+    const result = await client.query(
+      `INSERT INTO application (person,"createdAt")
+      VALUES ($1,$2) 
+      ON CONFLICT (person) 
+      DO UPDATE
+      SET "createdAt" = $2;`,
+      values);
+      resolve(result);
+    } catch(err){
+      reject(err);
+    } finally{
+      await client.end();
+    }
   });
 };
 
@@ -219,23 +210,20 @@ exports.createApplication = async (date, uid) => {
  **/
 exports.submitAvailability = async (date, uid) => {
   const client = db.conn();
-
   const values = [uid, date.fromDate, date.toDate];
-  return await new Promise((resolve, reject) => {
-    client.query(
-      `INSERT INTO availability (person,from_date ,to_date) 
-       VALUES ($1, $2, $3)`,
-      values,
-      (err) => {
-        if (err) {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject();
-          throw err;
-        }
-        resolve("Profile Created");
-        client.end();
-      }
-    );
+
+  return await new Promise(async (resolve, reject) => {
+    try{
+      const result = await client.query(
+        `INSERT INTO availability (person,from_date ,to_date) 
+        VALUES ($1, $2, $3)`,
+        values);
+      resolve(result);
+    } catch(err){
+      reject(err);
+    } finally{
+      await client.end();
+    }
   });
 };
 
@@ -250,32 +238,27 @@ exports.submitAvailability = async (date, uid) => {
  **/
 exports.submitExpertise = async (areaOfExpertise, uid) => {
   const client = db.conn();
-
   const values = [
     uid,
     areaOfExpertise.areaOfExpertiseId,
     areaOfExpertise.yearsOfExperience
   ];
-  //INSERT INTO competence osv
-  return await new Promise((resolve, reject) => {
-    client.query(
-      `INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
-    VALUES ($1, $2, $3)
-    ON CONFLICT (person,competence_id) 
-    DO UPDATE
-    SET "years_of_experience" = $3;`,
-      values,
-      (err) => {
-        if (err) {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject();
-          throw err;
-        }
-        console.log("Profile Created");
-        resolve("Profile Created");
-        client.end();
-      }
-    );
+
+  return await new Promise(async (resolve, reject) => {
+    try{
+      const result = await client.query(
+        `INSERT INTO competence_profile (person,competence_id ,years_of_experience) 
+        VALUES ($1, $2, $3)
+        ON CONFLICT (person,competence_id) 
+        DO UPDATE
+        SET "years_of_experience" = $3;`,
+        values);
+      resolve(result);
+    } catch(err){
+      reject(err);
+    } finally {
+      await client.end();
+    }
   });
 };
 
@@ -287,40 +270,38 @@ exports.submitExpertise = async (areaOfExpertise, uid) => {
 exports.getAreaOfExpertise = async () => {
   const client = db.conn();
 
-  return await new Promise((resolve, reject) => {
-    client.query("SELECT * FROM competence", (err, res) => {
-      if (err) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-        throw err;
-      }
-      console.log(res.rows);
-      resolve(res.rows);
-      client.end();
-    });
+  return await new Promise(async (resolve, reject) => {
+    try{
+      const result = await client.query("SELECT * FROM competence");
+      resolve(result.rows);
+    } catch(err){
+      reject(err);
+    } finally{
+      await client.end();
+    }
   });
 };
-
 
 /**
  * @description Creates an entry in the table 'competence'
  * @author Markus Hilding
  * @param {name} string Name of competence
  */
-exports.createCompetence = async (name) => {
+exports.createCompetence = async (data) => {
   const client = db.conn();
-  return await new Promise((resolve, reject) => {
-    client.query(`
-      INSERT INTO competence
-      (name) 
-      VALUES ($1)`
-      ,[name] ,(err, res) => {
-        if (err) return reject(err);
-        console.log("COMPETENCE row created");
-        client.end();
-        return resolve();
-      }
-    );
+  return await new Promise(async (resolve, reject) => {
+    try{
+      const result = await client.query(`
+        INSERT INTO competence
+        (competence_id, name) 
+        VALUES ($1, $2)`
+        ,[data.competence_id, data.name]);
+      resolve(result);
+    } catch(err){
+      reject(err);
+    } finally{
+      await client.end();
+    }
   });
 };
 
@@ -335,18 +316,19 @@ exports.createCompetence = async (name) => {
  */
 exports.createRole = async (data) => {
   const client = db.conn();
-  return await new Promise((resolve, reject) => {
-    client.query(`
-      INSERT INTO role
-      (role_id, name) 
-      VALUES ($1, $2)`
-      ,[data.id, data.name] ,(err, res) => {
-        if (err) return reject(err);
-        console.log("ROLE row created");
-        client.end();
-        return resolve();
-      }
-    );
+  return await new Promise(async (resolve, reject) => {
+    try{
+      const result = await client.query(`
+        INSERT INTO role
+        (role_id, name) 
+        VALUES ($1, $2)`
+        ,[data.role_id, data.name]); 
+      resolve(result);
+    } catch(err){
+      reject(err);
+    } finally{
+      client.end();
+    }
   });
 };
 
@@ -363,18 +345,22 @@ exports.addInitialApplication = async (uid) => {
     uid,
     today,
   ];
+  console.log(insertData);
 
-  return await new Promise((resolve, reject) => {
-    client.query(`
-      INSERT INTO application
-      (person, createdAt) 
-      VALUES ($1, $2)`
-      ,insertData ,(err, res) => {
-        if (err) return reject(err);
-        console.log("APPLICAITON row created");
-        client.end();
-        return resolve();
-      }
-    );
+  return await new Promise( async (resolve, reject) => {
+    try{
+      await client.query(`
+        INSERT INTO application
+        ("person", "createdAt") 
+        VALUES ($1, $2)`
+        , insertData);
+      resolve();
+
+    } catch(err){
+      console.log(err);
+      reject(err);
+    } finally{
+      await client.end();
+    }
   });
 }

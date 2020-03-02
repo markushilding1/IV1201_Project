@@ -1,39 +1,35 @@
 const firebaseAuth = require('./../../firebaseAdmin.js').firebaseAuth;
-const mysql        = require('mysql');
+const fs = require('fs');
 
 const userRepository = require('./../../api/users/users.repository');
 const applicationsRepository = require('./../../api/applications/applications.repository');
-const wipe = require('./../../common/db/wipe');
+const wipe = require('./../../api/common/db/wipe');
+const legacyDatabase = require('./legacyDatabase');
+const utils = require('./utils');
 
-// mysql config
-const oldDbConfig = {
-  host:'localhost',
-  user:'root',
-  pass:'mysql_dev',
-  database:'amusement_park',
-};
-
-// Connection to old database (locally)
-var connection = mysql.createConnection({
-  host     : oldDbConfig.host,
-  user     : oldDbConfig.user,
-  password : oldDbConfig.pass,
-  database : oldDbConfig.database,
-});
 
 // Init db connection.
-connection.connect();
+const connection = legacyDatabase.connect();
 
+// Import util functions
+const snooze = utils.snooze;
 
 const checkEmailValid = (email) => {
   return true;
 }
 
 const checkSSNValid = (ssn) => {
-  return ssn && ssn.length === 13;
+  return true //ssn && ssn.length === 13;
 }
 
 const checkValidPassword = (password) => password && password.length >= 6; 
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    /* eslint-disable no-await-in-loop, callback-return */
+    await callback(array[index], index, array);
+  }
+}
 
 /**
  * @author Markus Hilding
@@ -51,8 +47,9 @@ const createFirebaseUser = (data) => {
     .then((userRecord) => {
       return resolve(userRecord);
     })
-    .catch((error) => {
-      reject(error);
+    .catch((err) => {
+      console.err;
+      reject(err);
     });
   });
 };
@@ -82,8 +79,8 @@ const removeAllFirebaseUsers = () => {
   return new Promise ((resolve) => {
     // List batch of users, 1000 at a time.
     firebaseAuth.listUsers()
-    .then((listUsersResult) => {
-      listUsersResult.users.forEach(async (userRecord) => {
+    .then(async (listUsersResult) => {
+      await listUsersResult.users.forEach(async (userRecord) => {
         const user = userRecord.toJSON();
         await deleteFirebaseUser(user.uid);
       });
@@ -104,15 +101,15 @@ const migratePersons = () => {
       if (error) return reject(error);
       if(!results) return reject(new Error("No users found in the database."));
     
-      const addedPersons = {};
+      const addedPersons = [];
     
       await results.forEach( async (row) => {
         if(checkEmailValid(row.email) && checkSSNValid(row.ssn) && checkValidPassword(row.password)){
           try{
             const userRecord = await createFirebaseUser(row);
-    
+      
             // Add uid to person row data.
-            row.uid = row;
+            row.uid = userRecord.uid;
             
             // Add user to heroku db.
             const userCreated = await userRepository.createUserProfile({
@@ -125,7 +122,7 @@ const migratePersons = () => {
             // Add the profile data to added persons object for further migration.
             // * If insert to database was successful 
             if(userCreated){
-              addedPersons[row.person_id] = row;
+              addedPersons.push(row);
             }
     
           } catch (err) {
@@ -149,12 +146,12 @@ const migratePersons = () => {
  */
 const migrateRoleData = () => {
   return new Promise ((resolve, reject) => {
-    connection.query('SELECT * FROM role', async (error, results, fields) => {
+    connection.query('SELECT * FROM role', async (error, results) => {
       if(error) return reject(error);
       if(!results) return resolve();
       await results.forEach(async (row) => {
         const data = {
-          id:row.id,
+          role_id:row.role_id,
           name:row.name,
         };
         try{
@@ -163,7 +160,7 @@ const migrateRoleData = () => {
           console.err;
         }
       });
-      resolve(true);
+      resolve();
     });
   })
 };
@@ -176,12 +173,16 @@ const migrateRoleData = () => {
  */
 const migrateCompetenceData = () => {
   return new Promise ((resolve, reject) => {
-    connection.query('SELECT * FROM competence', async (error, results, fields) => {
+    connection.query('SELECT * FROM competence', async (error, results) => {
       if(error) return reject(error);
       if(!results) return resolve();
       await results.forEach(async (row) => {
+        const data = {
+          competence_id:row.competence_id,
+          name:row.name,
+        }
         try{
-          await applicationsRepository.createCompetence(row.name);
+          await applicationsRepository.createCompetence(data);
         } catch (err) {
           console.err;
         } 
@@ -199,29 +200,36 @@ const migrateCompetenceData = () => {
  * @param {object} addedPersons 
  */
 const migrateAvailability = (addedPersons) => {
+  const personIds = addedPersons.map((person) => person.person_id);
   return new Promise ((resolve, reject) => {
-    addedPersons.forEach(async (person) => {
-      connection.query('SELECT * FROM availability WHERE person = ?', [person.uid],async (error, results, fields) => {
-        if(error) return reject(error);
-        if(!results){
-          console.log("No results availability");
-          return null;
-        } //return reject(new Error("No results in table 'availability"));
-
-        // add to heroku db.
-        await results.forEach((row) => {
-          applicationsRepository.submitAvailability({
-            date:{
-              toDate: row.toDate,
-              fromDate: row.fromDate,
-            },
-            uid: person.uid,
-          });
-        });
-      }); 
+    connection.query('SELECT * FROM availability', async (error, results) => {
+      if(error) return reject(error);
+      if(!results){
+        console.log("No results availability");
+        return null;
+      } //return reject(new Error("No results in table 'availability"));
+      
+      // add to heroku db.
+      //await results.forEach(async (row) => {
+      await asyncForEach(results, async (row) => {
+        if(personIds.includes(row.person_id)){
+          await snooze(500);
+          const uid = addedPersons.find((person) => person.person_id === row.person_id).uid;
+          const date = {
+              toDate: row.to_date,
+              fromDate: row.from_date,
+            };
+          
+          try {
+            await applicationsRepository.submitAvailability(date, uid);
+          } catch(err){
+            console.log("error");
+          }
+        }
+      });
+      
+      resolve();
     });
-
-    resolve(true);
   })
 };
 
@@ -232,27 +240,32 @@ const migrateAvailability = (addedPersons) => {
  * @param {object} addedPersons 
  */
 const migrateCompetenceProfiles = (addedPersons) => {
-  return new Promise ((resolve, reject) => {
-    addedPersons.forEach(async (person) => {
-      connection.query('SELECT * FROM competence_profile', async (error, results, fields) => {
+  return new Promise (async (resolve, reject) => {
+    await asyncForEach(addedPersons, async (person) => {
+      connection.query('SELECT * FROM competence_profile WHERE person_id = ?', [person.person_id], async (error, results) => {
         if(error) return reject(error);
         if(!results) return reject(new Error("No results in table 'competence_profile"));
 
-        await results.forEach((row) => {
-          console.log(row);
-          /*
-          const data = {
-            areaOfExpertise,
-            uid: person.uid,
-          };
+        // add to heroku db.
+        await asyncForEach(results, async (row) => {
           
-          applicationsRepository.submitExpertise(data);
-          */
+          await snooze(500);
+          const uid = person.uid;
+          const areaOfExpertise = {
+            areaOfExpertiseId: row.competence_id,
+            yearsOfExperience: row.years_of_experience,
+          }
+          
+          try {
+            await applicationsRepository.submitExpertise(areaOfExpertise, uid);
+          } catch(err){
+            console.err;
+          }
         });
       }); 
     });
 
-    resolve(true);
+    resolve();
   })
 };
 
@@ -265,13 +278,13 @@ const migrateCompetenceProfiles = (addedPersons) => {
  * the date is set to today's date. 
  * @param {object} addedPersons 
  */
-const addApplications = (addedPersons) => {
-  return new Promise ((resolve) => {
-    addedPersons.forEach(async (person) => {
+const addApplications = async (addedPersons) => {
+  return await new Promise (async (resolve) => {
+    await addedPersons.map(async (person) => {
       try{
         await applicationsRepository.addInitialApplication(person.uid);
       } catch (err) {
-        console.err;
+        console.log(err);
       }
     });
     resolve();
@@ -279,37 +292,58 @@ const addApplications = (addedPersons) => {
 };
 
 
+
 const migrate = async () => {
   
   try {
 
     // Wipe heroku postgres db
+    console.log("\nWiping postgres database.");
     await wipe.fullWipe();
 
     // Remove all users from firebase cloud.
+    console.log("\nWiping firebase users...");
     await removeAllFirebaseUsers();
 
     // Migrate static data
+    console.log("\nMigrating role table...");
     await migrateRoleData();
+
+    console.log("\nMigrating competence table...");
     await migrateCompetenceData();
 
+    // small sleep as it was noticed that firebase cloud takes some extra time
+    // to delete a user totally.
+    await snooze(5000);
+
     // Migrating to 'person' table
+    console.log("\nMigrating persons...");
     const addedPersons = await migratePersons();
 
+    await snooze(5000);
+
     console.log(addedPersons);
-    if(addedPersons && Object.keys(addedPersons).length){
+    if(addedPersons.length){
+
+      console.log("\nMigrating availability...");
       await migrateAvailability(addedPersons);
+      
+      console.log("\nMigrating competence profiles...");
       await migrateCompetenceProfiles(addedPersons);
+      
+      console.log("\nAdding data to application table...");
       await addApplications(addedPersons);
+
     } else {
       console.log("No new person data to migrate.");
     }
 
   } catch (err) {
-    throw err;
+    console.err;
+  } finally{
+    connection.end();
+    process.exit();
   }
-
-  connection.end();
 };
 
 
