@@ -113,8 +113,8 @@ const areaOfExpertiseFetchFailed = (dispatch, err) => {
  * @author Josef Federspiel
  * @description Dispatches a successful fetch request and resets
  * the status after 5 seconds.
- * @param {function} dispatch Redux dispatch
- * @param {string} err Error message
+ * @param {function} dispatch Redux dispatch.
+ * @param {payload} payload area of expertise.
  */
 
 const areaOfExpertiseReceived = (dispatch, payload) => {
@@ -132,7 +132,7 @@ const areaOfExpertiseReceived = (dispatch, payload) => {
 
 const areaOfExpertise = (accessToken) => {
   return new Promise((resolve) => {
-    fetch(`${API_URL}/expertise/`, {
+    fetch(`${API_URL}/applications/expertise`, {
       headers: {
         'authorization': accessToken,
         'Content-Type': 'application/json',
@@ -146,9 +146,6 @@ const areaOfExpertise = (accessToken) => {
         })
         .then((res) => {
           resolve(res);
-        })
-        .catch((err) => {
-          resolve(false);
         });
   });
 };

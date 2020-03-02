@@ -49,13 +49,16 @@ exports.updateStatus = async (id, status) => {
  * @description Function to get areas of expertise
  ***/
 exports.getAreaOfExpertise = async () => {
-    const result = await applicationRepository.getAreaOfExpertise();
-    return result;
+    return await applicationRepository.getAreaOfExpertise();
 };
 
 /**
  * @author Josef Federspiel
  * @description Function to get submit application
+ * @param {array} areaOfExpertise list of user expertise
+ * @param {array} date list of user expertise
+ * @param {string} uid user unique id
+ * @param {date} todayDate current date
  ***/
 exports.submitApplication = async (areaOfExpertise,date,uid,todayDate) => {
    for(let i = 0; i < date.length; i++){
@@ -67,10 +70,8 @@ exports.submitApplication = async (areaOfExpertise,date,uid,todayDate) => {
         await applicationRepository.submitExpertise(areaOfExpertise[i], uid);
     }
     try {
-        const result = await applicationRepository.createApplication(todayDate,uid);
-        return result;
+        return await applicationRepository.createApplication(todayDate, uid);
     } catch(err) {
-        console.log('Error reached service')
         throw err;
     }
 

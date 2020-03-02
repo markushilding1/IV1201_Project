@@ -12,19 +12,7 @@ class Submission extends Component {
     this.state = {};
   }
 
-  /**
-   * @description Resets the error message when
-   * the user starts to type in the form after
-   * a failed attempt to sign up.
-   */
-  resetErrorMessage = () => {
-    const { error } = this.props;
-    if (error) {
-      this.props.resetError();
-    }
-  };
-
-  /**
+   /**
    * @description calls the discard application
    * from actions, on click function.
    */
@@ -56,7 +44,7 @@ class Submission extends Component {
   }
 }
 
-const mapStateToProps = (state, initialProps) => {
+const mapStateToProps = (state) => {
   const {
     loading,
     error,

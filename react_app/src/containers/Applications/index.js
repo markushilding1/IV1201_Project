@@ -27,7 +27,7 @@ class Applications extends Component {
   }
 
   permissionCheck() {
-    const result = this.props.permissionCheck('recruit', 'applications');
+    const result = this.props.permissionCheck('applicant', 'applications');
     if (result) {
       this.setState({
         authorized: true,
@@ -148,7 +148,7 @@ class Applications extends Component {
         onExpertiseSubmit={this.onExpertiseSubmit}
         onAvailabilitySubmit={this.onAvailabilityPeriodSubmit}
         onDateSelect={this.handleDateSelect}
-        component={<Submission />}
+        component={<Submission/>}
       />
     );
   }
@@ -164,7 +164,7 @@ Applications.propTypes = {
   loading: PropTypes.bool,
 };
 
-const mapStateToProps = (state, initialProps) => {
+const mapStateToProps = (state) => {
   const { loading, error, list } = state.applications;
 
   return {

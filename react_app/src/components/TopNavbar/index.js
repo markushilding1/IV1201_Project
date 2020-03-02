@@ -53,7 +53,6 @@ const TopNavbar = (props) => {
                 {home}
                 <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
-                <Nav.Link href="/apply">Apply for job</Nav.Link>
                 {signOut}
               </Nav>
             ) : null}

@@ -8,9 +8,8 @@ const { check, validationResult } = require("express-validator");
  * @description //Controller to handle submission of an application
  * @param req The request object
  * @param res The response object
- * @param next Function to pass through to next middleware
  */
-exports.submitApplication = async (req, res, next) => {
+exports.submitApplication = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
@@ -43,7 +42,7 @@ exports.submitApplication = async (req, res, next) => {
  */
 
 
-exports.getAreaOfExpertise = async (req, res, next) => {
+exports.getAreaOfExpertise = async (req, res) => {
   const result = await applicationsService.getAreaOfExpertise();
   if (result) {
     res.send(result);

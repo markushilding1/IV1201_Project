@@ -9,7 +9,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import * as yup from 'yup';
 import PropTypes from 'prop-types';
 
 const ApplicationsView = (props) => {
@@ -25,7 +24,7 @@ const ApplicationsView = (props) => {
     component,
   } = props;
   const dropDown =
-    expertiseDropDown != (null && false) ? (
+    expertiseDropDown !== null ? (
       <Form.Control as="select" name="areaOfExpertise">
         <option value="" disabled selected>
           Select your option

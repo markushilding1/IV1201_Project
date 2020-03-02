@@ -61,11 +61,12 @@ export const discardApplication = () => {
  *    date: (array[object]),
  *    uid: (string),
  * }
+ * @param {userToken} accessToken is the user validation
  */
 
 const createApplication = (data, accessToken) => {
   return new Promise((resolve) => {
-    fetch(`${API_URL}/submit/`, {
+    fetch(`${API_URL}/applications/submit/`, {
       method: 'post',
       // Authorization: accessToken,
       headers: {
@@ -82,9 +83,6 @@ const createApplication = (data, accessToken) => {
         })
         .then((res) => {
           resolve(res);
-        })
-        .catch((err) => {
-          resolve(false);
         });
   });
 };
@@ -95,7 +93,6 @@ const createApplication = (data, accessToken) => {
  * @param {function} dispatch Redux dispatch
  */
 const createApplicationSuccess = (dispatch) => {
-  console.log('******************************************');
   dispatch({type: SUBMIT_APPLICATION_SUCCESS});
 };
 

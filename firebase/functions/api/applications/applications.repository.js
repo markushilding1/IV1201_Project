@@ -201,7 +201,6 @@ exports.createApplication = async (date, uid) => {
           reject(err);
           throw new Error("Failed to add application");
         }
-        console.log("Application Created");
         resolve("Application Created");
         client.end();
       }
@@ -213,10 +212,10 @@ exports.createApplication = async (date, uid) => {
  @author Josef Federspiel
  * @description Adds a to and from dates to the database and
  *  throws an error on a failed attempt.
- *  @param {object,string} Example {
+ *  @param {object} date {
  *    date:({date,date}),
- *    uid: (uid),
  * }
+ * @param {string} uid sting with user id
  **/
 exports.submitAvailability = async (date, uid) => {
   const client = db.conn();
@@ -227,13 +226,12 @@ exports.submitAvailability = async (date, uid) => {
       `INSERT INTO availability (person,from_date ,to_date) 
        VALUES ($1, $2, $3)`,
       values,
-      (err, res) => {
+      (err) => {
         if (err) {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject();
           throw err;
         }
-        console.log("Profile Created");
         resolve("Profile Created");
         client.end();
       }
@@ -245,10 +243,10 @@ exports.submitAvailability = async (date, uid) => {
  @author Josef Federspiel
  * @description Adds an area of expertise to the database and
  *  throws an error on a failed attempt.
- *  @param {object,string} data Example {
+ *  @param {object} areaOfExpertise Example {
  *    areaOfExpertise:(object),
- *    uid: (uid),
  * }
+ *  @param {string} uid user id string
  **/
 exports.submitExpertise = async (areaOfExpertise, uid) => {
   const client = db.conn();
@@ -267,7 +265,7 @@ exports.submitExpertise = async (areaOfExpertise, uid) => {
     DO UPDATE
     SET "years_of_experience" = $3;`,
       values,
-      (err, res) => {
+      (err) => {
         if (err) {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject();
