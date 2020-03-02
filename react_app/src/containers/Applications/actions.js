@@ -13,10 +13,9 @@ import {
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const getAreaOfExpertise = () => {
-  return (dispatch, getState, {getFirebase}) => {
-    dispatch({type: AREA_OF_EXPERTISE_FETCH});
-    const accessToken = getState().firebase.auth.stsTokenManager
-        .accessToken;
+  return (dispatch, getState, { getFirebase }) => {
+    dispatch({ type: AREA_OF_EXPERTISE_FETCH });
+    const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
     areaOfExpertise(accessToken).then((res) => {
       if (res) {
         areaOfExpertiseReceived(dispatch, res);
@@ -133,26 +132,23 @@ const areaOfExpertiseReceived = (dispatch, payload) => {
 
 const areaOfExpertise = (accessToken) => {
   return new Promise((resolve) => {
-    fetch(
-        `${API_URL}/expertise/`,
-        {
-          headers: {
-            'authorization': accessToken,
-            'Content-Type': 'application/json',
-          },
-        },
-    )
-        .then((res) => {
-          if (!res.ok || (res.ok && res.status !== 200)) {
-            resolve(false);
-          }
-          return res.json();
-        })
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((err) => {
+    fetch(`${API_URL}/applications/expertise`, {
+      headers: {
+        authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (!res.ok || (res.ok && res.status !== 200)) {
           resolve(false);
-        });
+        }
+        return res.json();
+      })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        resolve(false);
+      });
   });
 };
