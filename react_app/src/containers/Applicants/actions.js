@@ -17,31 +17,29 @@ export const fetchApplicants = (data) => {
 
   const url = new URL(`${API_URL}/applications`);
   url.search = new URLSearchParams(data);
-  console.log(url.toString());
 
-  console.log(data);
-  return (dispatch, getState, {getFirebase}) => {
+  return (dispatch, getState, { getFirebase }) => {
     const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
-    dispatch({type: SEARCH_APPLICANTS});
+    dispatch({ type: SEARCH_APPLICANTS });
 
     fetch(url, {
       headers: {
-        'authorization': accessToken,
+        authorization: accessToken,
         'Content-Type': 'application/json',
       },
     })
-        .then((response) => {
-          if (!response.ok) {
-            throw response;
-          }
-          return response.json(); // we only get here if there is no error
-        })
-        .then((data) => {
-          searchSuccess(dispatch, SUCCESS_APPLICANTS, data);
-        })
-        .catch((err) => {
-          searchFail(dispatch, ERROR_APPLICANTS, 'Failed to query applicants');
-        });
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); // we only get here if there is no error
+      })
+      .then((data) => {
+        searchSuccess(dispatch, SUCCESS_APPLICANTS, data);
+      })
+      .catch((err) => {
+        searchFail(dispatch, ERROR_APPLICANTS, 'Failed to query applicants');
+      });
   };
 };
 
@@ -53,28 +51,28 @@ export const fetchApplicants = (data) => {
 export const fetchApplicant = (id) => {
   const API_URL = process.env.REACT_APP_API_URL;
 
-  return (dispatch, getState, {getFirebase}) => {
+  return (dispatch, getState, { getFirebase }) => {
     const accessToken = getState().firebase.auth.stsTokenManager.accessToken;
-    dispatch({type: SEARCH_APPLICANT});
+    dispatch({ type: SEARCH_APPLICANT });
 
     fetch(`${API_URL}/applications/${id}`, {
       headers: {
-        'authorization': accessToken,
+        authorization: accessToken,
         'Content-Type': 'application/json',
       },
     })
-        .then((response) => {
-          if (!response.ok) {
-            throw response;
-          }
-          return response.json(); // we only get here if there is no error
-        })
-        .then((data) => {
-          searchSuccess(dispatch, SUCCESS_APPLICANT, data[0]);
-        })
-        .catch((err) => {
-          searchFail(dispatch, ERROR_APPLICANT, 'Failed to query applicants');
-        });
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json(); // we only get here if there is no error
+      })
+      .then((data) => {
+        searchSuccess(dispatch, SUCCESS_APPLICANT, data[0]);
+      })
+      .catch((err) => {
+        searchFail(dispatch, ERROR_APPLICANT, 'Failed to query applicants');
+      });
   };
 };
 

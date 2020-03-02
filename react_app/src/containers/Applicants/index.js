@@ -132,7 +132,6 @@ class Applicants extends Component {
    * @param applicationId The id of the application to show.
    */
   toggleModal = (applicationId) => {
-    console.log('Applicant with id ' + applicationId + ' clicked');
     this.setState((prevState) => ({
       showModal: !prevState.showModal,
     }));

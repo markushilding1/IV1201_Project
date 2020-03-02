@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 const modal = (props) => {
   const { showModal, toggleModal, updateApplicationStatus } = props;
   const { loading, applicant, error } = props.applicant;
-  console.log(props.applicant);
 
   const competence = applicant?.competence?.map((competence) => {
     return <li>{competence}</li>;
