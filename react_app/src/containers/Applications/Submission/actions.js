@@ -29,7 +29,6 @@ export const submitApplication = () => {
       todayDate,
     };
     createApplication(applicationData, accessToken)
-<<<<<<< HEAD
       .then((res) => {
         console.log(res);
         createApplicationSuccess(dispatch);
@@ -38,16 +37,6 @@ export const submitApplication = () => {
         console.err(err);
         createApplicationFailure(dispatch, 'Oops, something went wrong...');
       });
-=======
-        .then((res) => {
-          console.log(res);
-          createApplicationSuccess(dispatch);
-        })
-        .catch((err) => {
-          console.err(err);
-          createApplicationFailure(dispatch, 'Oops, something went wrong...');
-        });
->>>>>>> 4e5bf66a2a5d12cb573518166a3604a0dd1ff844
   };
 };
 
@@ -107,11 +96,7 @@ const createApplication = (data, accessToken) => {
  */
 const createApplicationSuccess = (dispatch) => {
   console.log('******************************************');
-<<<<<<< HEAD
   dispatch({ type: SUBMIT_APPLICATION_SUCCESS });
-=======
-  dispatch({type: SUBMIT_APPLICATION_SUCCESS});
->>>>>>> 4e5bf66a2a5d12cb573518166a3604a0dd1ff844
 };
 
 /**
