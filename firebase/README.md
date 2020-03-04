@@ -29,7 +29,16 @@ firebase serve --only functions
 
 ### Deploying to production
 First build the react app with "npm run build" and move the content created in *react_app/build* into *firebase/public*. Then run following command. 
+As long as the linter is okay with current build in the functions folder the app will be deployed. 
 ```shell
+# From root folder 
+# Delete current build
+rm -rf firebase/public/*
+
+# Move react build into firebase public
+mv react_app/build/* firebase/public/
+
+# Deploy application
 firebase deploy
 ```
 
@@ -48,3 +57,25 @@ const client = db.conn()
 
 ### Database Schema
 ![Database Schema](./db.png)
+
+
+## Database migration
+To move all data from the old solution to the new database, a migration module was created. A localhost mysql database was used to simulate the old database.  
+
+### Migration Flow 
+1. Wiping current postgres database to start from zero.
+2. Wiping firebase users.
+3. Migrating role table.
+4. Migrating competence table.
+5. Migrating persons/users if they have valid data in old database.
+6. Migrating availability.
+7. Migrating competence profiles.
+8. Adding data to new table 'application' in order to see the users application status and date for submitting the application.  
+
+### Running the migration
+```shell
+# From root folder
+node firebase/functions/api/common/db/migration/index.js
+```
+
+
