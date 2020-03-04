@@ -148,7 +148,7 @@ class Applications extends Component {
         onExpertiseSubmit={this.onExpertiseSubmit}
         onAvailabilitySubmit={this.onAvailabilityPeriodSubmit}
         onDateSelect={this.handleDateSelect}
-        component={<Submission/>}
+        component={<Submission />}
       />
     );
   }
