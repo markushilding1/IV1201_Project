@@ -1,4 +1,4 @@
-# Firebase Cloud & Heroku PostgresQL Database
+# Firebase Node JS Server & Heroku PostgresQL Database
 The application is hosted on the firebase platform, by Google. Firebase hosts the react application as well as the Rest API for handling all business logic. The database is a SQL database and is hosted on Heroku as Firebase does not support SQL databases.
 
 ## Prerequisites
