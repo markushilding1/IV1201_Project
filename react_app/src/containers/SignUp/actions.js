@@ -76,7 +76,6 @@ export const signUpUser = (data) => {
               user
                   .sendEmailVerification()
                   .then(function() {
-                    auth.signOut();
                     signUpSuccess(dispatch);
                   })
                   .catch(function(err) {

@@ -3,7 +3,7 @@
  * all the data from the Heroku postgres database.
  */
 
-const db = require("./index");
+const db = require("./../index");
 
 /**
  * @author Markus Hilding
@@ -12,13 +12,13 @@ const db = require("./index");
 exports.fullWipe = () => {
   return new Promise (async (resolve, reject) => {
     try{
-      await wipePerson();
-      await wipeApplications();
-      await wipeRole();
-      await wipeCompetence();
       await wipeCompetenceProfile();
       await wipeAvailability();
-
+      await wipeApplications();
+      await wipePerson();
+      await wipeRole();
+      await wipeCompetence();
+      
       return resolve();
     } catch (err) {
       return reject(err);

@@ -48,7 +48,8 @@ export const authListener = () => {
   return (dispatch, getState, {getFirebase}) => {
     const auth = getFirebase().auth();
     auth.onAuthStateChanged(async (user) => {
-      if (user) { // && user.emailVerified) {
+      if (user) {
+        // && user.emailVerified) {
         const accessToken = getState().firebase.auth.stsTokenManager
             .accessToken;
 
