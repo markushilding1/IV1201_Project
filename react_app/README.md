@@ -37,32 +37,55 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+###` npm run prettify`
+Run the  prettier script found in `IV1201_Project\react_app\src\`
+It refractors the code according to the rules specified in the script.   
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#Local Setup 
+Running local set up will install all dependencies. It watches JS, and images, then compiles and reloads accordingly.
 
-### Code Splitting
+```
+$ cd IV1201_Project\react_app
+$ npm install
+$ npm run start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+#Deploying
 
-### Analyzing the Bundle Size
+Running the `npm run build` script creates the build folder that contains the appropriate files.
+These then need to be move to the firebase public folder. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+# Eslint & Prettier
 
-### Making a Progressive Web App
+The project uses eslint and prettier to check and enforce code standards. 
+The project uses google's style guide for javascript [Can be seen here](https://google.github.io/styleguide/jsguide.html)
+The Prettier script can be altered to follow other code conventions if needed.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+#File Structure
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+The react_app has the following structure 
+```
+react_app
+|----node_modules
+|----public
+|----src
+     |----common
+     |    |----auth 
+     |   
+     |----components 
+     |    
+     |----config
+     |    
+     |----containers
+     |    |    
+     |    |----pages
+     |    
+     |----settings
+     |    
+     |----store
+     |    
+     |----utils
+```
+The file structure is made to keep each component separate and to make sure there are no unnecessary
+dependencies. If a new page is added it should be placed in containers as its own page.  
