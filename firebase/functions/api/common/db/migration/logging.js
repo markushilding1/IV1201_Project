@@ -3,12 +3,8 @@ const fs = require('fs');
 
 class Logger{
 
-  constructor(){
-
-  }
-
   init(){
-    const today = Date.now().toISOString();
+    const today = new Date().toISOString();
     fs.writeFile('log.txt', `\n${today}`, (err) => {
       if (err) throw err;
     });
@@ -22,4 +18,4 @@ class Logger{
 
 }
 
-exports.Logger;
+exports.Logger = Logger;

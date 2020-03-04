@@ -3,7 +3,7 @@
  * all the data from the Heroku postgres database.
  */
 
-const db = require("./index");
+const db = require("./../index");
 
 /**
  * @author Markus Hilding
@@ -34,7 +34,6 @@ const wipePerson = () => {
   client = db.conn();
   return new Promise ((resolve, reject) => {
     client.query('DELETE FROM person', async (error, results) => {
-      console.log(results);
       if (error) return reject(error);
       if(!results) return reject(new Error("Could not delete from person."));
       return resolve();

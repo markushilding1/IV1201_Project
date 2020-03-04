@@ -1,15 +1,20 @@
-const firebaseAuth = require('./../../firebaseAdmin.js').firebaseAuth;
+const firebaseAuth = require('../../../../firebaseAdmin.js').firebaseAuth;
 const fs = require('fs');
 
-const userRepository = require('./../../api/users/users.repository');
-const applicationsRepository = require('./../../api/applications/applications.repository');
-const wipe = require('./../../api/common/db/wipe');
+const userRepository = require('../../../users/users.repository');
+const applicationsRepository = require('../../../applications/applications.repository');
+const wipe = require('./wipe');
 const legacyDatabase = require('./legacyDatabase');
 const utils = require('./utils');
+const logging = require('./logging');
 
 
 // Init db connection.
 const connection = legacyDatabase.connect();
+
+// Init logger
+const logger = new logging.Logger();
+logger.init();
 
 // Import util functions
 const snooze = utils.snooze;
@@ -48,7 +53,7 @@ const createFirebaseUser = (data) => {
       return resolve(userRecord);
     })
     .catch((err) => {
-      console.err;
+      logger.log("ERROR", err);
       reject(err);
     });
   });
@@ -63,10 +68,11 @@ const deleteFirebaseUser = (uid) => {
   return new Promise ((resolve, reject) => {
     firebaseAuth.deleteUser(uid)
       .then(() => {
+        logger.log("INFO", `User with uid:${uid} deleted from firebase auth.`);
         return resolve();
       })
-      .catch((error) => {
-        console.log('Error deleting user:', error);
+      .catch((err) => {
+        logger.log("ERROR", `Firebase: Error deleting user with uid:${uid}, Error: ${err.message}`);
       });
   });
 };
@@ -77,18 +83,18 @@ const deleteFirebaseUser = (uid) => {
  */
 const removeAllFirebaseUsers = () => {
   return new Promise ((resolve) => {
-    // List batch of users, 1000 at a time.
     firebaseAuth.listUsers()
     .then(async (listUsersResult) => {
       await listUsersResult.users.forEach(async (userRecord) => {
         const user = userRecord.toJSON();
         await deleteFirebaseUser(user.uid);
       });
-      console.log("Users deleted from firebase.");
+
+      logger.log("INFO", `User with uid:${user.uid} deleted from firebase auth.`);
       return resolve(true);
     })
-    .catch((error) => {
-      console.log('Error listing users:', error);
+    .catch((err) => {
+      logger.log("INFO", `${err.message}`);
       return resolve(false);
     });
   });
@@ -97,7 +103,7 @@ const removeAllFirebaseUsers = () => {
 
 const migratePersons = () => {
   return new Promise ((resolve, reject) => {
-    connection.query('SELECT * from person', async (error, results, fields) => {
+    connection.query('SELECT * from person', async (error, results) => {
       if (error) return reject(error);
       if(!results) return reject(new Error("No users found in the database."));
     
@@ -117,19 +123,25 @@ const migratePersons = () => {
               name: row.name, 
               surname: row.surname, 
               ssn: row.ssn,
+              role_id: row.role_id,
             });
 
             // Add the profile data to added persons object for further migration.
             // * If insert to database was successful 
-            if(userCreated){
+            if(userCreated && row.uid){
               addedPersons.push(row);
             }
     
           } catch (err) {
-            console.log(`Firebase: `, err.message);
+            logger.log("ERROR", `Firebase: ${err.message}`);
           }
         } else {
-          console.log("User data not valid");
+          logger.log("ERROR", `Provided user data with uid:${row.uid} & person_id:${row.person_id} is not valid. User will not be created.`);
+          try{
+            deleteFirebaseUser(row.uid);
+          } catch(err){
+            logger.log("ERROR", err.message);
+          }
         }
       });
       
@@ -176,15 +188,17 @@ const migrateCompetenceData = () => {
     connection.query('SELECT * FROM competence', async (error, results) => {
       if(error) return reject(error);
       if(!results) return resolve();
-      await results.forEach(async (row) => {
+      await asyncForEach(results, async (row) => {
         const data = {
           competence_id:row.competence_id,
           name:row.name,
         }
+
         try{
-          await applicationsRepository.createCompetence(data);
+          const res = await applicationsRepository.createCompetence(data);
+          logger.log("INFO", JSON.stringify(res));
         } catch (err) {
-          console.err;
+          logger.log("ERROR", err);
         } 
       });
       return resolve(true);
@@ -200,6 +214,7 @@ const migrateCompetenceData = () => {
  * @param {object} addedPersons 
  */
 const migrateAvailability = (addedPersons) => {
+  logger.log("INFO", "\n\nMigrating availability...");
   const personIds = addedPersons.map((person) => person.person_id);
   return new Promise ((resolve, reject) => {
     connection.query('SELECT * FROM availability', async (error, results) => {
@@ -207,13 +222,13 @@ const migrateAvailability = (addedPersons) => {
       if(!results){
         console.log("No results availability");
         return null;
-      } //return reject(new Error("No results in table 'availability"));
+      }
       
       // add to heroku db.
       //await results.forEach(async (row) => {
       await asyncForEach(results, async (row) => {
         if(personIds.includes(row.person_id)){
-          await snooze(500);
+          await snooze(1000);
           const uid = addedPersons.find((person) => person.person_id === row.person_id).uid;
           const date = {
               toDate: row.to_date,
@@ -221,9 +236,10 @@ const migrateAvailability = (addedPersons) => {
             };
           
           try {
-            await applicationsRepository.submitAvailability(date, uid);
+            const result = await applicationsRepository.submitAvailability(date, uid);
+            logger.log("INFO", JSON.stringify(result));
           } catch(err){
-            console.log("error");
+            logger.log("ERROR", err);
           }
         }
       });
@@ -239,33 +255,35 @@ const migrateAvailability = (addedPersons) => {
  * new Heroku postgres db.
  * @param {object} addedPersons 
  */
-const migrateCompetenceProfiles = (addedPersons) => {
-  return new Promise (async (resolve, reject) => {
-    await asyncForEach(addedPersons, async (person) => {
-      connection.query('SELECT * FROM competence_profile WHERE person_id = ?', [person.person_id], async (error, results) => {
-        if(error) return reject(error);
-        if(!results) return reject(new Error("No results in table 'competence_profile"));
+const migrateCompetenceProfiles = async (addedPersons) => {
+  logger.log("INFO", "Migrating competence profiles...");
+  const personIds = addedPersons.map((person) => person.person_id);
+  return await new Promise (async (resolve, reject) => {
+  
+    connection.query('SELECT * FROM competence_profile', async (error, results) => {
+      if(error) return reject(error);
+      if(!results) return reject(new Error("No results in table 'competence_profile"));
 
-        // add to heroku db.
-        await asyncForEach(results, async (row) => {
-          
-          await snooze(500);
-          const uid = person.uid;
+      // add to heroku db.
+      await asyncForEach(results, async (row) => {
+        if(personIds.includes(row.person_id)){
+          await snooze(1000);
+          const uid = addedPersons.find((person) => person.person_id === row.person_id).uid;
           const areaOfExpertise = {
             areaOfExpertiseId: row.competence_id,
             yearsOfExperience: row.years_of_experience,
           }
           
           try {
-            await applicationsRepository.submitExpertise(areaOfExpertise, uid);
+            const result = await applicationsRepository.submitExpertise(areaOfExpertise, uid);
+            logger.log("INFO", JSON.stringify(result));
           } catch(err){
-            console.err;
+            logger.log("ERROR", err);
           }
-        });
-      }); 
-    });
-
-    resolve();
+        }
+      });
+      resolve();
+    }); 
   })
 };
 
@@ -279,12 +297,16 @@ const migrateCompetenceProfiles = (addedPersons) => {
  * @param {object} addedPersons 
  */
 const addApplications = async (addedPersons) => {
+  logger.log("INFO", "Adding initial rows to application table...");
+  
   return await new Promise (async (resolve) => {
-    await addedPersons.map(async (person) => {
+    await asyncForEach(addedPersons, async (person) => {
+      await snooze(1000);
       try{
-        await applicationsRepository.addInitialApplication(person.uid);
+        const result = await applicationsRepository.addInitialApplication(person.uid);
+        logger.log("INFO", JSON.stringify(result));
       } catch (err) {
-        console.log(err);
+        logger.log("ERROR", err);
       }
     });
     resolve();
@@ -302,52 +324,55 @@ const migrate = async () => {
     await wipe.fullWipe();
 
     // Remove all users from firebase cloud.
+    await snooze(1000);
     console.log("\nWiping firebase users...");
     await removeAllFirebaseUsers();
 
     // Migrate static data
+    await snooze(1000);
     console.log("\nMigrating role table...");
     await migrateRoleData();
 
+    await snooze(1000);
     console.log("\nMigrating competence table...");
     await migrateCompetenceData();
 
     // small sleep as it was noticed that firebase cloud takes some extra time
     // to delete a user totally.
-    await snooze(5000);
+    await snooze(2000);
 
     // Migrating to 'person' table
     console.log("\nMigrating persons...");
     const addedPersons = await migratePersons();
 
-    await snooze(5000);
+    await snooze(2000);
 
-    console.log(addedPersons);
     if(addedPersons.length){
 
+      await snooze(3000);
       console.log("\nMigrating availability...");
       await migrateAvailability(addedPersons);
       
+      await snooze(3000);
       console.log("\nMigrating competence profiles...");
       await migrateCompetenceProfiles(addedPersons);
       
+      await snooze(3000);
       console.log("\nAdding data to application table...");
       await addApplications(addedPersons);
-
+      
+      console.log("\nMigration done.");
     } else {
       console.log("No new person data to migrate.");
     }
 
   } catch (err) {
-    console.err;
+    logger.log("ERROR", err);
   } finally{
     connection.end();
     process.exit();
   }
 };
-
-
-
 
 migrate();
 

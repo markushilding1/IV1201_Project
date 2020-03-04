@@ -7,9 +7,10 @@ import Col from 'react-bootstrap/Container';
 const PermissionDenied = () => {
   return (
     <Container>
-      <Row>
+      <Row className="mt-5">
         <Col>
-          <h1>Permission Denied</h1>
+          <h1>Access Denied</h1>
+          <p>You do not have permission to view the requested page.</p>
         </Col>
       </Row>
     </Container>

@@ -345,19 +345,16 @@ exports.addInitialApplication = async (uid) => {
     uid,
     today,
   ];
-  console.log(insertData);
-
+  
   return await new Promise( async (resolve, reject) => {
     try{
-      await client.query(`
+      const result = await client.query(`
         INSERT INTO application
-        ("person", "createdAt") 
+        (person, "createdAt") 
         VALUES ($1, $2)`
         , insertData);
-      resolve();
-
+      resolve(result);
     } catch(err){
-      console.log(err);
       reject(err);
     } finally{
       await client.end();

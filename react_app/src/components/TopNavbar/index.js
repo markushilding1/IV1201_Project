@@ -44,14 +44,6 @@ const TopNavbar = (props) => {
             ) : user && user.role === 'recruit' ? (
               <Nav className="mr-auto">
                 {home}
-                <Nav.Link href="/applications">Apply for job</Nav.Link>
-                <Nav.Link href="/applicants">Applicants</Nav.Link>
-                {signOut}
-              </Nav>
-            ) : user && user.role === 'admin' ? (
-              <Nav className="mr-auto">
-                {home}
-                <Nav.Link href="/applications">Apply for job</Nav.Link>
                 <Nav.Link href="/applicants">Applicants</Nav.Link>
                 {signOut}
               </Nav>

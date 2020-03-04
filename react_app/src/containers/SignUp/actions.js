@@ -72,16 +72,15 @@ export const signUpUser = (data) => {
             const createProfileResult = await createUserProfile(profileData);
 
             if (createProfileResult) {
-            // Send verificaton email to user.
+              // Send verificaton email to user.
               user
-                  .sendEmailVerification()
-                  .then(function() {
-                    auth.signOut();
-                    signUpSuccess(dispatch);
-                  })
-                  .catch(function(err) {
-                    console.err('Failed to send email.');
-                  });
+                .sendEmailVerification()
+                .then(function() {
+                  signUpSuccess(dispatch);
+                })
+                .catch(function(err) {
+                  console.err('Failed to send email.');
+                });
             }
           }
         })

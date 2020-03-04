@@ -56,7 +56,7 @@ const View = (props) => {
       <Container className="innerContainer">
         {loading ? (
           <Spinner animation="border" />
-        ) : (
+        ) : applicants.length ? (
           applicants.map((applicant, i) => (
             <Applicant
               name={applicant.name}
@@ -66,6 +66,8 @@ const View = (props) => {
               onClick={() => toggleModal(applicant.id)}
             />
           ))
+        ) : (
+          <p>No results.</p>
         )}
       </Container>
       <PageBar handlePageClick={handlePageClick} />
