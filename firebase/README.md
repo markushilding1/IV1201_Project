@@ -1,6 +1,8 @@
 # Firebase Cloud & Heroku PostgresQL Database
 The application is hosted on the firebase platform, by Google. Firebase hosts the react application as well as the Rest API for handling all business logic. The database is a SQL database and is hosted on Heroku as Firebase does not support SQL databases.
 
+## Architecture
+The rest api is built feature driven with the MVC pattern to better support scaling of the application. 
 
 ## Firebase Console
 Permission needed to access the console.
@@ -18,6 +20,14 @@ npm install -g firebase-tools
 You will be promted to login with email and password. Access to project is needed to succeed with this step.
 ```shell
 firebase login
+```
+
+### Creating service key
+To be able to run the api locally, the developer needs a service key. It can be downloaded at https://console.firebase.google.com/project/iv1201-g7/settings/serviceaccounts/adminsdk. When downloaded, store the file locally on your computer, anywhere. Then, under firebase/functions/configs, create a new file called serviceAccount.js and add following to the file:
+
+```javascript
+// firebase/functions/configs/serviceAccount.js
+exports.serviceAccount = require("/path/to/iv1201-g7-firebase-adminsdk-d4csr-1a64f29c56.json");
 ```
 
 ### Serving api locally
