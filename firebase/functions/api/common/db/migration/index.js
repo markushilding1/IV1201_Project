@@ -19,14 +19,6 @@ logger.init();
 // Import util functions
 const snooze = utils.snooze;
 
-const checkEmailValid = (email) => {
-  return true;
-}
-
-const checkSSNValid = (ssn) => {
-  return true //ssn && ssn.length === 13;
-}
-
 const checkValidPassword = (password) => password && password.length >= 6; 
 
 async function asyncForEach(array, callback) {
@@ -110,7 +102,7 @@ const migratePersons = () => {
       const addedPersons = [];
     
       await results.forEach( async (row) => {
-        if(checkEmailValid(row.email) && checkSSNValid(row.ssn) && checkValidPassword(row.password)){
+        if(checkValidPassword(row.password)){
           try{
             const userRecord = await createFirebaseUser(row);
       

@@ -69,7 +69,7 @@ const SubmissionView = (props) => {
                 Submit
               </Button>
               <Button
-                variant="primary"
+                variant="danger"
                 type="submit"
                 onClick={() => onDiscardApplication()}
               >

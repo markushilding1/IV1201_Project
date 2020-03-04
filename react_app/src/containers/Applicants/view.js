@@ -34,13 +34,13 @@ const View = (props) => {
     return null;
   }
   return (
-    <Container className="outerContainer">
+    <Container className="outerContainer d-flex align-items-center" >
       <Modal
         showModal={showModal}
         toggleModal={toggleModal}
         updateApplicationStatus={updateApplicationStatus}
       />
-      <Row className="searchBar">
+      <Row fluid>
         <Col>
           <SearchForm
             onFormChange={onFormChange}
@@ -51,26 +51,28 @@ const View = (props) => {
             onDatesChange={onDatesChange}
             onFocusChange={onFocusChange}
           />
+      
+          <Container className="innerContainer">
+            {loading ? (
+              <Spinner animation="border" />
+            ) : applicants.length ? (
+              applicants.map((applicant, i) => (
+                <Applicant
+                  name={applicant.name}
+                  surname={applicant.surname}
+                  key={applicant.id}
+                  apDate={applicant.createdAt?.split('T')[0]}
+                  onClick={() => toggleModal(applicant.id)}
+                />
+              ))
+            ) : (
+              <p>No results.</p>
+            )}
+          </Container>
+  
+          <PageBar handlePageClick={handlePageClick} />
         </Col>
       </Row>
-      <Container className="innerContainer">
-        {loading ? (
-          <Spinner animation="border" />
-        ) : applicants.length ? (
-          applicants.map((applicant, i) => (
-            <Applicant
-              name={applicant.name}
-              surname={applicant.surname}
-              key={applicant.id}
-              apDate={applicant.createdAt?.split('T')[0]}
-              onClick={() => toggleModal(applicant.id)}
-            />
-          ))
-        ) : (
-          <p>No results.</p>
-        )}
-      </Container>
-      <PageBar handlePageClick={handlePageClick} />
     </Container>
   );
 };
