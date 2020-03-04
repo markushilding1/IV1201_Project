@@ -9,7 +9,7 @@ Permission needed to access the console.
 https://console.firebase.google.com/project/iv1201-g7/overview
 
 ## Dev Environment Setup
-The following sections explains how to install firebase tools on your system and how to serve the rest api locally. 
+The following sections explains how to install firebase tools on your system and how to serve the rest api locally. It is required that npm and node is already installed on the system.
 
 ### Installing Firebase CLI
 ```shell
